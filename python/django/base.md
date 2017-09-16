@@ -29,7 +29,7 @@ mysite
 - urls.py
     Django 项目的 URL 设置, 可视为 django 网站目录。
 
-启动服务器: 
+启动服务器:
 
 ```bash
 python manage.py runserver
@@ -39,13 +39,30 @@ python manage.py runserver
 
 ## 执行流程
 
-- setting.py
+### setting.py
 
 所有的 Django project 开始于 setting.py , 脚本在 manage.py 同一个目录下查找名为 setting.py 的文件。这个文件包含所有关于这个 Django 项目的配置信息, 均大写: ```INSTALLED_APPS```, ```MIDDLEWARE```. ```ROOT_URLCONF```, ```TEMPLATE_DIRS``` ,```WSGI_APPLICATION``` , ```DATABASE_NAME```, ```AUTH_PASSWORD_VALIDATORS```, ```LANGUAGE_CODE```, ```TIME_ZONE```, ```USE_I18N```, ```USE_L10N```, ```USE_TZ```, ```STATIC_URL``` 。最重要的是 ```ROOT_URLCONF```， 它将作为 ```URLconf``` 告诉 Django 在这个站点哪些 Python 模块将被用到。
 
-Django 时区
+- Django 时区
 
 Django 有时区意识, 默认时区为 America/Chicago, 使用其他时区需要在 setting.py 中修改。请参见它里面的注释, 以获得最新世界时区列表。
+
+- INSTALLED_APPS
+
+默认站点:
+
+站点 | 功能
+---|---
+django.contrib.admin | 管理站点
+django.contrib.auth | 认证系统
+django.contrib.contenttypes | 用于内容类型的框架
+django.contrib.sessions | 会话框架
+django.contrib.messages | 消息框架
+django.contrib.staticfiles | 管理静态文件的框架
+
+这些应用默认包含在 Django 中, 方便通用场合下使用。
+
+- 视图
 
 ```python
 ROOT_URLCONF = 'mysite.urls'
@@ -54,6 +71,8 @@ ROOT_URLCONF = 'mysite.urls'
 对应的文件是 ```<project_dir>/urls.py```
 
 一个视图功能必须返回一个 HttpResponse， 完成后, Django 将完成剩余的转换 Python 对象到一个合适的带有 HTTP 请求头和 body 的 Web Respond。
+
+
 
 ## Django 的错误界面
 
@@ -84,7 +103,7 @@ ROOT_URLCONF = 'mysite.urls'
 # settings.py
 # 设置是否开启 Debug 模式
 DEBUG = True
-# 设置能够访问的 hosts 
+# 设置能够访问的 hosts
 ALLOWED_HOSTS = []
 ```
 
@@ -114,7 +133,7 @@ ADMINS = (
 
 ## 数据库配置
 
-数据库配置也是在 Django 的配置文件 ```setting.py``` 中。 内容为: 
+数据库配置也是在 Django 的配置文件 ```setting.py``` 中。 内容为:
 
 ```python
 DATABASES = {
@@ -129,9 +148,9 @@ DATABASES = {
 }
 ```
 
-配置纲要: 
+配置纲要:
 
-1. DATABASE_ENGINE 配置数据库类型, 内容如下: 
+1. DATABASE_ENGINE 配置数据库类型, 内容如下:
 
 配置 | 数据库 | 所需要的适配器
 ---|---|---
@@ -141,7 +160,7 @@ mysql | MySQL | MySQLdb
 sqlite3 | SQLite | 如果使用 Python 2.5+ 则不需要适配器。 否则就使用 pysqlite
 oracle | Oracle | cx_Oracle
 
-配置示例: 
+配置示例:
 ```python
 DATABASE_ENGINE = 'postgresql_psycopg2'
 DATABASE_NAME = 'mydb'
@@ -173,7 +192,8 @@ INSTALLED_APPS ={
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mysite.<app>',
+    '<app>',
+    ...,
 }
 ```
 
@@ -181,12 +201,54 @@ INSTALLED_APPS ={
 
 ```bash
 # 验证有效性
-python manage.py validate
+python manage.py check
 # 生成 CREATE TABLE 语句
-python manage.py sqlall <>
+python manage.py sqlmigrate
+# 为修改创建迁移文件
+python manage.py makemigrations
+# 将改变更新到数据库中
+python manage.py migrate
 ```
 
-2. 
+2. models
 
+当编写一个数据库驱动的Web应用时, 第一步就是定义该应用的模型 —— 本质上, 就是定义该模型所对应的数据库设计及其附带的元数据。
 
+模型指出了数据的唯一, 明确的真实来源。 它包含了正在存储的数据的基本字段和行为。Django遵循DRY (Don't repeat yourself)原则。这个原则的目标是在一个地方定义你的数据模型, 并自动从它获得需要的信息。
 
+通过以下命令告知 Django model 需要更改, 通过 sqlmigrate 命令返回 sql 语句:
+
+```bash
+python manage.py makemigrations <app>
+
+# output in console
+Migrations for '<app>':
+  0001_initial.py:
+    - Create model <model1>
+    - Create model <model2>
+    - ...
+    - Add field question to choice
+
+# 查看 sql
+python manage.py sqlmigrate <app>
+```
+
+创建管理员用户
+
+```bash
+python manage.py createsuperuser
+# 按照提示输入相应的选项
+```
+
+## 站点管理
+
+通过编辑 <app>/admin.py 来配置管理页面可以管理 <app> 中的 models。
+
+```python
+from django.contrib import admin
+from .models import <Model>
+
+admin.site.register(<Model>)
+
+class <Model1>
+```

@@ -13,17 +13,20 @@ yum install mysql mysql-devel mysql-client -y
 
 # 启动
 service mysqld start
+
+# mac
+mysql.server start|stop
 ```
 
 2. 安装后需要完成的工作
 
-MySQL 安装后, 默认密码为空, 首先需要做的事为 MySQL 创建密码: 
+MySQL 安装后, 默认密码为空, 首先需要做的事为 MySQL 创建密码:
 
 ```
 mysqladmin -u root password "new_password";
 ```
 
-通过以下指令连接 MySQL: 
+通过以下指令连接 MySQL:
 
 ```
 mysql -u root -p
@@ -48,13 +51,13 @@ ps -aux | grep mysql
 ```sql
 # 通配符为 %
 # 创建一个名为 user 的用户, 所有 IP 能访问, 未设置密码
-CREATE USER 'user'@'%'; 
+CREATE USER 'user'@'%';
 # 创建一个名为 user 的用户, 指定 IP 能访问, 密码为 password
-CREATE USER 'user'@'192.168.1.101' IDENDIFIED BY 'password'; 
+CREATE USER 'user'@'192.168.1.101' IDENDIFIED BY 'password';
 # 创建一个名为 user 的用户, 所有 IP 能访问, 密码为 password
-CREATE USER 'user'@'%' IDENTIFIED BY 'password'; 
+CREATE USER 'user'@'%' IDENTIFIED BY 'password';
 # 创建一个名为 user 的用户, 所有 IP 能访问, 无密码
-CREATE USER 'user'@'%' IDENTIFIED BY ''; 
+CREATE USER 'user'@'%' IDENTIFIED BY '';
 ```
 
     2. 为数据库添加用户:
@@ -65,7 +68,7 @@ use mysql;
 INSERT INTO user
     (host, user, password,
     select_priv, select_priv, select_priv)
-    VALUES ('localhost', 'guest', 
+    VALUES ('localhost', 'guest',
     PASSWORD('password'), 'Y', 'Y', 'Y');
 
 # 在添加用户时, 注意使用MySQL提供的 PASSWORD() 函数来对密码进行加密。
@@ -258,7 +261,7 @@ select clone_name1, clone_name2
 # 可以通过 offset 指定偏移量, 默认为 0
 # 可以通过 limit 属性设定返回的记录数
 
-# example 
+# example
 select * from table_name;
 # 查询 table_name 的所有字段的的所有数据
 select id from table_name;
@@ -276,21 +279,4 @@ update table_name set field1=new_data1, field2=new_data2
     [where clause];
 ```
 
-## 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+##
