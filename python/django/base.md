@@ -4,6 +4,8 @@
 
 一个URL模式就是一个正则表达式
 
+- 通过 .coveragerc 测试代码覆盖率。
+
 - 编码次序
     1. URLpattern;
     2. views

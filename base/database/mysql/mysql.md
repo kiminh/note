@@ -198,6 +198,18 @@ CREATE TABLE table_name(
    )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
+## mysql 数据备份和导入
+
+1. 备份
+```bash
+musqldump -u <user> <database> > <filename>
+```
+
+2. 导入
+```bash
+mysql -u <user> -p <database> < <filename>
+```
+
 ## 删除操作
 
 1. 删除数据库

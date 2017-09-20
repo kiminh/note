@@ -1,0 +1,238 @@
+19 Sep 2017 09:11:24,234 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,242 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,245 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,250 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,252 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,272 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,275 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,281 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,283 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,291 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,293 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,302 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,304 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,310 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,312 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,318 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:24,321 ERROR [ambari-client-thread-1905] HostImpl:1084 - Config inconsistency exists: unknown configType=kafka-broker
+19 Sep 2017 09:11:25,170  WARN [ambari-action-scheduler] ExecutionCommandWrapper:185 - Unable to lookup the cluster by ID; assuming that there is no cluster and therefore no configs for this execution command: Cluster not found, clusterName=clusterID=-1
+19 Sep 2017 09:11:25,171  WARN [ambari-action-scheduler] ActionScheduler:782 - Host: master1.hadoop.spacestar.com, role: check_host, actionId: 762-0 expired and will be failed
+19 Sep 2017 09:11:25,174  INFO [ambari-action-scheduler] ActionScheduler:809 - Removing command from queue, host=master1.hadoop.spacestar.com, commandId=762-0
+19 Sep 2017 09:11:25,174  WARN [ambari-action-scheduler] ActionScheduler:782 - Host: master2.hadoop.spacestar.com, role: check_host, actionId: 762-0 expired and will be failed
+19 Sep 2017 09:11:25,176  INFO [ambari-action-scheduler] ActionScheduler:809 - Removing command from queue, host=master2.hadoop.spacestar.com, commandId=762-0
+19 Sep 2017 09:11:25,177  WARN [ambari-action-scheduler] ActionScheduler:782 - Host: master3.hadoop.spacestar.com, role: check_host, actionId: 762-0 expired and will be failed
+19 Sep 2017 09:11:25,179  INFO [ambari-action-scheduler] ActionScheduler:809 - Removing command from queue, host=master3.hadoop.spacestar.com, commandId=762-0
+
+
+19 Sep 2017 00:19:37,026  WARN [ambari-action-scheduler] ActionScheduler:316 - Exception received
+java.lang.NullPointerException
+        at org.apache.ambari.server.actionmanager.Stage.getStartTime(Stage.java:630)
+        at org.apache.ambari.server.actionmanager.ActionScheduler.processHostRole(ActionScheduler.java:1065)
+        at org.apache.ambari.server.actionmanager.ActionScheduler.doWork(ActionScheduler.java:461)
+        at org.apache.ambari.server.actionmanager.ActionScheduler.run(ActionScheduler.java:310)
+        at java.lang.Thread.run(Thread.java:744)
+
+代码 check_host, HostImpl
+
+
+
+
+
+WARN - You have config(s): activity-env-version1,activity-zeppelin-env-version1,hst-log4j-version1,
+hst-agent-conf-version1,activity-zeppelin-interpreter-version1,activity-conf-version1,
+activity-zeppelin-shiro-version1,anonymization-rules-version1,hst-server-conf-version1,
+activity-log4j-version1,activity-zeppelin-site-version1 that is(are) not mapped
+ (in serviceconfigmapping table) to any service!
+
+
+
+
+2017-09-19 01:41:36,229  WARN - You have config(s):
+
+kafka-broker-version1504863207162,
+krb5-conf-version1504698148280,
+pseudo-distributed.ini-version1503568077130,
+hue-hive-site-version1503626974018,
+kafka-broker-version1505041951344,
+activity-zeppelin-shiro-version1,
+kafka-logsearch-conf-version1504866193312,
+hue-hadoop-site-version1503285255552,
+hue-zookeeper-site-version1503626974018,
+kafka-env-version1503144410146,
+ranger-kafka-audit-version1504686077449,
+anonymization-rules-version1,
+krb5-conf-version1503300256647,
+hue-hadoop-site-version1503285014353,
+hst-server-conf-version1,
+activity-log4j-version1,
+hue-env-version1503626974018,
+hue-hadoop-site-version1503282230437,
+activity-zeppelin-site-version1,
+kafka-broker-version1504753875295,
+kerberos-env-version1504685886531,
+kafka-env-version1504747566684,
+kerberos-env-version1503299031215,
+hue-env-version1503283538413,
+kafka_jaas_conf-version1503144410146,
+kafka-log4j-version1503386474299,
+hst-log4j-version1,
+hue-hbase-site-version1503626974018,
+hue-desktop-site-version1503282230437,
+hue-desktop-site-version1503387059614,
+kerberos-env-version1503300256647,
+kafka-broker-version1505041971380,
+kafka-env-version1504866193312,
+krb5-conf-version1504685886531,
+hue-zookeeper-site-version1503282230437,
+ranger-kafka-audit-version1504774348212,
+hue-notebook-site-version1503282230437,
+ranger-kafka-audit-version1503300558960,
+hue-hadoop-site-version1503285562856,
+hue-env-version1503282230437,
+hue-log4j-env-version1503282230437,
+pseudo-distributed.ini-version1503282230437,
+hue-auth-site-version1503626974018,
+ranger-kafka-policymgr-ssl-version1504866193312,
+kafka-env-version1503387059126,
+kafka-broker-version1505041993214,
+ranger-kafka-plugin-properties-version1504866193312,
+hue-ugsync-site-version1503282230437,
+hue-solr-site-version1503282230437,hst-agent-conf-version1,
+activity-zeppelin-interpreter-version1,
+hue-pig-site-version1503282230437,
+hue-ugsync-site-version1503626974018,
+flume-logsearch-conf-version1503235770535,
+kafka-broker-version1504443919479,
+kafka-broker-version1504252877259,
+kafka-broker-version1504765618740,
+kafka-broker-version1504686077634,
+pseudo-distributed.ini-version1503568210804,
+hue-solr-site-version1503626974018,
+ranger-kafka-audit-version1504753875110,
+kafka_client_jaas_conf-version1504866193312,
+kafka-broker-version1504774348433,
+kafka-broker-version1504446875546,
+krb5-conf-version1504765629803,
+kafka-broker-version1504866193312,
+flume-conf-version1503235770535,
+kafka-broker-version1504747567256,
+kafka-log4j-version1503144410146,
+krb5-conf-version1504688168650,
+kafka-broker-version1504253269501,
+ranger-kafka-plugin-properties-version1503386474300,
+kafka-broker-version1504253378249,
+kafka-broker-version1504764779169,
+krb5-conf-version1503284039794,
+kafka-broker-version1505041904647,
+kafka_client_jaas_conf-version1503144410146,
+hue-spark-site-version1503282230437,
+kafka-broker-version1503144410146,
+kafka-broker-version1504861785549,
+ranger-kafka-security-version1504866193312,
+kafka-env-version1504686076928,
+pseudo-distributed.ini-version1503626974018,
+ranger-kafka-security-version1503144410146,
+ranger-kafka-policymgr-ssl-version1503144410146,
+hue-desktop-site-version1503300558987,
+ranger-kafka-plugin-properties-version1503144410146,
+krb5-conf-version1504752902620,
+hue-rdbms-site-version1503282230437,
+kafka-broker-version1505042152578,
+hue-desktop-site-version1503626974018,
+kafka-broker-version1504861806403,
+hue-rdbms-site-version1503626974018,
+flume-env-version1503235770535,
+kerberos-env-version1504773321870,
+ranger-kafka-audit-version1504747567109,
+hue-ugsync-site-version1503283589721,
+hue-oozie-site-version1503282230437,
+ranger-kafka-audit-version1504765618537,
+kafka-env-version1504774347591,
+hue-hadoop-site-version1503566977393,
+hue-auth-site-version1503282230437,
+activity-env-version1,
+kafka-logsearch-conf-version1503144410146,
+kafka-broker-version1503300559115,
+kafka-broker-version1504443242833,
+hue-notebook-site-version1503626974018,
+activity-conf-version1,
+ranger-kafka-audit-version1503144410146,
+ranger-kafka-audit-version1504764778912,
+krb5-conf-version1504773321870,
+hue-hbase-site-version1503282230437,
+hue-hadoop-site-version1503626974018,
+activity-zeppelin-env-version1,
+kafka-broker-version1503386474298,
+hue-pig-site-version1503626974018,
+kerberos-env-version1503284039794,
+hue-hive-site-version1503282230437,
+kerberos-env-version1504698148280,
+kafka-broker-version1504863236069,
+ranger-kafka-audit-version1504866193312,
+kerberos-env-version1504688168650,
+hue-log4j-env-version1503626974018,
+kafka-broker-version1504446910342,
+kafka-broker-version1504446931665,
+kafka-env-version1504753874549,
+kafka-env-version1504765617959,
+kafka-broker-version1504446954772,
+kerberos-env-version1504752902620,
+kafka-broker-version1504861756179,
+kafka-env-version1503300558564,
+kafka-env-version1504764778208,
+kafka-log4j-version1504866193312,
+kerberos-env-version1504765629803,
+ranger-kafka-audit-version1503387059578,
+krb5-conf-version1503299031215,
+hue-oozie-site-version1503626974018,
+kafka-broker-version1503387059726,
+hue-spark-site-version1503626974018,
+kafka-broker-version1504234804902,
+kafka_jaas_conf-version1504866193312
+that is(are) not mapped (in serviceconfigmapping table) to any service!
+
+
+UseAction
+
+ConfigGroup
+ConfigGroupClusterMapping
+
+delete from clusterconfig where type_name like 'KA%';
+
+
+
+hue-hadoop-site-version1503626974018activity-zeppelin-env-version1pseudo-distributed.ini-version1503568077130hue-hadoop-site-version1503285562856,hue-pig-site-version1503626974018kerberos-env-version1503284039794hue-hive-site-version1503626974018kerberos-env-version1504698148280activity-zeppelin-shiro-version1hue-hadoop-site-version1503285255552hue-auth-site-version1503626974018pseudo-distributed.ini-version1503626974018kerberos-env-version1504688168650hue-zookeeper-site-version1503626974018hue-log4j-env-version1503626974018hst-agent-conf-version1activity-zeppelin-interpreter-version1hue-ugsync-site-version1503626974018hue-desktop-site-version1503626974018flume-logsearch-conf-version1503235770535kerberos-env-version1504752902620hue-rdbms-site-version1503626974018anonymization-rules-version1flume-env-version1503235770535hst-server-conf-version1activity-log4j-version1hue-hadoop-site-version1503285014353kerberos-env-version1504773321870hue-env-version1503626974018activity-zeppelin-site-version1kerberos-env-version1504685886531pseudo-distributed.ini-version1503568210804kerberos-env-version1504765629803hue-solr-site-version1503626974018kerberos-env-version1503299031215hue-env-version1503283538413hue-hadoop-site-version1503566977393hue-oozie-site-version1503626974018activity-env-version1hue-hbase-site-version1503626974018hst-log4j-version1flume-conf-version1503235770535hue-notebook-site-version1503626974018activity-conf-version1hue-desktop-site-version1503387059614kerberos-env-version1503300256647hue-spark-site-version1503626974018
+
+
+
+
+
+
+
+19 Sep 2017 11:44:39,252  INFO [qtp-ambari-agent-111] HostImpl:329 - Received host registration,
+
+host=[hostname=master3,
+fqdn=master3.hadoop.spacestar.com,
+domain=hadoop.spacestar.com,
+architecture=x86_64,
+processorcount=40,
+physicalprocessorcount=40,
+osname=centos,
+osversion=6.7,
+osfamily=redhat,memory=65937100,
+uptime_hours=529,
+  mounts=(available=36924560,mountpoint=/,used=11929068,percent=25%,size=51475068,device=/dev/sda3,type=ext4)
+  (available=194098888,mountpoint=/hadoop,used=1709040,percent=1%,size=206293688,device=/dev/sda1,type=ext4)
+  (available=91941376,mountpoint=/home,used=14446016,percent=14%,size=112087792,device=/dev/sda7,type=ext4)
+  (available=48526112,mountpoint=/opt,used=327516,percent=1%,size=51475068,device=/dev/sda5,type=ext4)
+  (available=97512104,mountpoint=/var/lib,used=326264,percent=1%,size=103081248,device=/dev/sda2,type=ext4)
+  (available=43554412,mountpoint=/var/log,used=5299216,percent=11%,size=51475068,device=/dev/sda6,type=ext4)
+]
+"/var/log/ambari-server/ambari-server.log" [readonly] 201051L, 26484186C                                                                                                                  196479,2-9    97%
+19 Sep 2017 11:53:59,908  WARN [ambari-action-scheduler] ActionScheduler:316 - Exception received
+java.lang.NullPointerException
+        at org.apache.ambari.server.actionmanager.Stage.getStartTime(Stage.java:630)
+        at org.apache.ambari.server.actionmanager.ActionScheduler.processHostRole(ActionScheduler.java:1065)
+        at org.apache.ambari.server.actionmanager.ActionScheduler.doWork(ActionScheduler.java:461)
+        at org.apache.ambari.server.actionmanager.ActionScheduler.run(ActionScheduler.java:310)
+        at java.lang.Thread.run(Thread.java:744)
