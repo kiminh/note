@@ -3,7 +3,7 @@
 
 ## usage  
 
-- quick start project 
+- quick start project
 
 ```
 django-admin startproject mysite
@@ -11,7 +11,7 @@ django-admin startproject mysite
 
 - run server
 
-在 project 根目录下执行: 
+在 project 根目录下执行:
 
 ```bash
 # python manage.py runserver <port/host:server>
@@ -52,4 +52,3 @@ python manage.py startapp polls
 # 生成 sqlite 数据库和数据库表
 python manage.py migrate
 ```
-

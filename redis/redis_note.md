@@ -4,6 +4,7 @@
 
 ## 簡介  
 
+-[Download](http://download.redis.io/releases/)
 
 ## 集群环境搭建  
 
@@ -16,7 +17,7 @@
 
 ```conf
 # Redis 是否以守护进程 的方式运行
-daemonize no 
+daemonize no
 
 # 当 Redis 以守护进程的方式运行时，Redis 默认会把 pid 文件放到 /var/run/redis.pid, 可以配置其他地址
 # 当运行多个 redis 实例时，需要指定不同的 pid 文件和端口
@@ -116,7 +117,3 @@ appendonly yes
 
     1. ruby Redis 接口需要手动下载，通过 ```gem install redis``` 下载。  
     2. ```replicas 1``` 选项表示为集群中的每个主节点创建一个从节点。  
-
-
-
-

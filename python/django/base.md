@@ -140,7 +140,7 @@ ADMINS = (
 ```python
 DATABASES = {
     'default': {
-        'ENGINE': '',
+        'ENGINE': 'django.db.backend.xxx',
         'NAME': '',
         'USER': '',
         'PASSWORD': '',
@@ -164,8 +164,8 @@ oracle | Oracle | cx_Oracle
 
 配置示例:
 ```python
-DATABASE_ENGINE = 'postgresql_psycopg2'
-DATABASE_NAME = 'mydb'
+ENGINE = 'postgresql_psycopg2'
+NAME = 'mydb'
 # 如果使用 SQLite, 需要配置数据库文件的完整路径
 DATABASE_NAME = '/home/django/mydata.db'
 # 此处的 MySQL 是一个特例。 如果使用的是 MySQL 且该项设置值由斜杠（ '/' ）开头，MySQL 将通过 Unix socket 来连接指定的套接字
@@ -241,6 +241,10 @@ python manage.py sqlmigrate <app>
 python manage.py createsuperuser
 # 按照提示输入相应的选项
 ```
+
+3. form 表单管理
+
+
 
 ## 站点管理
 

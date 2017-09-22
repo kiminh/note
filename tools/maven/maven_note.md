@@ -56,7 +56,7 @@ TODO
 ## 常用命令
 
 command | 作用
----|--- 
+---|---
 mvn clean | 清理项目生产的临时文件,一般是模块下的 target 目录
 mvn compile | 编译源代码，一般编译模块下的 src/main/Java 目录
 mvn package | 项目打包工具,会在模块下的 target 目录生成jar或war等文件
@@ -69,9 +69,6 @@ mvn dependency:tree | 打印出项目的整个依赖树
 mvn archetype:generate | 创建Maven的普通java项目
 mvn tomcat:run | 在tomcat容器中运行web应用
 mvn jetty:run | 调用 Jetty 插件的 Run 目标在 Jetty Servlet 容器中启动 web 应用
+mvn versions:set -DnewVersion=<new_version> | 更新版本
 
 **注意：运行 maven 命令的时候，首先需要定位到 maven 项目的目录，也就是项目的 pom.xml 文件所在的目录。否则，必以通过参数来指定项目的目录。**
-
-
-
-
