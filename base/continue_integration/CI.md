@@ -19,6 +19,10 @@ sonar 和 gitlab 审查代码相关插件, 需要自行编译, 编译指令:
 配置参考:
 [sonar-gitlab-plugin 配置](http://blog.csdn.net/aixiaoyang168/article/details/78115646)
 
+- 数据库
+
+使用外部数据库, 生产环境中不要使用嵌入式数据库。 mysql 要求5.6及以上版本。
+
 ## gitlab CI
 
 [gitlab](https://about.gitlab.com/)

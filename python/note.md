@@ -47,7 +47,7 @@ pip install pypiwin32
 pip install -r requirements.txt
 ```
 
-    request 文件格式: 
+    request 文件格式:
 
 ```
 requests==1.2.0
@@ -61,4 +61,45 @@ numpy
 
 ```
 pip install Sphinx
+```
+
+8. 字典推倒式
+
+```python
+d = {key: value for (key, value) in iterable}
+```
+
+9. \*args and \*\*kwargs
+
+当你不确定你的函数里将要传递多少参数时你可以用*args。例如, 它可以传递任意数量的参数:
+
+```python
+def print_everything(*args):
+  for count, thing in enumerate(args):
+    print '{0}. {1}'.format(count, thing)
+
+print_everything('apple', 'banana', 'cabbage')
+# console output
+# 0. apple
+# 1. banana
+# 2. cabbage
+```
+
+\*\*kwargs允许你使用没有事先定义的参数名
+
+```python
+def table_things(**kwargs):
+  for name, value in kwargs.items():
+    print '{0} = {1}'.format(name, value)
+
+table_things(apple = 'fruit', cabbage = 'vegetable')
+# console output
+# cabbage = vegetable
+# apple = fruit
+```
+
+也可以混着用。命名参数首先获得参数值然后所有的其他参数都传递给 \*args 和 \*\*kwargs 。命名参数在列表的最前端。例如:
+
+```python
+def table_things(titlestring, **kwargs)
 ```
