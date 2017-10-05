@@ -28,6 +28,14 @@ grp.getgrall()
 
 2. virtualenv
 
+```bash
+# 建立 python 环境
+virtualenv <python_dir> # python2 环境
+virtualenv -p python3 <python_dir> # python3环境
+source <python_dir>/bin/activate # 将当前 python 环境设置为虚拟 python 环境
+deactivate # 退出虚拟 python 环境, 回到系统 python 环境
+```
+
 3. pexpect  
 
 一个自动控制的 Python 模块,可以用来ssh、ftp、passwd、telnet 等命令行进行自动交互  
@@ -103,3 +111,13 @@ table_things(apple = 'fruit', cabbage = 'vegetable')
 ```python
 def table_things(titlestring, **kwargs)
 ```
+
+10. open 句柄在 python2 和 python3 中的区别
+
+```python
+with open('<file_path>', 'open_mode') as f:
+  <execution>
+```
+
+  - python2 中, 默认通过二进制方式读取文件。
+  - python3 中, 默认通过 UTF-8 编码读取文件。open_mode 为 `'wb'`` , 通过二进制形式读取文件。
