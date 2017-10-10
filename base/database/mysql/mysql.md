@@ -18,6 +18,14 @@ service mysqld start
 mysql.server start|stop
 ```
 
+通过 rpm 安装 mysql 5.5, 5.6, 5.7:
+
+```bash
+yum install -y http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm
+# 根据需要的 mysql 版本修改 /etc/yum.repos.d/mysql-community.repo 中的内容, 即选择启用的 yum 源。
+yum install -y mysql-community-server mysql-community-client mysql-community-lib
+```
+
 2. 安装后需要完成的工作
 
 MySQL 安装后, 默认密码为空, 首先需要做的事为 MySQL 创建密码:

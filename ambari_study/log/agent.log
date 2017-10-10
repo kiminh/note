@@ -1,0 +1,20 @@
+```
+WARNING 2017-10-12 08:43:12,140 NetUtil.py:116 - Server at https://master571.hadoop.spacestar.com:8440 is not reachable, sleeping for 10 seconds...
+INFO 2017-10-12 08:43:22,141 NetUtil.py:62 - Connecting to https://master571.hadoop.spacestar.com:8440/ca
+ERROR 2017-10-12 08:43:22,151 NetUtil.py:88 - [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)
+ERROR 2017-10-12 08:43:22,151 NetUtil.py:89 - SSLError: Failed to connect. Please check openssl library versions.
+Refer to: https://bugzilla.redhat.com/show_bug.cgi?id=1022468 for more details.
+```
+
+Ambari-server Ambari-agent 间的通信默认走 HTTP 协议而非 HTTPS 协议, `/etc/python/cert-verification.cfg' 文件中设置 HTTPS 为默认值, 在当前环境下因为某些未知原因默认开启, 需要修改为 `disable` 来禁用。
+
+```cfg
+# Possible values are:
+# 'enable' to ensure HTTPS certificate verification is enabled by default
+# 'disable' to ensure HTTPS certificate verification is disabled by default
+# 'platform_default' to delegate the decision to the redistributor providing this particular Python version
+
+# For more info refer to https://www.python.org/dev/peps/pep-0493/
+[https]
+verify=disable # 原来为 platform_default
+```

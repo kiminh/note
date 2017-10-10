@@ -121,3 +121,29 @@ with open('<file_path>', 'open_mode') as f:
 
   - python2 中, 默认通过二进制方式读取文件。
   - python3 中, 默认通过 UTF-8 编码读取文件。open_mode 为 `'wb'`` , 通过二进制形式读取文件。
+
+11. lambda 表达式
+
+lambda 表达式可以替代仅仅求职的简单函数
+
+```python
+add = lambda x, y: x + y
+print add(2, 3)
+# output 5
+
+# 等价于
+def add(x, y):
+  return x + y
+```
+
+11. os 模块的 path
+
+```python
+import os
+
+# 获取当前目录
+os.getcwd()
+
+# 获取 <path> 的上一级目录
+os.path.dirname('<path>')
+```
