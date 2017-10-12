@@ -36,6 +36,11 @@ source <python_dir>/bin/activate # 将当前 python 环境设置为虚拟 python
 deactivate # 退出虚拟 python 环境, 回到系统 python 环境
 ```
 
+```bash
+# virtualenv 建立的 python virtual environment 无法运行 matplotlab, 需使用以下方式建立虚拟环境
+python -m venv <dir> # dir 需存在
+```
+
 3. pexpect  
 
 一个自动控制的 Python 模块,可以用来ssh、ftp、passwd、telnet 等命令行进行自动交互  
