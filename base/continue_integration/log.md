@@ -65,6 +65,11 @@ mvn sonar:sonar \
 mvn package sonar:sonar   -Dsonar.host.url=http://192.168.1.88:9000   -Dsonar.login=5f6f68885d1cf72e86bf223411adb9bb5fb50b3e -Dsonar.sources=src/main/java/ -Dsonar.libraries=./target/sonar-gitlab-plugin-2.2.0-SNAPSHOT/META-INF/lib/*.jar
 ```
 
+```
+# sonarqube's new token for jenkins
+8fce20e507448c653d87174102db4b25e17b28db
+```
+
 
 ```
 mvn package sonar:sonar   -Dsonar.host.url=http://192.168.1.88:9000   -Dsonar.login=5f6f68885d1cf72e86bf223411adb9bb5fb50b3e -Dsonar.sources=src/main/java/ -Dsonar.libraries=./src/main/webapp/WEB-INF/lib/*.jar

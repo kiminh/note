@@ -72,3 +72,14 @@ mvn jetty:run | 调用 Jetty 插件的 Run 目标在 Jetty Servlet 容器中启�
 mvn versions:set -DnewVersion=<new_version> | 更新版本
 
 **注意：运行 maven 命令的时候，首先需要定位到 maven 项目的目录，也就是项目的 pom.xml 文件所在的目录。否则，必以通过参数来指定项目的目录。**
+
+
+## parameters
+
+1. 跳过测试
+
+```bash
+mvn install -DskipTests
+mvn install -Dmaven.test.skip=true
+# TODO 添加这两个参数的区别
+```

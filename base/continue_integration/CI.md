@@ -23,6 +23,8 @@ sonar 和 gitlab 审查代码相关插件, 需要自行编译, 编译指令:
 
 使用外部数据库, 生产环境中不要使用嵌入式数据库。 mysql 要求5.6及以上版本。
 
+- sonar runner 环境安装
+
 ## gitlab CI
 
 [gitlab](https://about.gitlab.com/)
@@ -32,3 +34,14 @@ gitlab CI 需要 gitlab-runner, 同时需要编写 `.gitlab-ci.yml` 和 `sonar_p
 
 - `.gitlab-ci.yml` 设置代码审查规则。
 - `sonar_preview.sh` commit 后自动执行。
+
+## jenkins
+
+
+
+
+## jmeter
+
+
+
+1. jmeter -n -t http_request.jmx -l logfile1.
