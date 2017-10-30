@@ -74,3 +74,109 @@ mvn package sonar:sonar   -Dsonar.host.url=http://192.168.1.88:9000   -Dsonar.lo
 ```
 mvn package sonar:sonar   -Dsonar.host.url=http://192.168.1.88:9000   -Dsonar.login=5f6f68885d1cf72e86bf223411adb9bb5fb50b3e -Dsonar.sources=src/main/java/ -Dsonar.libraries=./src/main/webapp/WEB-INF/lib/*.jar
 ```
+
+## jenkins log
+
+```
+Oct 25, 2017 2:25:10 PM hudson.XmlFile replaceIfNotAtTopLevel
+WARNING: JENKINS-45892: reference to hudson.maven.MavenModuleSet@73486958[ssm] being saved from unexpected /var/lib/jenkins/jobs/ssm/builds/37/build.xml
+java.lang.IllegalStateException
+	at hudson.XmlFile.replaceIfNotAtTopLevel(XmlFile.java:210)
+	at hudson.model.AbstractItem.writeReplace(AbstractItem.java:509)
+	at sun.reflect.GeneratedMethodAccessor563.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at com.thoughtworks.xstream.converters.reflection.SerializationMethodInvoker.callWriteReplace(SerializationMethodInvoker.java:89)
+	at hudson.util.RobustReflectionConverter.marshal(RobustReflectionConverter.java:141)
+	at com.thoughtworks.xstream.core.AbstractReferenceMarshaller.convert(AbstractReferenceMarshaller.java:69)
+	at com.thoughtworks.xstream.core.TreeMarshaller.convertAnother(TreeMarshaller.java:58)
+	at com.thoughtworks.xstream.core.AbstractReferenceMarshaller$1.convertAnother(AbstractReferenceMarshaller.java:84)
+	at hudson.util.RobustReflectionConverter.marshallField(RobustReflectionConverter.java:265)
+	at hudson.util.RobustReflectionConverter$2.writeField(RobustReflectionConverter.java:252)
+	at hudson.util.RobustReflectionConverter$2.visit(RobustReflectionConverter.java:224)
+	at com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider.visitSerializableFields(PureJavaReflectionProvider.java:138)
+	at hudson.util.RobustReflectionConverter.doMarshal(RobustReflectionConverter.java:209)
+	at hudson.util.RobustReflectionConverter.marshal(RobustReflectionConverter.java:150)
+	at com.thoughtworks.xstream.core.AbstractReferenceMarshaller.convert(AbstractReferenceMarshaller.java:69)
+	at com.thoughtworks.xstream.core.TreeMarshaller.convertAnother(TreeMarshaller.java:58)
+	at com.thoughtworks.xstream.core.TreeMarshaller.convertAnother(TreeMarshaller.java:43)
+	at com.thoughtworks.xstream.core.AbstractReferenceMarshaller$1.convertAnother(AbstractReferenceMarshaller.java:88)
+	at com.thoughtworks.xstream.converters.collections.AbstractCollectionConverter.writeItem(AbstractCollectionConverter.java:64)
+	at com.thoughtworks.xstream.converters.collections.CollectionConverter.marshal(CollectionConverter.java:74)
+	at com.thoughtworks.xstream.core.AbstractReferenceMarshaller.convert(AbstractReferenceMarshaller.java:69)
+	at com.thoughtworks.xstream.core.TreeMarshaller.convertAnother(TreeMarshaller.java:58)
+	at com.thoughtworks.xstream.core.AbstractReferenceMarshaller$1.convertAnother(AbstractReferenceMarshaller.java:84)
+	at hudson.util.RobustReflectionConverter.marshallField(RobustReflectionConverter.java:265)
+	at hudson.util.RobustReflectionConverter$2.writeField(RobustReflectionConverter.java:252)
+	at hudson.util.RobustReflectionConverter$2.visit(RobustReflectionConverter.java:224)
+	at com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider.visitSerializableFields(PureJavaReflectionProvider.java:138)
+	at hudson.util.RobustReflectionConverter.doMarshal(RobustReflectionConverter.java:209)
+	at hudson.util.RobustReflectionConverter.marshal(RobustReflectionConverter.java:150)
+	at com.thoughtworks.xstream.core.AbstractReferenceMarshaller.convert(AbstractReferenceMarshaller.java:69)
+	at com.thoughtworks.xstream.core.TreeMarshaller.convertAnother(TreeMarshaller.java:58)
+	at com.thoughtworks.xstream.core.TreeMarshaller.convertAnother(TreeMarshaller.java:43)
+	at com.thoughtworks.xstream.core.TreeMarshaller.start(TreeMarshaller.java:82)
+	at com.thoughtworks.xstream.core.AbstractTreeMarshallingStrategy.marshal(AbstractTreeMarshallingStrategy.java:37)
+	at com.thoughtworks.xstream.XStream.marshal(XStream.java:1026)
+	at com.thoughtworks.xstream.XStream.marshal(XStream.java:1015)
+	at com.thoughtworks.xstream.XStream.toXML(XStream.java:988)
+	at hudson.XmlFile.write(XmlFile.java:181)
+	at hudson.model.Run.save(Run.java:1920)
+	at hudson.maven.MavenModuleSetBuild.notifyModuleBuild(MavenModuleSetBuild.java:599)
+	at hudson.maven.MavenBuild$ProxyImpl2.end(MavenBuild.java:618)
+	at sun.reflect.GeneratedMethodAccessor655.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at hudson.model.Executor$2.call(Executor.java:939)
+	at hudson.util.InterceptingProxy$1.invoke(InterceptingProxy.java:23)
+	at com.sun.proxy.$Proxy87.end(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor655.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at hudson.remoting.RemoteInvocationHandler$RPCRequest.perform(RemoteInvocationHandler.java:899)
+	at hudson.remoting.RemoteInvocationHandler$RPCRequest.call(RemoteInvocationHandler.java:873)
+	at hudson.remoting.RemoteInvocationHandler$RPCRequest.call(RemoteInvocationHandler.java:832)
+	at hudson.remoting.UserRequest.perform(UserRequest.java:205)
+	at hudson.remoting.UserRequest.perform(UserRequest.java:52)
+	at hudson.remoting.Request$2.run(Request.java:356)
+	at hudson.remoting.InterceptingExecutorService$1.call(InterceptingExecutorService.java:72)
+	at org.jenkinsci.remoting.CallableDecorator.call(CallableDecorator.java:19)
+	at hudson.remoting.CallableDecoratorList$1.call(CallableDecoratorList.java:21)
+	at jenkins.util.ContextResettingExecutorService$2.call(ContextResettingExecutorService.java:46)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+```
+
+```bash
+# sh /home/jenkins/tomcat/bin/shutdown.sh
+rm -rf /home/jenkins/tomcat/webapps/*
+cp target/*.war /home/jenkins/tomcat/webapps/
+sleep 2
+sh /home/jenkins/tomcat/bin/startup.sh
+```
+
+```
+org.eclipse.jetty.io.EofException
+        at org.eclipse.jetty.io.ChannelEndPoint.flush(ChannelEndPoint.java:292)
+        at org.eclipse.jetty.io.WriteFlusher.flush(WriteFlusher.java:429)
+        at org.eclipse.jetty.io.WriteFlusher.completeWrite(WriteFlusher.java:384)
+        at org.eclipse.jetty.io.ChannelEndPoint$3.run(ChannelEndPoint.java:139)
+        at org.eclipse.jetty.util.thread.Invocable.invokePreferred(Invocable.java:128)
+        at org.eclipse.jetty.util.thread.Invocable$InvocableExecutor.invoke(Invocable.java:222)
+        at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:294)
+        at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:199)
+        at winstone.BoundedExecutorService$1.run(BoundedExecutorService.java:77)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:748)
+Caused by: java.io.IOException: Broken pipe
+        at sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+        at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
+        at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:93)
+        at sun.nio.ch.IOUtil.write(IOUtil.java:51)
+        at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:471)
+        at org.eclipse.jetty.io.ChannelEndPoint.flush(ChannelEndPoint.java:270)
+        ... 11 more
+```

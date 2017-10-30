@@ -4,6 +4,13 @@
 
 Jenkins是一个开源软件项目, 是基于Java开发的一种持续集成工具, 用于监控持续重复的工作, 旨在提供一个开放易用的软件平台, 提供软件持续集成的功能。
 
+- 参考
+
+https://www.ibm.com/developerworks/cn/java/j-lo-jenkins-plugin/
+
+
+编写 Jenkins 插件需要引入 Jenkins 的 maven 仓库, 在 pom.xml 中配置。
+
 - 功能
   1. 持续的软件版本发布 / 测试项目。
   2. 监控外部调用执行的工作。
@@ -70,11 +77,19 @@ jenkins 负责发布的插件。
 配置项:
 
   1. `WAR/EAR files`: 配置 war 包或 ear 包编译后的路径。
-  2. `content path`: tomcat 的发布路径, 即通过 ` ` 来访问项目。
+  2. `content path`: tomcat 的路径, 即 tomcat 在目标服务器的 tomcat 的路径。
   3. `deploy on failure`: 是发生错误的时候是否发布到 tomcat。  
 
- - 注意: 要在 `tomcat-users` 里的用户赋予 `manager-gui`, `manager-script`, `manager-jmx`, `manager-status` 这些权限。
+ - 注意: 要在 `tomcat-users` 里的用户赋予 `manager-gui`, `manager-script`, `manager-jmx`, `manager-status` 这些权限。即修改 `<tomcat_path>/conf/tomcat-users.xml` 文件中配置 tomcat 的用户名和密码。
 
 7. SonarQube Scanner for Jenkins
 
 jenkins 负责代码审查的插件
+
+## deploy 注意问题
+
+1. 部署好执行启动命令或运行启动脚本后, 完成部署过程, 在服务器环境中无法查看到通过 Jenkins 启动的进程。
+  思路:
+  1. 由于 Jenkins 启动没有出错, 在服务器中启动能够成功, 因此需要排查 Jenkins 是否启动服务。  
+  2. 判断方式为: 在 deploy 阶段, 启动 Tomcat 后查看其进程, 结果是 Tomcat 进程存在。  
+  由以上过程判断未启动进程的原因为 Jenkins 将其启动的进程 kill。

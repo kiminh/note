@@ -16,3 +16,9 @@ workerer576.hadoop.spacestar.com | FAILED! => {
 vim /etc/ansible/ansible.cfg
 # 这一行注释取消 host_key_checking = False
 ```
+
+2. playbook 用法
+
+```
+ansible-playbook -i inventory/[qa/prod] ./deploy.yml -e tag=$ver -e env=[qa/pro]
+```
