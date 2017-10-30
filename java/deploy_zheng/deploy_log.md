@@ -26,10 +26,19 @@
 ./zheng-upms/zheng-upms-server/target/zheng-upms-server.war
 ```
 
+```
+zheng-api/zheng-api-rpc-service/target/zheng-api-rpc-service-assembly.tar.gz
+zheng-cms/zheng-cms-rpc-service/target/zheng-cms-rpc-service-assembly.tar.gz
+zheng-demo/zheng-demo-rpc-service/target/zheng-demo-rpc-service-1.0.0-assembly.tar.gz
+zheng-pay/zheng-pay-rpc-service/target/zheng-pay-rpc-service-assembly.tar.gz
+zheng-ucenter/zheng-ucenter-rpc-service/target/zheng-ucenter-rpc-service-assembly.tar.gz
+zheng-upms/zheng-upms-rpc-service/target/zheng-upms-rpc-service-assembly.tar.gz
+```
+
 ## 部署步骤
 
 编译前需要将配置文件修改好。
-通过 `<project>/zheng-common/src/main/java/com/zheng/common/util/AESUtil.java` 来获取加密后的各种配置。
+通过 `<project_path>/zheng-common/src/main/java/com/zheng/common/util/AESUtil.java` 来获取加密后的各种配置。
 
 编译指令: `mvn clean install`
 
@@ -42,14 +51,25 @@
 
 1. nginx 作用是什么
 
+即哪些部分是需要通过 nginx 代理的, 哪些不需要通过 nginx 代理(不考虑其他因素, 在何处必须依赖 nginx)。
 
-
-
-
-
-log:
+2. log:
 
 ```
 2017-10-26 21:33:27 [ ERROR ] [ ContextLoader.java :350(initWebApplicationContext)]  Context initialization failed
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.cache.interceptor.CacheInterceptor#0': Cannot resolve reference to bean 'cacheManager' while setting bean property 'cacheManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'cacheManager' defined in file [/root/tomcat/tomcat-upm-service/webapps/zheng-upms-server/WEB-INF/classes/applicationContext-ehcache.xml]: Cannot resolve reference to bean 'cacheManagerFactory' while setting bean property 'cacheManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'cacheManagerFactory' defined in file [/root/tomcat/tomcat-upm-service/webapps/zheng-upms-server/WEB-INF/classes/applicationContext-ehcache.xml]: Invocation of init method failed; nested exception is net.sf.ehcache.CacheException: Error configuring from input stream. Initial cause was null:12: Element <defaultCache> does not allow nested <persistence> elements.
+```
+
+3. 192.168.1.125 出现的问题
+
+```
+2017-10-30 21:26:51 [ WARN ] [ AbstractRegistry.java :212(doSaveProperties)]   [DUBBO] Failed to save registry store file, cause: No such file or directory, dubbo version: 2.5.6, current host: 192.168.1.125
+java.io.IOException: No such file or directory
+	at java.io.UnixFileSystem.createFileExclusively(Native Method)
+	at java.io.File.createNewFile(File.java:1006)
+	at com.alibaba.dubbo.registry.support.AbstractRegistry.doSaveProperties(AbstractRegistry.java:176)
+	at com.alibaba.dubbo.registry.support.AbstractRegistry$SaveProperties.run(AbstractRegistry.java:518)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
 ```

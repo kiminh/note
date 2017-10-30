@@ -84,5 +84,21 @@ mvn install -DskipTests
 mvn install -Dmaven.test.skip=true
 # TODO 添加这两个参数的区别
 ```
+2. mvn install 后  mvn clean 结果
 
-2. deploy
+编译好的结果会在被存放到本地 maven 仓库中, 不会因为执行 `mvn clean` 而清除
+
+3. deploy
+
+
+
+## 插件
+
+1. surefire
+
+  - 作用
+
+```
+Maven通过Maven Surefire Plugin插件执行单元测试
+资料:http://www.cnblogs.com/pixy/p/4718176.html
+```

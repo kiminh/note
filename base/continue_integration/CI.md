@@ -42,6 +42,6 @@ gitlab CI 需要 gitlab-runner, 同时需要编写 `.gitlab-ci.yml` 和 `sonar_p
 
 ## jmeter
 
-
-
 1. jmeter -n -t http_request.jmx -l logfile1.
+
+## supervisor
