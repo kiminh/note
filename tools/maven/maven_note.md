@@ -86,3 +86,16 @@ mvn install -Dmaven.test.skip=true
 ```
 
 2. deploy
+
+
+
+## 插件
+
+1. surefire
+
+  - 作用
+
+```
+Maven通过Maven Surefire Plugin插件执行单元测试
+资料:http://www.cnblogs.com/pixy/p/4718176.html
+```
