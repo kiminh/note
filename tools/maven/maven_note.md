@@ -86,13 +86,9 @@ mvn install -Dmaven.test.skip=true
 ```
 2. mvn install 后  mvn clean 结果
 
-<<<<<<< HEAD
 编译好的结果会在被存放到本地 maven 仓库中, 不会因为执行 `mvn clean` 而清除
 
 3. deploy
-=======
-2. deploy
->>>>>>> ca9a860ff6b28ff38672cf45f4d2c9d5500645fc
 
 
 
