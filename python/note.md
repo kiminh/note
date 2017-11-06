@@ -149,3 +149,10 @@ os.path.dirname('<path>')
 ```
 
 12. jupyter notebook
+
+13. Mac上 python 找不到 yaml模块
+
+1.报错
+  ImportError: No module named yaml
+2.安装
+  sudo pip install  pyyaml

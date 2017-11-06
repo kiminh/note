@@ -18,6 +18,12 @@ service mysqld start
 mysql.server start|stop
 ```
 
+```sql
+-- OS X 修改密码 --
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
+FLUSH PRIVILEGES;
+```
+
 通过 rpm 安装 mysql 5.5, 5.6, 5.7:
 
 ```bash
@@ -50,7 +56,17 @@ mysql -u root -p
 ps -aux | grep mysql
 ```
 
-4. 用户设置
+4. 测试连接状态:
+
+  - shell
+
+```bash
+mysqlcheck --host=<mysql_host> --port=<port> --user=<user> --password=<password> -e "<database_name>" > /dev/null 2>&1
+echo $?
+通过返回值信息确定 mysql 是否能够正常访问
+```
+
+5. 用户设置
 
 通过 root 用户设置其他用户。
 

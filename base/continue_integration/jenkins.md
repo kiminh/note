@@ -125,6 +125,20 @@ request
     1. 配置每个 step 构建某一个子工程, 一个构建全部工程, 覆盖全部工程。
     2. 手动选择某个项目进行构建的条件。
     3. 配置结束构建后需要进行的操作。
+    4. run 可选项及说明:
+      1. 触发器支持以下方式触发:
+        - UserCause - 构建是由手动交互式触发
+        - SCMTrigger - 构建是由 SCM 更改触发
+        - TimerTrigger - 构建是通过定时器触发
+        - CLICause - 构建是通过 CLI 接口触发
+        - RemoteCause - 构建是通过远程接口触发
+        - UpstreamCause - 构建是由上游项目触发
+      2. 如果安装了 XTrigger 插件, 还支持以下触发方式:
+        - FSTrigger - 构建是由文件系统更改触发 (FSTrigger Plugin)
+        - URLTrigger - 构建是由 URL 更改触发 (URLTrigger Plugin)
+        - IvyTrigger - 构建是由 Ivy 依赖关系版本触发 (IvyTrigger Plugin)
+        - ScriptTrigger - 构建由脚本触发 (ScriptTrigger Plugin)
+        - BuildResultTrigger - 构建是由其他作业的结果触发 (BuildResultTrigger Plugin)
 
 2. set build status to "pending" on GitHub commit
 
@@ -138,79 +152,99 @@ request
   5. JVM Options: JVM 参数配置
   6. On evaluation failure: 可选项为: `Fail the build, Mark the build unstable, Run and mark the build unstable, Run, Don't run`, 来确定该构建的执行条件或是否执行。
 
+5. commit 构建触发(Poll SCM)
+
+  > 定时检查源码变更 (根据SCM软件的版本号), 如果有更新就 checkout 最新代码下来, 然后执行构建动作。
+  1. 触发规则: `*****`
+    1. 第一个 `*` 代表分钟, 范围是 0~59
+    2. 第二个 `*` 代表小时, 范围是 0~23
+    3. 第三个 `*` 代表天, 范围是 0~31
+    4. 第四个 `*` 代表月, 范围是 1~12
+    5. 第五个 `*` 代表星期几, 范围是 0～7(0 & 7 代表星期日)
+  2. eg:
+    1. `H 17 * * * ` 表示一天的 17 点触发
+    2. `H 8,12,15,16 * * 0-6` 一天的 8 点, 12 点, 15 点, 16 点, 每个星期的七天都触发
+  3. Ignore post-commit hooks 选项
+    > 对某些出现不需要构建的提交后不进行构建
+
+6. build 构建触发
+
+  > 周期进行项目构建 (不关心源码是否发生变化)
+  1. 触发规则: 同 Poll SCM
+
 ## jenkins 默认 env 变量
 
 ```bash
-The following variables are available to shell scripts
+# The following variables are available to shell scripts
 
 BRANCH_NAME
-For a multibranch project, this will be set to the name of the branch being built, for example in case you wish to deploy to production from master but not from feature branches; if corresponding to some kind of change request, the name is generally arbitrary (refer to CHANGE_ID and CHANGE_TARGET).
+# For a multibranch project, this will be set to the name of the branch being built, for example in case you wish to deploy to production from master but not from feature branches; if corresponding to some kind of change request, the name is generally arbitrary (refer to CHANGE_ID and CHANGE_TARGET).
 CHANGE_ID
-For a multibranch project corresponding to some kind of change request, this will be set to the change ID, such as a pull request number, if supported; else unset.
+# For a multibranch project corresponding to some kind of change request, this will be set to the change ID, such as a pull request number, if supported; else unset.
 CHANGE_URL
-For a multibranch project corresponding to some kind of change request, this will be set to the change URL, if supported; else unset.
+# For a multibranch project corresponding to some kind of change request, this will be set to the change URL, if supported; else unset.
 CHANGE_TITLE
-For a multibranch project corresponding to some kind of change request, this will be set to the title of the change, if supported; else unset.
+# For a multibranch project corresponding to some kind of change request, this will be set to the title of the change, if supported; else unset.
 CHANGE_AUTHOR
-For a multibranch project corresponding to some kind of change request, this will be set to the username of the author of the proposed change, if supported; else unset.
+# For a multibranch project corresponding to some kind of change request, this will be set to the username of the author of the proposed change, if supported; else unset.
 CHANGE_AUTHOR_DISPLAY_NAME
-For a multibranch project corresponding to some kind of change request, this will be set to the human name of the author, if supported; else unset.
+# For a multibranch project corresponding to some kind of change request, this will be set to the human name of the author, if supported; else unset.
 CHANGE_AUTHOR_EMAIL
-For a multibranch project corresponding to some kind of change request, this will be set to the email address of the author, if supported; else unset.
+# For a multibranch project corresponding to some kind of change request, this will be set to the email address of the author, if supported; else unset.
 CHANGE_TARGET
-For a multibranch project corresponding to some kind of change request, this will be set to the target or base branch to which the change could be merged, if supported; else unset.
+# For a multibranch project corresponding to some kind of change request, this will be set to the target or base branch to which the change could be merged, if supported; else unset.
 BUILD_NUMBER
-The current build number, such as "153"
+# The current build number, such as "153"
 BUILD_ID
-The current build ID, identical to BUILD_NUMBER for builds created in 1.597+, but a YYYY-MM-DD_hh-mm-ss timestamp for older builds
+# The current build ID, identical to BUILD_NUMBER for builds created in 1.597+, but a YYYY-MM-DD_hh-mm-ss timestamp for older builds
 BUILD_DISPLAY_NAME
-The display name of the current build, which is something like "#153" by default.
+# The display name of the current build, which is something like "#153" by default.
 JOB_NAME
-Name of the project of this build, such as "foo" or "foo/bar".
+# Name of the project of this build, such as "foo" or "foo/bar".
 JOB_BASE_NAME
-Short Name of the project of this build stripping off folder paths, such as "foo" for "bar/foo".
+# Short Name of the project of this build stripping off folder paths, such as "foo" for "bar/foo".
 BUILD_TAG
-String of "jenkins-${JOB_NAME}-${BUILD_NUMBER}". All forward slashes (/) in the JOB_NAME are replaced with dashes (-). Convenient to put into a resource file, a jar file, etc for easier identification.
+# String of "jenkins-${JOB_NAME}-${BUILD_NUMBER}". All forward slashes (/) in the JOB_NAME are replaced with dashes (-). Convenient to put into a resource file, a jar file, etc for easier identification.
 EXECUTOR_NUMBER
-The unique number that identifies the current executor (among executors of the same machine) that’s carrying out this build. This is the number you see in the "build executor status", except that the number starts from 0, not 1.
+# The unique number that identifies the current executor (among executors of the same machine) that’s carrying out this build. This is the number you see in the "build executor status", except that the number starts from 0, not 1.
 NODE_NAME
-Name of the agent if the build is on an agent, or "master" if run on master
+# Name of the agent if the build is on an agent, or "master" if run on master
 NODE_LABELS
-Whitespace-separated list of labels that the node is assigned.
+# Whitespace-separated list of labels that the node is assigned.
 WORKSPACE
-The absolute path of the directory assigned to the build as a workspace.
+# The absolute path of the directory assigned to the build as a workspace.
 JENKINS_HOME
-The absolute path of the directory assigned on the master node for Jenkins to store data.
+# The absolute path of the directory assigned on the master node for Jenkins to store data.
 JENKINS_URL
-Full URL of Jenkins, like http://server:port/jenkins/ (note: only available if Jenkins URL set in system configuration)
+# Full URL of Jenkins, like http://server:port/jenkins/ (note: only available if Jenkins URL set in system configuration)
 BUILD_URL
-Full URL of this build, like http://server:port/jenkins/job/foo/15/ (Jenkins URL must be set)
+# Full URL of this build, like http://server:port/jenkins/job/foo/15/ (Jenkins URL must be set)
 JOB_URL
-Full URL of this job, like http://server:port/jenkins/job/foo/ (Jenkins URL must be set)
+# Full URL of this job, like http://server:port/jenkins/job/foo/ (Jenkins URL must be set)
 GIT_COMMIT
-The commit hash being checked out.
+# The commit hash being checked out.
 GIT_PREVIOUS_COMMIT
-The hash of the commit last built on this branch, if any.
+# The hash of the commit last built on this branch, if any.
 GIT_PREVIOUS_SUCCESSFUL_COMMIT
-The hash of the commit last successfully built on this branch, if any.
+# The hash of the commit last successfully built on this branch, if any.
 GIT_BRANCH
-The remote branch name, if any.
+# The remote branch name, if any.
 GIT_LOCAL_BRANCH
-The local branch name being checked out, if applicable.
+# The local branch name being checked out, if applicable.
 GIT_URL
-The remote URL. If there are multiple, will be GIT_URL_1, GIT_URL_2, etc.
+# The remote URL. If there are multiple, will be GIT_URL_1, GIT_URL_2, etc.
 GIT_COMMITTER_NAME
-The configured Git committer name, if any.
+# The configured Git committer name, if any.
 GIT_AUTHOR_NAME
-The configured Git author name, if any.
+# The configured Git author name, if any.
 GIT_COMMITTER_EMAIL
-The configured Git committer email, if any.
+# The configured Git committer email, if any.
 GIT_AUTHOR_EMAIL
-The configured Git author email, if any.
+# The configured Git author email, if any.
 SVN_REVISION
-Subversion revision number that's currently checked out to the workspace, such as "12345"
+# Subversion revision number that's currently checked out to the workspace, such as "12345"
 SVN_URL
-Subversion URL that's currently checked out to the workspace.
+# Subversion URL that's currently checked out to the workspace.
 ```
 
 ## deploy 注意问题
