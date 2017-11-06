@@ -30,14 +30,27 @@ FLUSH PRIVILEGES;
 yum install -y http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm
 # 根据需要的 mysql 版本修改 /etc/yum.repos.d/mysql-community.repo 中的内容, 即选择启用的 yum 源。
 yum install -y mysql-community-server mysql-community-client mysql-community-lib
+
+# 直接通过 rpm 安装
+# 红帽安装rpm安装MySQL时爆出警告： 警告：MySQL-server-5.5.46-1.linux2.6.x86_64.rpm: 头V3 DSA/SHA1 Signature,
+# 密钥 ID 5072e1f5: NOKEY 原因：这是由于yum安装了旧版本的GPG keys造成的 解决办法：后面加上  --force --nodeps
+# 如：  rpm -ivh MySQL-server-5.5.46-1.linux2.6.x86_64.rpm --force --nodeps
+# 从 RPM 版本 4.1 开始，在安装或升级软件包时会检查软件包的签名。
+rpm -ivh mysql-community-server-5.6.37-2.el6.x86_64.rpm --force --nodeps
 ```
 
 2. 安装后需要完成的工作
 
 MySQL 安装后, 默认密码为空, 首先需要做的事为 MySQL 创建密码:
 
-```
+```bash
 mysqladmin -u root password "new_password";
+
+# MySQL 初始化
+mysqld --initialize --user=<user>
+mysql_install_db --user=<user>
+# MySQL 在第一次安装后, 第一次启动会自动初始化
+# my.cnf 有些选项修改后, 需要重新初始化
 ```
 
 通过以下指令连接 MySQL:
@@ -115,7 +128,7 @@ update user set password=password('123456') where user='root';
 flush privileges;
 ```
 
-5. /etc/my.cnf 文件配置
+6. /etc/my.cnf 文件配置
 
 在配置文件中, 可以指定不同的错误日志文件存放的目录, 一般你不需要改动这些配置。该文件默认配置如下：
 
@@ -123,6 +136,9 @@ flush privileges;
 [mysqld]
 datadir=/var/lib/mysql
 socket=/var/lib/mysql/mysql.sock
+
+# 下划线 驼峰
+lower_case_table_name=1
 
 [mysql.server]
 user=mysql
@@ -132,7 +148,7 @@ basedir=/var/lib
 err-log=/var/log/mysqld.log
 pid-file=/var/run/mysqld/mysqld.pid
 ```
-6. 管理命令
+7. 管理命令
 
     1. use database_name; 使用 database_name 这个数据库。
     2. show databases; 查看所有数据库。

@@ -96,6 +96,18 @@ git clone https://github.com/user_name/project_name.git new_deritory
 
 TODO
 
+1. 创建本地分支关联远程分支及分支切换:
+
+```bash
+# 创建本地分支, 关联远程分支
+git branch add origin <git_url>
+# 切换分支
+git checkout <branch>
+# 查看所有分支
+git branch -a
+# 删除本地分支
+git branch -d <branch>
+```
 
 
 

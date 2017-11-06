@@ -101,3 +101,28 @@ example:
 `<servlet-name>example</servlet-name>` 这个 `Servlet` 的名字是 `example`, 可以有多个 `DispatcherServlet`, 是通过名字来区分的。每一个 `DispatcherServlet` 有自己的 `WebApplicationContext` 上下文对象, 同时保存的 `ServletContext` 中和 Request 对象中。
 
 在 `DispatcherServlet` 的初始化过程中, 框架会在 web 应用的 WEB-INF文件夹下寻找名为[servlet-name]-servlet.xml 的配置文件，生成文件中定义的bean
+
+## 基本依赖
+
+GroupId | ArtifactId | Description
+---|---|---
+org.springframework | spring-aop |
+org.springframework | spring-aspects |
+org.springframework | spring-bean | 包含 Groovy, 处理 bean
+org.springframework | spring-context | 运行时上下文
+org.springframework | spring-context-support |
+org.springframework | spring-core | spring 核心模块
+org.springframework | spring-expression |
+org.springframework | spring-instrument |
+org.springframework | spring-instrument-tomcat |
+org.springframework | spring-jdbc | 提供 JDBC, 引入 JDBC
+org.springframework | spring-jms | 提供 JMS 支持, 帮助获取 JMS 信息
+org.springframework | spring-messaging |
+org.springframework | spring-orm |
+org.springframework | spring-omx |
+org.springframework | spring-test |
+org.springframework | spring-tx |
+org.springframework | spring-web | 
+org.springframework | spring-webmvc |
+org.springframework | spring-webmvc-protlet |
+org.springframework | spring-websocket |

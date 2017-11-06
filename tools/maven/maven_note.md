@@ -38,9 +38,16 @@ Maven 的一个重要作用就是统一管理jar包。在一个 project 中一�
     <groupId\>junit</groupId\>
     <artifactId\>junit-dep</artifactId\>
     <version\>4.12</version\>
+    <scope>runtime</scope>
   </dependency\>
 </dependencies\>
 ```
+  - scope 标签内容及意义
+    1. compile: 默认就是 `compile`, 表示被依赖项目需要参与当前项目的编译, 当然后续的测试, 运行周期也参与其中, 是一个比较强的依赖。
+    2. test: 表示依赖项目仅仅参与测试相关的工作, 包括测试代码的编译, 执行。比较典型的如junit。
+    3. runtime: 表示被依赖项目无需参与项目的编译, 不过后期的测试和运行周期需要其参与。与 `compile` 相比, 跳过编译而已。 `oracle jdbc` 驱动架包就是一个很好的例子, 一般 `scope` 为`runntime`。
+    4. provided: `provided` 意味着打包的时候可以不用包进去, 别的设施(Web Container, 运行容器)会提供。
+    5. system: 从参与度来说, 也 `provided` 相同, 不过被依赖项不会从 maven 仓库抓, 而是从本地文件系统拿, 一定需要配合 `systemPath` 属性使用。
 
 配置好 dependencies 后， Maven 会自动去远程仓库中下载jar包到本地仓库中。
 
@@ -111,7 +118,7 @@ Maven通过Maven Surefire Plugin插件执行单元测试
 资料:http://www.cnblogs.com/pixy/p/4718176.html
 ```
 
-1. tomcat Plugin
+2. tomcat Plugin
 
 pom.xml 内容:
 
@@ -131,3 +138,50 @@ pom.xml 内容:
 ```
 
 运行使用 `mvn tomcat:run`
+
+3. mvn idea:<options>
+
+```bash
+mvn idea:clean # 清除 IEDA 信息
+mvn idea:idea # 创建 IDEA 信息
+```
+
+4. exec-maven-plugin
+
+```xml
+<plugin>
+  <artifactId>exec-maven-plugin</artifactId>
+  <groupId>org.codehaus.mojo</groupId>
+  <executions>
+
+    <execution>
+      <id>runfilter</id>
+      <phase>package</phase>
+      <goals>
+        <goal>exec</goal>
+      </goals>
+      <configuration>
+        <executable>${basedir}/deploy.sh</executable>
+        <arguments>
+          <argument>build</argument>
+        </arguments>
+      </configuration>
+    </execution>
+    <execution>
+      <id>clean-dubbo-cache</id>
+      <phase>clean</phase>
+      <goals>
+        <goal>exec</goal>
+      </goals>
+      <configuration>
+        <executable>${basedir}/deploy.sh</executable>
+        <arguments>
+          <argument>clean</argument>
+        </arguments>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
+
+编译后执行 command, `arguments` 中为执行添加的参数。

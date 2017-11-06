@@ -1,5 +1,27 @@
 # postgreSQL note
 
+## install
+
+```bash
+# install repos
+yum install https://download.postgresql.org/pub/repos/yum/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-2.noarch.rpm
+```
+
+```bash
+# install
+yum install postgresql93
+yum install postgresql93-server
+```
+
+```bash
+# first start
+service postgresql-9.3 initdb
+chkconfig postgresql-9.3 on
+service postgresql-9.3 start
+```
+
+## usage
+
 1. 备份数据库
 
 将数据库内的数据导出到 SQL 文件:  
