@@ -33,7 +33,7 @@ pg_dump -U <user> <datanase_name> > <file_path>
 2. 将 SQL 文件导入数据库:  
 
 ```SQL
-CREATE datanase <database_name>;
+CREATE database <database_name>;
 ```
 
 ```bash

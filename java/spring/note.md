@@ -122,7 +122,11 @@ org.springframework | spring-orm |
 org.springframework | spring-omx |
 org.springframework | spring-test |
 org.springframework | spring-tx |
-org.springframework | spring-web | 
+org.springframework | spring-web |
 org.springframework | spring-webmvc |
 org.springframework | spring-webmvc-protlet |
 org.springframework | spring-websocket |
+
+## 使用角度
+
+1. 可以使用 `Groovy` 配置 `bean` 以及各种连接。

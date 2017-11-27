@@ -33,7 +33,7 @@ yum install -y mysql-community-server mysql-community-client mysql-community-lib
 
 # 直接通过 rpm 安装
 # 红帽安装rpm安装MySQL时爆出警告： 警告：MySQL-server-5.5.46-1.linux2.6.x86_64.rpm: 头V3 DSA/SHA1 Signature,
-# 密钥 ID 5072e1f5: NOKEY 原因：这是由于yum安装了旧版本的GPG keys造成的 解决办法：后面加上  --force --nodeps
+# 密钥 ID 5072e1f5: NOKEY 原因：这是由于yum安装了旧版本的GPG keys造成的 解决办法：后面加上  --force --nodeps 强制执行
 # 如：  rpm -ivh MySQL-server-5.5.46-1.linux2.6.x86_64.rpm --force --nodeps
 # 从 RPM 版本 4.1 开始，在安装或升级软件包时会检查软件包的签名。
 rpm -ivh mysql-community-server-5.6.37-2.el6.x86_64.rpm --force --nodeps
