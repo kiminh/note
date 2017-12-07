@@ -47,7 +47,7 @@ alert 拥有已下属性：
 5. service_name
 6. component_name
 7. source: 用来配置 alert 类型、阈值以及提示信息。
-8. scope: 
+8. scope:
 9. interval: 告警的检测时间间隔
 
 - source 配置
@@ -58,10 +58,10 @@ alert 拥有已下属性：
 
 类型 | 用途 | 告警级别 | 阈值是否可配置 | 单位  
 ---|---|---|---|---  
-PORT | 用来监测某台机器的某个端口是否可用 | OK, WARN, CRITICAL | 是 | 秒 
-METRIC | 用来监测 Metric 相关的p配置属性 | OK, WARN, CRITICAL | 是 | 变量 
-AGGREGATE | 聚合定义用于组合来自不同节点的另一个警报定义的结果。 | OK, WARN, CRITICAL | 是 | 百分比 
-WEB | 用于监测一个 WEB UI(URL) 是否可用 | OK, WARN, CRITICAL | 否 | 无 
+PORT | 用来监测某台机器的某个端口是否可用 | OK, WARN, CRITICAL | 是 | 秒
+METRIC | 用来监测 Metric 相关的p配置属性 | OK, WARN, CRITICAL | 是 | 变量
+AGGREGATE | 聚合定义用于组合来自不同节点的另一个警报定义的结果。 | OK, WARN, CRITICAL | 是 | 百分比
+WEB | 用于监测一个 WEB UI(URL) 是否可用 | OK, WARN, CRITICAL | 否 | 无
 SCRIPT | Alert 监测逻辑由一个自定义的 python 脚本执行 | OK, CRITICAL | 否 | 无
 
 ### PORT
@@ -72,21 +72,21 @@ SCRIPT | Alert 监测逻辑由一个自定义的 python 脚本执行 | OK, CRITI
 
 ```json
 "source": {
-    "default_port": 2181, 
+    "default_port": 2181,
     "reporting": {
         "ok": {
             "text": "TCP OK - {0:.3}s response on port {1}"
-        }, 
+        },
         "warning": {
-            "text": "TCP OK - {0:.3}s response on port {1}", 
+            "text": "TCP OK - {0:.3}s response on port {1}",
             "value": 1.5
-        }, 
+        },
         "critical": {
-            "text": "Connection failed: {0} to {1}:{2}", 
+            "text": "Connection failed: {0} to {1}:{2}",
             "value": 5
         }
-    }, 
-    "type": "PORT", 
+    },
+    "type": "PORT",
     "uri": "{{core-site/ha.zookeeper.quorum}}"
 }
 ```
@@ -107,43 +107,43 @@ source 配置
 "source": {
     "jmx": {
         "property_list": [
-            "java.lang:type=OperatingSystem/SystemCpuLoad", 
+            "java.lang:type=OperatingSystem/SystemCpuLoad",
             "java.lang:type=OperatingSystem/AvailableProcessors"
-        ], 
+        ],
         "value": "{0} * 100"
-    }, 
+    },
     "reporting": {
         "ok": {
             "text": "{1} CPU, load {0:.1%}"
-        }, 
+        },
         "warning": {
-            "text": "{1} CPU, load {0:.1%}", 
+            "text": "{1} CPU, load {0:.1%}",
             "value": 200
-        }, 
+        },
         "critical": {
-            "text": "{1} CPU, load {0:.1%}", 
+            "text": "{1} CPU, load {0:.1%}",
             "value": 250
-        }, 
+        },
         "units": "%"
-    }, 
-    "type": "METRIC", 
+    },
+    "type": "METRIC",
     "uri": {
-        "http": "{{hdfs-site/dfs.namenode.http-address}}", 
-        "https": "{{hdfs-site/dfs.namenode.https-address}}", 
-        "https_property": "{{hdfs-site/dfs.http.policy}}", 
-        "https_property_value": "HTTPS_ONLY", 
-        "default_port": 0, 
+        "http": "{{hdfs-site/dfs.namenode.http-address}}",
+        "https": "{{hdfs-site/dfs.namenode.https-address}}",
+        "https_property": "{{hdfs-site/dfs.http.policy}}",
+        "https_property_value": "HTTPS_ONLY",
+        "default_port": 0,
         "high_availability": {
-            "nameservice": "{{hdfs-site/dfs.nameservices}}", 
-            "alias_key": "{{hdfs-site/dfs.ha.namenodes.{{ha-nameservice}}}}", 
-            "http_pattern": "{{hdfs-site/dfs.namenode.http-address.{{ha-nameservice}}.{{alias}}}}", 
+            "nameservice": "{{hdfs-site/dfs.nameservices}}",
+            "alias_key": "{{hdfs-site/dfs.ha.namenodes.{{ha-nameservice}}}}",
+            "http_pattern": "{{hdfs-site/dfs.namenode.http-address.{{ha-nameservice}}.{{alias}}}}",
             "https_pattern": "{{hdfs-site/dfs.namenode.https-address.{{ha-nameservice}}.{{alias}}}}"
         }
     }
 }
 ```
 
-1. jmx: 
+1. jmx:
 2. reporting
 3. uri
 
@@ -156,7 +156,7 @@ source 配置
 - 3. https_property
 - 4. http_property_value
 - 5. kerberos_keytab
-- 6. kerberos_principal 
+- 6. kerberos_principal
 - 7. default_port
 - 8. high_availability
 
@@ -203,28 +203,28 @@ source 配置：
     "reporting": {
         "ok": {
             "text": "HTTP {0} response in {2:.3f} seconds"
-        }, 
+        },
         "warning": {
             "text": "HTTP {0} response in {2:.3f} seconds"
-        }, 
+        },
         "critical": {
             "text": "Connection failed to {1}: {3}"
         }
     }
 },
-"type": "WEB", 
+"type": "WEB",
 "uri": {
-    "http": "{{hdfs-site/dfs.namenode.http-address}}", 
-    "https": "{{hdfs-site/dfs.namenode.https-address}}", 
-    "https_property": "{{hdfs-site/dfs.http.policy}}", 
-    "https_property_value": "HTTPS_ONLY", 
-    "kerberos_keytab": "{{hdfs-site/dfs.web.authentication.kerberos.keytab}}", 
-    "kerberos_principal": "{{hdfs-site/dfs.web.authentication.kerberos.principal}}", 
-    "default_port": 0, 
+    "http": "{{hdfs-site/dfs.namenode.http-address}}",
+    "https": "{{hdfs-site/dfs.namenode.https-address}}",
+    "https_property": "{{hdfs-site/dfs.http.policy}}",
+    "https_property_value": "HTTPS_ONLY",
+    "kerberos_keytab": "{{hdfs-site/dfs.web.authentication.kerberos.keytab}}",
+    "kerberos_principal": "{{hdfs-site/dfs.web.authentication.kerberos.principal}}",
+    "default_port": 0,
     "high_availability": {
-        "nameservice": "{{hdfs-site/dfs.nameservices}}", 
-        "alias_key": "{{hdfs-site/dfs.ha.namenodes.{{ha-nameservice}}}}", 
-        "http_pattern": "{{hdfs-site/dfs.namenode.http-address.{{ha-nameservice}}.{{alias}}}}", 
+        "nameservice": "{{hdfs-site/dfs.nameservices}}",
+        "alias_key": "{{hdfs-site/dfs.ha.namenodes.{{ha-nameservice}}}}",
+        "http_pattern": "{{hdfs-site/dfs.namenode.http-address.{{ha-nameservice}}.{{alias}}}}",
         "https_pattern": "{{hdfs-site/dfs.namenode.https-address.{{ha-nameservice}}.{{alias}}}}"
     }
 }
@@ -236,7 +236,7 @@ SCRIPT 类型需要在 source 中指定：
 
 ```json
 "source": {
-    "path": "HDFS/2.1.0.2.0/package/alerts/alert_ha_namenode_health.py", 
+    "path": "HDFS/2.1.0.2.0/package/alerts/alert_ha_namenode_health.py",
     "type": "SCRIPT"
 }
 ```
@@ -273,7 +273,7 @@ def execute():
     # 判断这个 alert 需要的前置条件，如果不成立，则返回 ‘UNKNOW’
     if configurations = None:
         return(RESULT_CODE_UNKNOWN, configurations is none)
-    
+
     if not alert:
         return(RESULT_CODE_OK, informations)
     else:
@@ -297,6 +297,9 @@ TODO
 ## **注意**
 
 1. 通过配置alerts.json 添加 alerts 时，不需要重启 ambari-server ，只需要将该 service 删除后重新安装。当 Service 安装完成之后，再修改 alert.json 是没有用的。Ambari 已经将 Service 相关的告警存入到数据库中了。这时候如果更新 alert.json，Ambari 便不会再读取里面的配置，即使重启也不行。
-2. 添加好 alerts.json 后但是还未重新安装该 service ，重启 ambari-server 会失败，详情查看日志。
+2. 手动添加好 alerts.json 后但是还未重新安装该 service ，重启 ambari-server 会失败，详情查看日志。
 
-
+3. 添加邮件提醒
+  > 修改配置文件 `/etc/ambari-server/conf/ambari.properties`, 添加一行 `alerts.template.file=/path/to/alert-templates.xml`
+  > 在 ambari 界面的 alert 中配置邮箱提醒。
+  > 注意, 需要 smtp 及 客户端授权码。
