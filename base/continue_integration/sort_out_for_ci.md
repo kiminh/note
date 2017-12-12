@@ -200,6 +200,7 @@ Jenkins 的源码管理插件, 用来获取工程代码。 需要配置的部分
 
   以上配置完成后, 完成 Jenkins 配置一个项目。
 
+<<<<<<< HEAD
 ### 构建工程
 
 除了自动构建, 还可以手动构建工程, 通过点击立即构建来执行构建任务(job)。 所有构建会显示在左下角的列表中, 可以进入查看编译过程, 方便检查失败的编译的错误部分。
@@ -298,3 +299,12 @@ mvn sonar:sonar -Dsonar.host.url=http://sonar-server:sonar-port \
 
 - 建议使用第二种, 能够灵活配置, 而不需要每次进行分析都去修改 maven 配置。
 - 参数配置详情查看官方说明: https://docs.sonarqube.org/display/SONAR/Analysis+Parameters#AnalysisParameters-ProjectConfiguration.1
+=======
+#### 构建工程
+
+除了自动构建, 还可以手动构建工程, 通过点击立即构建来执行构建任务。 所有构建会显示在左下角的列表中, 可以进入查看编译过程, 方便检查失败的编译的错误部分。
+
+
+
+  BUILD_ID=DONTKILLME
+>>>>>>> 7462762d6bed17f7219eeb102bf868f6683803bf
