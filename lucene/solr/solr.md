@@ -14,7 +14,7 @@ some address
 
 # solr cloud
 
-基本概念:
+基本概念: 
 
 - Cluster: 一组Solr节点, 逻辑上作为一个单元进行管理, 整个集群使用同一套 Schema 和 SolrConfig  
 - Node: 一个运行 Solr 的 JVM 实例  
@@ -35,7 +35,7 @@ some address
 
 SolrCloud 中包含多个 Solr Instance , 每个 Solr Instance 包含多个 Solr Core。 Solr Core 对应一个可以访问的 Solr 索引资源 Replica 。 当 Solr Client 通过 Collection 访问 Solr 集群的时候, 通过 Shard 分片找到对应的 Replica, 即 Solr Core。
 
-![work_mode](imgs/work_mode.png)
+![work_mode](imgs/work_mode.png) 
 
 在 SolrCloud 模式下, 所有 Core 的配置是统一的, Core 有 Leader 和 Replica 两种角色, 每个 Core 一定属于某个 Shard, Core 在 Shard 中扮演 Leader 还是 Replication 由 Solr 内部由 Zookeeper 自动协调。  
 访问 SolrCloud 的过程: Solr Client 向 Zookeeper 咨询 Collection 的地址, Zookeeper 返回存活的 Solr instance 以供访问。 插入数据时由 Solr 内部协调数据分发(内部使用一致哈希)

@@ -234,7 +234,7 @@ pom 文件内容是配置 build 成一个在 `manifest` 带 `mainClass` 的 jar:
       </excludes>
     </dependencySet>  
     <dependencySet>
-      <unpack>true</unpack>  
+      <unpack>true</unpack>
       <includes>
         <include>${groupId}:${artifactId}</include>
       </includes>
@@ -242,3 +242,20 @@ pom 文件内容是配置 build 成一个在 `manifest` 带 `mainClass` 的 jar:
   </dependencySets>
 </assembly>
 ```
+
+6. scope 标签
+```xml
+<dependency>
+  <groupId>xxx</groupId>
+  <artifactid>xxx</artifactId>
+  <version>xxx</version>
+  <scope>compile</scope>
+</dependency>
+```
+
+  说明:
+  > 默认值: compile: 用于所有阶段, 会随着项目一起发布。
+  > provided: 类似compile，期望JDK, 容器或使用者会提供这个依赖。 如 Servlet等。
+  > runtime: 只在运行时使用, 如 JDBC。
+  > test: 只在测试时使用, 用于编译和运行测试代码。不会随项目发布。
+  > system: 类似provided, 需要显式提供包含依赖的jar, Maven不会在Repository中查找它。

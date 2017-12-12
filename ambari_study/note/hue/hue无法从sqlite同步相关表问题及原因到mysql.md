@@ -21,11 +21,13 @@ PS: hue <command> 实际执行的操作为 ```python manage.py <command>```\
 
 - hue migrate 解释:
 
-<install_path>/build/env/bin/hue 即 Django 框架中的 manage.py。
+<install_path>/build/env/bin/hue 等同于 Django 框架中的 manage.py。
 ```
 hue syncdb -> python manage.py syncdb
 hue migrate -> python manage.py migrate
 ```
+
+> 建议使用外部数据库而不是使用嵌入式数据库 sqlite, sqlite 在使用频率高的情况下可能会导致 `db is lock` 的问题。
 
 - Django 中使用 South
 

@@ -33,3 +33,7 @@ jar -cvfM0 ambari-metrics-timelineservice-2.4.1.0.99.jar ./
 # -M
 # -0   这个是阿拉伯数字，只打包不压缩的意思
 ```
+
+2. slf4j
+
+difference between jcl-over-slf4j & slf4j-log4j12
