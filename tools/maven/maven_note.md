@@ -185,3 +185,60 @@ mvn idea:idea # 创建 IDEA 信息
 ```
 
 编译后执行 command, `arguments` 中为执行添加的参数。
+
+5. maven-assembly-plugin
+
+pom 文件内容是配置 build 成一个在 `manifest` 带 `mainClass` 的 jar:
+
+```xml
+<plugin>
+  <artifactId>maven-assembly-plugin</artifactId>  
+  <version>3.1.0</version>  
+  <configuration>
+    <descriptors>
+      <descriptor>assembly.xml</descriptor>
+    </descriptors>  
+    <archive>
+      <manifest>
+        <mainClass>com.vidi.mrjob.GapDeduceRunner</mainClass>
+      </manifest>
+    </archive>
+  </configuration>  
+  <executions>
+    <execution>
+      <id>make-assembly</id>  
+      <phase>package</phase>  
+      <goals>
+        <goal>single</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+```
+
+同时需要一个 descriptor, 在上米娜的定义中是 `assembly.xml` 文件, 需要建立一个 `assembly.xml` 文件:
+```xml
+<assembly>
+  <id>job</id>  
+  <formats>
+    <format>jar</format>
+  </formats>  
+  <includeBaseDirectory>false</includeBaseDirectory>  
+  <dependencySets>
+    <dependencySet>
+      <unpack>false</unpack>  
+      <scope>runtime</scope>  
+      <outputDirectory>lib</outputDirectory>  
+      <excludes>
+        <exclude>${groupId}:${artifactId}</exclude>
+      </excludes>
+    </dependencySet>  
+    <dependencySet>
+      <unpack>true</unpack>  
+      <includes>
+        <include>${groupId}:${artifactId}</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+</assembly>
+```

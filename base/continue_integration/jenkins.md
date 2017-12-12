@@ -262,3 +262,7 @@ SVN_URL
 3. 源码管理: 可选项为 git 和 Subversion
 4. 配置构建方式, 根据创建的 project 类型来配置构建方式, 后续章节详细介绍
 5. 配置发布方式, 可选方式较多, 后续章节介绍
+
+## git 控制是否构建
+
+参考: 官方 wiki: https://wiki.jenkins.io/display/JENKINS/Git+Plugin `Push notification from repository部分`
