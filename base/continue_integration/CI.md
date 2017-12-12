@@ -16,6 +16,10 @@ sonar 和 gitlab 审查代码相关插件, 需要自行编译, 编译指令:
 将编译好的 jar 文件放在 <sonarqube_path>/extensions/plugins/ 中。
 版本对应关系参考 project／README.md
 
+```token
+a00d4161ce9ea5e4195151f593ecea400eb255b5
+```
+
 配置参考:
 [sonar-gitlab-plugin 配置](http://blog.csdn.net/aixiaoyang168/article/details/78115646)
 

@@ -59,4 +59,8 @@ hdfs namenode -initializeSharedEdits
 ```
 
   - 解决思路2:
+  > 备份 standby namenode 的元数据, 重新同步 standby namenode 的元数据为 active namenode 的元数据, 使用如下指令
+  > `hdfs namenode -bootstrapStandby -force` 强制重新初始化 standby namenode。
+
+  - 解决思路3:
   > 手动 copy namenode（active）所在的那台服务器上 `/XXX/dfs/name/current/` 下的所有文件到 namenode（standby）所在的那台服务器的对应目录下
