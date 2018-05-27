@@ -5,6 +5,7 @@
 pinpoint 是一个开源的 APM 工具, 用于基于 java 的大规模分布式系统, 基于 Google Dapper 论文。
 
 - Google Dapper: Google 大规模分布式跟踪系统, 详细信息链接: https://research.google.com/pubs/pub36356.html
+- [Dapper：谷歌的大规模分布式跟踪系统](http://blog.jobbole.com/69642/)
 
 - pinpoint 解决的问题
 

@@ -299,12 +299,46 @@ mvn sonar:sonar -Dsonar.host.url=http://sonar-server:sonar-port \
 
 - 建议使用第二种, 能够灵活配置, 而不需要每次进行分析都去修改 maven 配置。
 - 参数配置详情查看官方说明: https://docs.sonarqube.org/display/SONAR/Analysis+Parameters#AnalysisParameters-ProjectConfiguration.1
-=======
-#### 构建工程
+
+### 使用 gradle
+
+build.gradle 文件中添加一下行
+```
+plugins {
+  id "org.sonarqube" version "2.5"
+}
+```
+
+```
+541dece0dfede4507992205a9b9d2ed4e89e1a86
+40929103344bcfe4b55d4d1512265fce608d6b03 lng
+mvn clean sonar:sonar -Dsonar.host.url=http://192.168.1.112:9000 -Dsonar.sourceEncoding=UTF-8 -Dsonar.login=40929103344bcfe4b55d4d1512265fce608d6b03 -Dsonar.java.binaries=/Users/tanglei/.m2/repository/org/sonarsource/scanner/maven/sonar-maven-plugin/3.4.0.905/sonar-maven-plugin-3.4.0.905.jar
+```
+
+编译时执行以下指令
+```bash
+./gradlew sonarqube \
+  -Dsonar.host.url=http://192.168.1.111:9000 \
+  -Dsonar.login=51b502563681b494557ec2d2d68b1b7236d89beb
+```
+
+## 构建工程
 
 除了自动构建, 还可以手动构建工程, 通过点击立即构建来执行构建任务。 所有构建会显示在左下角的列表中, 可以进入查看编译过程, 方便检查失败的编译的错误部分。
 
+## 问题记录
 
+[Failed to upload report - 500: An error has occurred. Please contact your administrator问题解决](https://zhidao.baidu.com/question/1887669100757414308.html)
 
-  BUILD_ID=DONTKILLME
->>>>>>> 7462762d6bed17f7219eeb102bf868f6683803bf
+```log
+[ERROR] Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar (default-cli) on project lng: Failed to upload report - 500: An error has occurred. Please contact your administrator -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <goals> -rf :lng
+```

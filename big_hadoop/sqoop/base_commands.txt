@@ -1,0 +1,21 @@
+sqoop import-all-tables \
+-m 1 \
+--connect jdbc:mysql://<host>:<port>/<database> \
+--username=<username> \
+--password=<password> \
+--compression-codec=snappy \
+--as-parquetfile \
+--warehouse-dir=/user/hive/warehouse \
+--hive-import
+
+sqoop import \
+--table=<table_name> \
+--connect <jdbc_url> \
+--username <username> \
+--password <password>
+--hive-import
+
+# 导入 hbase 参数
+--hbase-table hxi --hbase-create-table \
+--hbase-row-key id --split-by date -m 7 \
+--column-family aitanjupt

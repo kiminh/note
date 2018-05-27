@@ -177,22 +177,6 @@ request
 ```bash
 # The following variables are available to shell scripts
 
-BRANCH_NAME
-# For a multibranch project, this will be set to the name of the branch being built, for example in case you wish to deploy to production from master but not from feature branches; if corresponding to some kind of change request, the name is generally arbitrary (refer to CHANGE_ID and CHANGE_TARGET).
-CHANGE_ID
-# For a multibranch project corresponding to some kind of change request, this will be set to the change ID, such as a pull request number, if supported; else unset.
-CHANGE_URL
-# For a multibranch project corresponding to some kind of change request, this will be set to the change URL, if supported; else unset.
-CHANGE_TITLE
-# For a multibranch project corresponding to some kind of change request, this will be set to the title of the change, if supported; else unset.
-CHANGE_AUTHOR
-# For a multibranch project corresponding to some kind of change request, this will be set to the username of the author of the proposed change, if supported; else unset.
-CHANGE_AUTHOR_DISPLAY_NAME
-# For a multibranch project corresponding to some kind of change request, this will be set to the human name of the author, if supported; else unset.
-CHANGE_AUTHOR_EMAIL
-# For a multibranch project corresponding to some kind of change request, this will be set to the email address of the author, if supported; else unset.
-CHANGE_TARGET
-# For a multibranch project corresponding to some kind of change request, this will be set to the target or base branch to which the change could be merged, if supported; else unset.
 BUILD_NUMBER
 # The current build number, such as "153"
 BUILD_ID
@@ -241,10 +225,6 @@ GIT_COMMITTER_EMAIL
 # The configured Git committer email, if any.
 GIT_AUTHOR_EMAIL
 # The configured Git author email, if any.
-SVN_REVISION
-# Subversion revision number that's currently checked out to the workspace, such as "12345"
-SVN_URL
-# Subversion URL that's currently checked out to the workspace.
 ```
 
 ## deploy 注意问题

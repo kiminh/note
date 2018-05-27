@@ -164,6 +164,12 @@ SHOW TABLE STATUS from RUNOOB LIKE 'runoob%';     # 表名以runoob开头的表�
 SHOW TABLE STATUS from RUNOOB LIKE 'runoob%'\G;   # 加上 \G，查询结果按列打印
 ```
 
+## 问题记录
+
+1. Failed to upload report
+  > mysql 会限制 server 接受数据包的大小, 大的插入会受 max_allowed_packet 参数限制导致写入或更新失败
+  > 可通过修改 `my.cnf` 文件中的 `max_allowed_packet` 来进行配置。
+
 ## 数据类型
 
 MySQL支持多种类型, 大致可以分为三类: 数值、日期/时间 和 字符串(字符)类型。
@@ -331,4 +337,9 @@ update table_name set field1=new_data1, field2=new_data2
     [where clause];
 ```
 
-##
+## 配置相关
+
+```conf
+max_allowed_packet
+innodb_log_file_size
+```
