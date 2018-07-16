@@ -25,10 +25,16 @@
         - [7. IoC 容器](#7-ioc-%E5%AE%B9%E5%99%A8)
             - [7.1 Spring IoC 容器和 Bean 的介绍](#71-spring-ioc-%E5%AE%B9%E5%99%A8%E5%92%8C-bean-%E7%9A%84%E4%BB%8B%E7%BB%8D)
             - [7.2 容器概述](#72-%E5%AE%B9%E5%99%A8%E6%A6%82%E8%BF%B0)
+                - [7.2.1 配置元数据](#721-%E9%85%8D%E7%BD%AE%E5%85%83%E6%95%B0%E6%8D%AE)
+                - [7.2.2 实例化容器](#722-%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AE%B9%E5%99%A8)
+            - [7.4 Dependencies](#74-dependencies)
+            - [7.9 基于 Java 注解的容器配置](#79-%E5%9F%BA%E4%BA%8E-java-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE)
+            - [7.12 基于 Java 代码的容器配置](#712-%E5%9F%BA%E4%BA%8E-java-%E4%BB%A3%E7%A0%81%E7%9A%84%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE)
         - [8. Resources](#8-resources)
         - [9. Validation, Data Binding, and Type Conversion](#9-validation-data-binding-and-type-conversion)
         - [10. Spring Expression Language](#10-spring-expression-language)
         - [11. Aspect Oriented Programming with Spring](#11-aspect-oriented-programming-with-spring)
+            - [11.8 通过 AspectJ 和 Spring 来依赖注入 domain 对象](#118-%E9%80%9A%E8%BF%87-aspectj-%E5%92%8C-spring-%E6%9D%A5%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-domain-%E5%AF%B9%E8%B1%A1)
         - [12. Spring AOP APIs](#12-spring-aop-apis)
     - [IV. Test](#iv-test)
     - [V. Data Access](#v-data-access)
@@ -200,9 +206,78 @@ TODO
 
 该部分包含了 Spring 框架实现 IoC 的原则。 IoC 也称为依赖注入(Dependency Inject/DI)。 ~~这是一个过程，通过这个过程，对象定义它们的依赖关系，即它们使用的其他对象，只能通过构造函数参数，工厂方法的参数，或者在构造或从工厂方法返回后在对象实例上设置的属性。~~ 容器在创建 `bean` 的时候注入这些依赖。 这个过程基本是相反的, 因此名称 `Inversion of Control(IoC)`, bean 本身通过使用类的直接构造或诸如 `Service Locator` 模式之类的机制来控制其依赖关系的实例化或位置。
 
-`org.springframework.beans` 和 `org.springframework.context` 是 Spring 框架的 IoC 容器的基础。
+`org.springframework.beans` 和 `org.springframework.context` 是 Spring 框架的 IoC 容器的基础。 `BeanFactory` 接口提供能够管理任何类型对象的高级配置机制。 `ApplicationContext` 是 `BeanFactory` 的一个子接口, 它使得集成 Spring AOP、 国际化、 ~~事件发布(event publication)~~ 和 如同 `WebApplicationContext` 的应用于一个 Web 应用的特定层的上下文 的功能更容哟。
+
+总而言之, `BeanFactory` 提供了配置框架和基本的功能, `ApplicationContext` 添加了更多的企业专有的特性。 `ApplicationContext` 是 `BeanFactory` 的更完善的一个~~超集(superset?)~~。   refer to Section 7.16, “The BeanFactory”.
+
+在 Spring 框架中, 构成应用程序主干并由 Spring IoC 容器管理的对象成为 bean。 Bean 是由 Spring IoC 容器 实例化, 组装 和 管理的对象。 另外, Bean 只是应用程序中的众多对象之一。 Bean 及其之间的依赖关系反映在容器使用的配置元数据中。
 
 #### 7.2 容器概述
+
+`org.springframework.context.ApplicationContext` 接口表示 Spring IoC 容器, 负责实例化、配置和组装上述 Bean。 容器通过配置元数据获取有关要实例化、配置和组装的对象的指令。 配置元数据通过 `XML`, 注解, 或者 Java 代码表示, 它允许通过表达式来组成应用以及这些对象之间的丰富的相互依赖。
+
+接口 `ApplicationContext` 的几个实现是与 Spring 一起提供的。在独立的应用中, 创建 `ClassPathXmlApplicationContext` 或者 `FileSystemXmlApplicationContext` 是很常见的。 虽然 XML 是定义 Bean 的传统方式, 但仍可以通过提供少量 XML 配置来声明性的支持其他元数据方式。 从而使容器使用注解或者代码的方式。
+
+在很多应用场景下, 实例化 Spring IoC 容器的一个或多个实例不需要显示的代码。 如: 在一个 Web 应用的场景, `web.xml` 文件中的简单几行描述即可。
+
+- Spring IoC 容器
+
+![The Spring IoC container](imgs/spring_ioc_container.png)
+
+##### 7.2.1 配置元数据
+
+Spring IoC 容器从配置元数据中消费, 该配置元数据, 该配置元数据表示如何告诉 Spring 容器在应用程序中实例化, 配置 和组装对象。
+
+配置元数据的传统配置方法是以 XML 的方式提供, 本章大部分内容用于传达 Spring IoC 容器的关键概念和功能。 
+
+> 基于 XML 的元数据不是唯一的配置元数据的形式, Spring IoC 容器本身与实际编写的元数据格式完全分离。 [基于 Java 代码的配置](#712-%E5%9F%BA%E4%BA%8E-java-%E4%BB%A3%E7%A0%81%E7%9A%84%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE)
+
+有关在 Spring 容器中使用其他形式的元数据的信息, 请参阅: 
+
+- [基于 Java 注解配置](#79-%E5%9F%BA%E4%BA%8E-java-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE): Spring 2.5 引入了对基于注解的配置元数据
+- [基于 Java 代码配置](#712-%E5%9F%BA%E4%BA%8E-java-%E4%BB%A3%E7%A0%81%E7%9A%84%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE): 从 Spring 3.0 开始, Spring JavaConfig 项目提供的许多功能成为 Spring 框架的一部分。 因此能够使用 Java 在应用程序类外部定义 Bean 而非 XML。 通过 `@Configuration`, `Bean`, `@Import` 和 `@DependsOn` 注解来使用这些新功能。
+
+Spring 配置由至少一个(通常不止一个) bean 定义组成, 基于 XML 的配置元数据通过 `<bean/>` 元素展现, `<bean/>` 元素在 `<beans/>` 元素里。 Java 配置通常在 `@Configuration` 注解的类中使用 `@Bean` 注解。
+
+这些 bean 定义对应于构成应用程序的实际对象。 通常, 定义服务层对象(如: 数据访问层/DAO, ~~presentation objects such as Struts Action instances~~, 基础设施对象如 Hibernate 的 `SessionFactories`, JMS `Queue`, 等)。 通常, 不会在容器中配置细粒度 `domain` 对象, 因为 DAO 和业务逻辑通常负责创建和加载对象。 然而, **也可以使用 `Spring` 与 `AspectJ` 集成来配置在 IoC 容器的控制之外创建的对象。** 请参阅: [通过 AspectJ 和 Spring 来依赖注入 domain 对象](#118-%E9%80%9A%E8%BF%87-aspectj-%E5%92%8C-spring-%E6%9D%A5%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-domain-%E5%AF%B9%E8%B1%A1).
+
+- 基于 XML 配置 Spring 元数据的基本结构
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="..." class="...">
+        <!-- collaborators and configuration for this bean go here -->
+    </bean>
+
+    <bean id="..." class="...">
+        <!-- collaborators and configuration for this bean go here -->
+    </bean>
+
+    <!-- more bean definitions go here -->
+
+</beans>
+```
+
+具体配置参见: [7.4 Dependencies](#74-dependencies)
+
+##### 7.2.2 实例化容器
+
+实例化 Spring IoC 容器很简单, 提供给 ApplicationContext 构造函数的位置路径实际上是资源字符串, 允许容器从各种外部资源 (如本地文件系统, Java CLASSPATH等) 加载配置元数据。
+
+```java
+ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", "daos.xml");
+```
+
+#### 7.4 Dependencies
+
+#### 7.9 基于 Java 注解的容器配置
+
+#### 7.12 基于 Java 代码的容器配置
 
 ### 8. Resources
 
@@ -212,13 +287,15 @@ TODO
 
 ### 11. Aspect Oriented Programming with Spring
 
+#### 11.8 通过 AspectJ 和 Spring 来依赖注入 domain 对象
+
 ### 12. Spring AOP APIs
 
 
 ## IV. Test
 
-13. Introduction to Spring Testing
-14. Unit Test
+1.  Introduction to Spring Testing
+2.  Unit Test
 org.springframework | spring-. Integration Test
 16. Further Resources
 
