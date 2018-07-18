@@ -243,7 +243,54 @@ pom 文件内容是配置 build 成一个在 `manifest` 带 `mainClass` 的 jar:
 </assembly>
 ```
 
-6. scope 标签
+6. duplicate-finder-maven-plugin
+
+用来检查依赖重复的插件。 基本配置如下: 
+
+```xml
+<plugin>
+  <!-- 检查依赖 duplicate -->
+  <groupId>org.basepom.maven</groupId>
+  <artifactId>duplicate-finder-maven-plugin</artifactId>
+  <version>1.3.0</version>
+  <executions>
+    <execution>
+      <id>default</id>
+      <phase>verify</phase>
+      <goals>
+        <goal>check</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <skip>false</skip>
+    <quiet>false</quiet>
+    <checkCompileClasspath>true</checkCompileClasspath>
+    <checkRuntimeClasspath>true</checkRuntimeClasspath>
+    <checkTestClasspath>true</checkTestClasspath>
+    <failBuildInCaseOfDifferentContentConflict>false</failBuildInCaseOfDifferentContentConflict>
+    <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
+    <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
+    <printEqualFiles>false</printEqualFiles>
+    <preferLocal>true</preferLocal>
+    <includeBootClasspath>false</includeBootClasspath>
+    <bootClasspathProperty>sun.boot.class.path</bootClasspathProperty>
+
+    <includePomProjects>false</includePomProjects>
+  </configuration>
+</plugin>
+```
+
+```bash
+# 执行检查重复引入插件的指令
+mvn duplicate-finder:check
+```
+
+详情参考: 
+  - [工具Github地址](https://github.com/basepom/duplicate-finder-maven-plugin)
+  - [Wiki](https://github.com/basepom/duplicate-finder-maven-plugin/wiki)
+
+7. scope 标签
 ```xml
 <dependency>
   <groupId>xxx</groupId>
