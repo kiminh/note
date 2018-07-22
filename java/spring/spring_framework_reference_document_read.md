@@ -31,11 +31,12 @@
             - [7.3 Bean 概述](#73-bean-%E6%A6%82%E8%BF%B0)
                 - [7.3.1 Bean 命名](#731-bean-%E5%91%BD%E5%90%8D)
                 - [7.3.2 初始化 Bean](#732-%E5%88%9D%E5%A7%8B%E5%8C%96-bean)
-                - [7.3.3](#733)
             - [7.4 Dependencies](#74-dependencies)
                 - [7.4.1 依赖注入](#741-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5)
+                - [7.4.2 依赖关系和配置细节](#742-%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%92%8C%E9%85%8D%E7%BD%AE%E7%BB%86%E8%8A%82)
                 - [7.4.4 Lazy-initialization Bean](#744-lazy-initialization-bean)
             - [7.5 Bean 范围](#75-bean-%E8%8C%83%E5%9B%B4)
+            - [7.7 Bean 定义继承](#77-bean-%E5%AE%9A%E4%B9%89%E7%BB%A7%E6%89%BF)
             - [7.9 基于 Java 注解的容器配置](#79-%E5%9F%BA%E4%BA%8E-java-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE)
             - [7.12 基于 Java 代码的容器配置](#712-%E5%9F%BA%E4%BA%8E-java-%E4%BB%A3%E7%A0%81%E7%9A%84%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE)
                 - [7.12.3 使用 @Bean 注解](#7123-%E4%BD%BF%E7%94%A8-bean-%E6%B3%A8%E8%A7%A3)
@@ -438,15 +439,281 @@ Java 配置：
 
 Bean 定的的本质是用于创建一个或多个对象。 容器在需要 Bean 时查 Bean 的命名, 并使用由该 Bean 定义封装的配置元数据来创建(或获取)实例。
 
-##### 7.3.3
+如果使用基于 XML 配置元数据的方式, 择要指定在 `<bean/>` 元素的 `class` 属性中实例化的对象的类型。 此类属性通常是必须的, 它在内部是 `BeanDefine` 实例上的  `class` 属性。 查看 [Bean 定义继承](#77-bean-%E5%AE%9A%E4%B9%89%E7%BB%A7%E6%89%BF)。 通过以下两种方式使用 `class` 配置:
+
+- 通常, 在容器本身通过反向调用其构造函数直接创建 bean 的情况下指定要构造的 bean 类, 稍微等同于使用 new 的 Java 创建实例。
+- 在不太常见的情况下,  容器执行一静态工厂方法来创建 Bean, 需要指定能够创建这些对象的j静态工厂方法。 从静态工厂方法的调用返回的对象类型可以完全是同一个类或另一个类。
+
+> ~~内部类名(inner class names)~~. 如果需要定义一个嵌套的 `static` 类, 则必须使用嵌套类的 ~~二进制名称(binary name)~~. 
+> 比如有一个类 `Foo`, 在包 `com.example` 下, `Foo` 又一个嵌套的 `static` 类 `Bar`, `Bar` 的 `class` 属性值为: `com.example.Foo$Bar`。
+> 嵌套类和外部类名称相同时, 也通过 `$` 区分。
+
+- 通过构造函数创建实例
+
+当通过构造函数创建一个实例, 所有普通类都可以使用并与 Spring 兼容。 也就是说, 正在开发的类不需要实现任何特定的接口或以特定的方式编码。 简单地指定 Bean 类就足够了。 但是, 根据该特定bean使用的IoC类型, 可能需要一个默认(空)构造函数。
+
+IoC 容器实际上管理着需要管理的所有类, 它不仅管理真正的 JavaBean, 还能够在容器中管理更多给 Bean 样式的类。 如: 不符合 JavaBean 规范的就连接池。
+
+XML 配置如下: 
+
+```xml
+<bean id="exampleBean" class="example.ExampleBean"/>
+<bean id="anotherExample" class="example.AnotherExample"/>
+```
+
+有关为构造函数提供参数的机制以及在构造对象后设置对象实例属性的详细信息, 见[依赖注入](#741-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5)
+
+- 通过静态工厂方法实例化
+
+定义使用静态工厂方法创建 Bean 是, 可以通过包含静态工厂方法和属性的, ~~指定属性为工厂方法本身的名称 的类(you use the class attribute to specify the class containing the static factory method and an attribute named factory-method to specify the name of the factory method itself.)~~。 可以调用该方法并返回一个活动的对象, 这种方式视为通过构造函数创建对象。 这种 Bean 定义的一个用途是在一流代码中调用静态工厂。
+
+以下 Bean 定义指定通过调用 `factory-method` 创建 Bean。 该定义未指定返回的类型, 仅指定包含工厂方法的类。 在此示例中, `createInstance()` 方法必须是静态方法。
+
+```xml
+<bean id="clientService"
+    class="example.ClientService"
+    factory-method="createInstance"/>
+```
+
+```java
+public class ClientService {
+    private static ClientService clientService = new ClientService();
+    private ClientService() {}
+
+    public static ClientService createInstance() {
+        return clientService;
+    }
+}
+```
+
+有关向工厂方法提供 (可选) 参数以及在从工厂返回对象后设置对象实例属性的机制的详细信息见 [依赖关系和配置细节](#742-%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%92%8C%E9%85%8D%E7%BD%AE%E7%BB%86%E8%8A%82)
+
+- 通过实例工厂方法实例化
+
+与通过静态工厂方法实例化类似, 使用实力工厂方法进行实例化会从容器调用现有 Bean 的非静态方法来创建新的 Bean, 使用该机制的条件是: 将类属性保留为空, 并在当前(or 父/祖先)容器 `factory-bean` 属性中指定 Bean 的名称, 该容器包含要调用来创建实例的方法。 使用 `factory-method` 属性设置工厂方法本身的名称。
+
+```xml
+<!-- 包含一个名为 createInstance() 的工厂 Bean -->
+<bean id="serviceLocator" class="example.DefaultServiceLocator">
+    <!-- 注入所有需要的 locator 的 Bean -->
+</bean>
+
+<!-- 创建 factory bean 的 bean -->
+<bean id="clientService"
+    factory-bean="serviceLocator"
+    factory-method="createClientServiceInstance"/>
+```
+
+```java
+public class DefaultServiceLocator {
+    private static ClientService clientService = new ClientServiceImpl();
+
+    public ClientService createClientServiceInstance() {
+        return clientService;
+    }
+}
+```
+
+一个工厂类同样能够有多个工厂方法: 
+
+```xml
+<bean id="serviceLocator" class="example.DefaultServiceLocator">
+    <!-- 注入所有需要的 locator 的 Bean -->
+</bean>
+
+<bean id="clientService"
+    factory-bean="serviceLocator"
+    factory-method="createClientServiceMethod"/>
+
+<bean id="accountService"
+    factory-bean="serviceLocator"
+    factory-method="createAccountServiceInstance"/>
+```
+
+```java
+public class DefaultServiceLocator {
+    private static ClientService clientService = new ClientServiceImpl();
+
+    private static AccountService accountService = new AccountServiceImpl();
+
+    public ClientService createClientServiceMethod() {
+        return clientService;
+    }
+
+    public AccountService createAccountServiceInstance() {
+        return accountService;
+    }
+}
+```
+
+这种方法表明可以通过依赖注入(DI) 来管理配置 工厂Bean 本身。 见: [依赖关系和配置细节](#742-%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%92%8C%E9%85%8D%E7%BD%AE%E7%BB%86%E8%8A%82)
 
 #### 7.4 Dependencies
 
+A typical enterprise application does not consist of a single object (or bean in the Spring parlance). Even the simplest application has a few objects that work together to present what the end-user sees as a coherent application. This next section explains how you go from defining a number of bean definitions that stand alone to a fully realized application where objects collaborate to achieve a goal.
+
 ##### 7.4.1 依赖注入
+
+依赖注入 (DI) 是一个过程, 通过这个过程, 来对象定义它们的依赖关系, 即它们使用的其他对象, 只能通过构造函数参数, 工厂方法的参数或在构造或返回对象实例后在对象实例上设置的属性或者从工厂方法返回。 容器在创建这些 Bean 的时候注入这些依赖。 这个过程基本上是相反的: Bean 本身通过使用的类直接构造器或服务[定位器模式](https://blog.csdn.net/hb0746/article/details/51123748) 来控制其依赖想的实例化或位置, 这就是 IoC(控制反转) 名称的由来。
+
+使用依赖注入的原理使代码更清晰, 当对象提供其依赖项时, 解耦会更有效。 对象不查找其依赖项, 也不知道依赖项的位置或类, 因此, 类变得容易测试(尤其是当依赖关系在接口或抽象类上时), 在单元测试中也能使用 stub 或 mock 实现。
+
+> 注: [单元测试之Stub和Mock](https://www.cnblogs.com/TankXiao/archive/2012/03/06/2366073.html)
+
+依赖注入有两种主要的变体: `基于构造方法的依赖注入` 和 `基于 Setter 的依赖注入`
+
+- 基于构造方法的依赖注入
+
+通过构造方法的依赖注入通过容器执行含参的构造函数来完成实例化, 每个参数表示一个依赖项。 调用具有特定参数的静态工厂方法来构造 Bean 几乎是等效的, 本讨论同样处理构造函数和静态工厂方法的参数。 以下示例为一个只能通过构造函数注入的类: 
+
+```java
+public class SimpleMovieLister {
+    // bbb
+    private MovieFinder movieFinder;
+
+    // a constructor so that the Spring container can inject a MovieFinder
+    public SimpleMovieLister(MovieFinder movieFinder) {
+        this.movieFinder = movieFinder;
+    }
+    // business logic that actually uses the injected MovieFinder is omitted...
+}
+```
+
+- 构造函数参数解析
+
+使用参数的类型进行构造函数参数解析匹配。 如果 Bean 定义的构造器参数不存在潜在的歧义, 那么在 Bean 定义中定义构造函数参数顺序, 是在实例化 Bean 时, 将这些参数提供给适当的构造函数的顺序。 如: 
+
+```java
+package x.y;
+
+public class Foo {
+    public Foo(Bar bar, Baz baz) {
+        // ...
+    }
+}
+```
+
+假设 `Bar` 和 `Baz` 类无继承关系, 则不存在潜在的歧义。 因此, 以下配置工作正常, 无需在 `<constructor-args/>` 元素中显示指定构造函数参数索引和类型。
+
+```xml
+<beans>
+  <bean id="foo" class="x.y.Foo">
+    <constructor-args reg="bar"/>
+    <constructor-args reg="baz"/>
+  </bean>
+  <bean id="bar" class="x.y.Bar"/>
+  <bean id="baz" class="x.y.Baz/>
+</beans>
+```
+
+当引用另一个 Bean 时, 类型是已知的, 并可以进行配置(与前面的示例一样)。 当使用简单类型时(例如: `<value>true</value>`), Spring 无法确定值的类型, 因此无法在没有帮助的情况下按类型进行匹配。 如: 
+
+```java
+package examples;
+
+public class ExampleBean {
+    private int years;
+
+    private String untimateAnswer;
+
+    public ExampleBean(int years, String untimateAnswer) {
+        this.years = years;
+        this.untimateAnswer = untimateAnswer;
+    }
+}
+```
+
+在上述场景中, 如果使用 `type` 属性显示指定构造函数参数的类型, 则容器可以使用与简单类型匹配的类型。
+
+```xml
+<bean id="exampleBean" class="examples.ExampleClass">
+  <constructor-arg type="int" value="7500000"/>
+  <constructor-arg type="java.lang.String" value="42"/>
+</bean>
+```
+
+通过 `index` 属性来显式指定构造函数参数的索引:
+
+```xml
+<bean id="exampleBean" class="examples.ExampleClass">
+  <constructor-arg index="0" value="7500000"/>
+  <constructor-arg index="1" value="42"/>
+</bean>
+```
+
+除了解决多个简单值的歧义之外, 指定索引还可以解决构造函数具有相同类型的两个参数的歧义。 请注意，索引基于0。
+
+也可以使用构造函数的参数名称来消除值的歧义:
+
+```xml
+<bean id="exampleBean" class="examples.ExampleBean">
+  <constructor-arg name="years" value="7500000"/>
+  <constructor-arg name="ultimateAnswer" value="42"/>
+</bean>
+```
+
+也可以使用 `@ConstructorProperties` 的 JDK 注解显示命名构造函数, 如下: 
+
+```java
+package examples;
+
+public class ExampleBean {
+    // Fields omitted
+
+    @ConstructorProperties({"years", "ultimateAnswer"})
+    public ExampleBean(int years, String ultimateAnswer) {
+        this.years = years;
+        this.ultimateAnswer = ultimateAnswer;
+    }
+}
+```
+
+- 基于 Setter 的依赖注入
+
+基于 `setter` 的依赖注入是在调用无参数构造函数或无参数静态工厂方法来实例化 Bean 之后, 通过容器调用 Bean 上的 `setter` 方法来完成。
+
+以下示例显示了一个智能使用 `setter` 注入进行依赖注入的类, 它是一个POJO，它不依赖于容器特定的接口，基类或注释。
+
+```java
+public class SimpleMovieLister {
+    private MovieFinder movieFinder;
+
+    public void setMovieFinder (MovieFinder movieFinder) {
+        this.moveiFinder = movieFinder;
+    }
+}
+```
+
+`ApplicationContext` 支持基于构造函数和基于 `setter` 的依赖注入的方式来管理 Bean。 ~~在通过构造函数方法注入了一些依赖后, 还支持基于 `setter` 的依赖注入(It also supports setter-based DI after some dependencies have already been injected through the constructor approach.)~~。 可以通过 `BeanDefinition` 的形式配置依赖项, 可以将其与 `PropertyEditor` 实例结合使用, 将属性从一种格式转换成另一种格式。 然而, 大多数的 Spring 用户不直接使用这些累(即以编程方式), 而是使用 `XML` 定义的形式、 注解的形式(如: `@Component`, `@Controller` 等注解类)、 或者基于 Java 的 `@Configuration` 类中的 `@Bean` 方法。 然后这些源在内部转换为 `BeanDefinition` 实例, 并用于加载整个 Spring IoC 容器实例。
+
+> **基于构造函数还是基于 `setter`?**  
+> 由于可以混合使用基于构造函数和基于 `setter` 的依赖注入, 因此将构造函数用于强依赖项, `setter` 方法 或 可选依赖项的配置用于可选依赖项。 注意: 在 `setter` 方法上使用 `@Required` 注解可以使该属性称为必须的依赖项。  
+> Spring 团队提倡构造函数注入, 因为它们使应用程序组件能够实现为不可变对象, 并确保所需的依赖项不为空。 此外, 构造函数注入的组件始终以完全初始化的状态返回到调用端代码。 作为旁注, 大量的构造函数参数时一个 bad small, 暗示该类可能有太多的责任, 应当重构以更好的解决关注点的正确分离。  
+> `setter` 注入主要用于可在类中指定合理默认值的可选依赖项。 否则必须在代码中使用依赖项的任何位置执行非空检查。 `setter` 注入的一个好处是 `setter` 方法使该类的对象可以在以后重新配置或重新注入。 因此, 通过 `JMX MBeab` 进行管理是二次注入的一个~~很不错的用例(compelling use case)~~。  
+> 使用对特定类最有意义的依赖注入样式。 有时在处理没有源的第三方类时, `setter` 注入更合适, 如果第三方类没有公开 `setter` 方法, 那么构造函数注入可能是唯一可用的依赖注形式。
+
+- 依赖关系过程
+
+容器通过如下方式进行 Bean 的依赖解析: 
+
+1. `ApplicationContext` 来创建和初始化描述所有 Bean 的配置元数据, 配置元数据可以基于 `XML`, Java 代码和 Java 注解。
+2. 对于每个 Bean, 如果使用 依赖普通构造函数, 那么它的依赖关系将以属性, 构造函数参数 或 静态工厂方法的参数的形式表示。 实际创建 Bean 时, 会将这些依赖项提供给 Bean。
+3. 每个属性或构造函数参数都是一个要设置的实际值的定义, 或者是对容器中另一个 Bean 的引用。
+4. 作为值的每个属性或构造函数参数都从其指定个数转换为该属性的实际类型。 默认情况下, Spring 可以将以字符串格式提供的值转换为所有内置类型, 如 `int`, `long`, `String`, `boolean` 等。
+
+Spring 容器在创建容器时验证每个 Bean 的配置, 然而, 在实际创建 Bean 之前不会设置 Bean 属性本身。 创建容器时 会创建单例作用域并设置为预先实例化的Bean。`Scope` 在 [Bean 范围](#75-bean-%E8%8C%83%E5%9B%B4) 中描述。 其他情况下, Bean 只在被需要的时候在被创建。 因为 Bean 的依赖关系以及其依赖的依赖关系被创建和分配, 创建 Bean 可能会导致创建 ~~Bean Graph~~。 **注意, 这些依赖项之间的分辨不匹配可能会显示比较晚, 即首次创建受影响的 Bean 创建时。**
+
+
+> **循环依赖**
+> 
+
+##### 7.4.2 依赖关系和配置细节
 
 ##### 7.4.4 Lazy-initialization Bean
 
 #### 7.5 Bean 范围
+
+#### 7.7 Bean 定义继承
 
 #### 7.9 基于 Java 注解的容器配置
 
