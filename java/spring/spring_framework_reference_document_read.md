@@ -47,10 +47,47 @@
             - [11.8 通过 AspectJ 和 Spring 来依赖注入 domain 对象](#118-%E9%80%9A%E8%BF%87-aspectj-%E5%92%8C-spring-%E6%9D%A5%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-domain-%E5%AF%B9%E8%B1%A1)
         - [12. Spring AOP APIs](#12-spring-aop-apis)
     - [IV. Test](#iv-test)
+        - [13. Introduction to Spring Testing](#13-introduction-to-spring-testing)
+        - [14. Unit Test](#14-unit-test)
+        - [15. Integration Test](#15-integration-test)
+        - [16. Further Resources](#16-further-resources)
     - [V. Data Access](#v-data-access)
+        - [17. Transaction Manager](#17-transaction-manager)
+        - [18. DAO support](#18-dao-support)
+        - [19. Data access with JDBC](#19-data-access-with-jdbc)
+        - [20. Object Relational Mapping(ORM) Data Access](#20-object-relational-mappingorm-data-access)
+            - [20.1. Introduction to ORM with Spring](#201-introduction-to-orm-with-spring)
+            - [20.2. General ORM integration consideration](#202-general-orm-integration-consideration)
+            - [20.3. Hibenrate](#203-hibenrate)
+            - [20.4. JDO](#204-jdo)
+            - [20.5. JPA](#205-jpa)
+        - [21 Marshalling XML using O/X Mappers](#21-marshalling-xml-using-ox-mappers)
     - [VI. The Web](#vi-the-web)
+        - [22. Web MVC framework](#22-web-mvc-framework)
+        - [23. View Technologies](#23-view-technologies)
+        - [24. Integrating with other web frameworks](#24-integrating-with-other-web-frameworks)
+        - [25. Portlet MVC Framework](#25-portlet-mvc-framework)
+        - [26. WebSocket Support](#26-websocket-support)
+        - [27. CORS Support](#27-cors-support)
     - [VII. Integration](#vii-integration)
+        - [28. Remoting and web service using Spring](#28-remoting-and-web-service-using-spring)
+        - [29. Enterprise JavaBeans(EJB) integration](#29-enterprise-javabeansejb-integration)
+        - [30. JMS](#30-jms)
+        - [31. JMX](#31-jmx)
+        - [32. JCA CCI](#32-jca-cci)
+        - [33. Email](#33-email)
+        - [34. Task Execution and Schedule](#34-task-execution-and-schedule)
+        - [35. Dynamic language support](#35-dynamic-language-support)
+        - [36. Cache Abstraction](#36-cache-abstraction)
     - [VIII. Appendices](#viii-appendices)
+        - [37. Migrating to Spring Framework 4.x](#37-migrating-to-spring-framework-4x)
+        - [38. Spring Annotation Programming Model](#38-spring-annotation-programming-model)
+        - [39. Classic Spring usage](#39-classic-spring-usage)
+        - [40. Classic Spring AOP usage](#40-classic-spring-aop-usage)
+        - [41. XML Schema-based configuration](#41-xml-schema-based-configuration)
+        - [42. Extensible XML authoring](#42-extensible-xml-authoring)
+        - [43. Spring JSP Tag Library](#43-spring-jsp-tag-library)
+        - [44. Spring-form JSP Tag Library](#44-spring-form-jsp-tag-library)
 
 ## [I. Spring 框架概览](https://docs.spring.io/spring/docs/4.3.19.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#overview-getting-started-with-spring)
 
@@ -703,11 +740,207 @@ public class SimpleMovieLister {
 
 Spring 容器在创建容器时验证每个 Bean 的配置, 然而, 在实际创建 Bean 之前不会设置 Bean 属性本身。 创建容器时 会创建单例作用域并设置为预先实例化的Bean。`Scope` 在 [Bean 范围](#75-bean-%E8%8C%83%E5%9B%B4) 中描述。 其他情况下, Bean 只在被需要的时候在被创建。 因为 Bean 的依赖关系以及其依赖的依赖关系被创建和分配, 创建 Bean 可能会导致创建 ~~Bean Graph~~。 **注意, 这些依赖项之间的分辨不匹配可能会显示比较晚, 即首次创建受影响的 Bean 创建时。**
 
-
 > **循环依赖**
-> 
+> 如果主要通过构造函数来注入, 那么可能会创建一个不可依赖的循环依赖.
+> 如: 类 `A` 需要一个通过构造函数注入的 `B` 的实例, 类 `B` 需要一个通过构造函数注入的 `A` 的实例, 如果配置 `A` 和 `B` 分别被其中另一个注入, IoC 容器在运行时会检查出这种循环依赖, 并抛出一个 `BeanCurrentlyInCreationException` 异常。
+> 一种可行的解决方案是主要通过 `setter` 注入的方式而不是通过构造函数来配置这些注入。 或者避免构造函数注入, 只通过 `setter` 注入。 换而言之, 尽管不推荐, 但是可以通过 `setter` 来配置注入。
+> 和典型的情况不同(没有循环依赖关系), Bean `A` 和 Bean `B` 之间的循环依赖迫使再完全初始化之前将其中一个 Bean 注入到另一个 Bean 中(鸡生蛋/蛋生鸡场景)。
+
+Spring 在容器装配是检测配置问题, 比如对不存在的 Bean 和循环依赖项的引用。 在实际创建 Bean 时, Spring 尽可能晚的设置属性冰解析依赖项。 这意味着 在创建对象时, 如果该对象或其依赖项出现问题时, 正确加载的 Spring 容器稍后可以在请求对象时生成异常。 比如: 由于缺少或无效的属性, Bean 会抛出异常。 一些配置问题可能会延迟可见性, 这就是为什么 `ApplicationContext` 实现默认的预实例化是单例的 `Bean`。 在实际需要这些 Bean 之前, 需要使用一些时间和内存来创建这些 Bean, 但是在创建 `ApplicationContext` 时, 可能会发现配置问题。 也可以不使用默认的单例的 Bean 的方式, 使用 `lazy-initialize` 的方式来预加载。
+
+如果没有循环依赖存在, 当一个协作 Bean 被注入到另一个 Bean 中, 每个协作 Bean 被注入到依赖 Bean 之前都被 完全配置。 这意味着如果 Bean `A` 依赖 Bean `B`, 那么在独爱听 Bean `A` 上的 `setter` 方法之前, Spring 容器将完全配置 Bean `B`。 换而言之, Bean 实例化(如果不是一个预先实例化的单例), 设置其依赖项, 并调用相关生命周期方法(例如配置的 `init` 方法或 `initialization` 回调方法)。
+
+- 依赖注入的例子
+
+下面的示例通过基于 XML 的配置元数据来通过 `setter` 来配置依赖注入。 Spring XML 配置文件的一小部分指定了一些 Bean 定义:
+
+```xml
+<bean id="exampleBean" class="examples.ExampleBean">
+  <!-- 通过嵌套 ref 元素来注入 setter -->
+  <property name="beanOne">
+    <ref bean="anotherExampleBean"/>
+  </properties>
+  <property name="beanTwo" ref="yetAnotherBean"/>
+  <property name="integerProperty" value="1">
+</bean>
+
+<bean id="anotherExampleBean" class="examples.AnotherBean"/>
+<bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
+```
+
+```java
+package examples;
+
+public class ExampleBean {
+    private AnotherBean beanOne;
+    private YetAnotherBean beanTow;
+    private int i;
+    public void setBeanOne(AnotherBean beanOne) {
+        this.beanOne = beanOne;
+    }
+
+    public void setBeanTow(YetAnotherBean beanTow) {
+        this.beanTow = beanTow;
+    }
+
+    pyblic void setIntegerProperty(int i) {
+        this.i = i;
+    }
+}
+```
+
+通过构造函数注入: 
+
+```xml
+<bean id="exampleBean" class="examples.ExampleBean">
+  <constructor-args>
+    <ref bean="anotherExampleBean"/>
+  </constructor-args>
+  <constructor-args ref="yetAnotherBean"/>
+  <constructoe-atgs type="int" value="1"/>
+</bean>
+
+<bean id="anotherExampleBean" class="examples.AnotherBean"/>
+<bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
+```
+
+```java
+package examples;
+
+public class ExampleBean {
+    private AnotherBean beanOne;
+    private YetAnotherBean beanTwo;
+    private int i;
+
+    public ExampleBean(AnotherBean beanOne, YetAnotherBean beanTow int i) {
+        this.beanOne = beanOne;
+        this.beanTwo = beanTwo;
+        this.i = i;
+    }
+}
+```
+
+这个例子的一个变体, Spring 不是使用构造函数, 而是被告知调用静态工厂来返回对象的实例:
+
+```xml
+<bean id="exampleBean" class="examples.ExampleBean" factory-method="createInstance">
+  <constructor-args ref="anotherExampleBean"/>
+  <constructor-args ref="yetAnotherBean"/>
+  <constructor-args value="1"/>
+</bean>
+
+<bean id="anotherExampleBean" class="examples.AnotherBean"/>
+<bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
+```
+
+```java
+package examples;
+
+public class ExampleBean {
+    private ExampleBean(...) {
+        ...
+    }
+
+    public static ExampleBean createInstance(AnotherBean beanOne, YetAnotherBean beanTow int i) {
+        ExampleBean eb = new ExampleBean(...);
+        return eb;
+    }
+}
+```
 
 ##### 7.4.2 依赖关系和配置细节
+
+如前一节所述, 可以将bean属性和构造函数参数定义为对其他托管 Bean(或协作者) 的引用, 或者定义为内联的值。 Spring 基于 XML 的配置元数据支持其 `<property/>` 和 `<constructor-arg/>` 元素中的子元素类型。
+
+- 连续值(基础类型, 字符串等)
+
+`<property/>` 标签的 `value` 属性将属性或构造函数参数 指定为 可读的字符串表示的形式。 Spring 的转换服务用于将这些值从字符串转换为属性或参数的实际类型。
+
+```xml
+<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+  <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+  <property name="url"
+            value="jdbc:mysql://xxx:xxx/mydb"/>
+  <property name="username" value="username"/>
+  <property name="password" value="password"/>
+</bean>
+```
+
+下面的例子通过 `p-namespace` 来实现更简洁的 XML 配置:
+
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <bean id="myDataSource"
+        class="org.apache.commons.dbcp.BasicDataSource"
+        destory-method="close"
+        p:driverClassName="com.mysql.jdbc.Driver"
+        p:url="jdbc:mysql://xxx:xxx/mydb"
+        p:username="username"
+        p:password="password"/>
+</beans>
+```
+
+还可以配置 `java.util.properies` 实例:
+
+```xml
+<bean id="mappings"
+      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  <!-- 配置 java.util.Properties 类型 -->
+  <property name="properties">
+    <value>
+      jdbc.driver.classNmam=com.mysql.jdbc.Driver
+      jdbc.url=jdbc:mysql://xxx:xxx/mydb
+    </value>
+  </property>
+</bean>
+```
+
+- `iderf` 元素
+
+`iderf` 元素只是将容器中另一个 Bean 的 id(String 值, 而不是引用), 传递给 `<constructor-arg/>` 或者 `<property/>` 标签的一种错误防范方法:
+
+```xml
+<bean id="theTargetBean" class="..."/>
+
+<bean id="theClientBean" class="...">
+  <property name="targetName">
+    <idref bean="theTargetBean"/>
+  </property>
+<bean/>
+```
+
+(在运行时) 上面的 Bean 定义片段等价于下面的片段:
+
+```xml
+<bean id="theTargetBean" class="..."/>
+<bean id="client" id="...">
+  <property name="targetName" value="theTargetBean"/>
+</bean>
+```
+
+- 其他的 Bean(协作)
+
+- 内部 Bean
+
+- 集合
+
+- 合并集合
+
+- 限制合并集合
+
+- 强类型集合
+
+- Null 和空字符串值
+
+- 具有 `p-namespace` 的快捷方式
+
+- 具有 `c-namespace` 的快捷方式
+
+- 复合属性名
 
 ##### 7.4.4 Lazy-initialization Bean
 
@@ -733,55 +966,86 @@ Spring 容器在创建容器时验证每个 Bean 的配置, 然而, 在实际创
 
 ### 12. Spring AOP APIs
 
-
 ## IV. Test
 
-1.  Introduction to Spring Testing
-2.  Unit Test
-org.springframework | spring-. Integration Test
-16. Further Resources
+### 13. Introduction to Spring Testing
+
+### 14. Unit Test
+
+### 15. Integration Test
+
+### 16. Further Resources
 
 ## V. Data Access
 
-17. Transaction Manager
-18. DAO support
-19. Data access with JDBC
-20. Object Relational Mapping(ORM) Data Access
-    1.  Introduction to ORM with Spring
-    2.  General ORM integration consideration
-    3.  Hibenrate
-    4.  JDO
-    5.  JPA
-21. Marshalling XML using O/X Mappers
+### 17. Transaction Manager
+
+### 18. DAO support
+
+### 19. Data access with JDBC
+
+### 20. Object Relational Mapping(ORM) Data Access
+
+#### 20.1. Introduction to ORM with Spring
+
+#### 20.2. General ORM integration consideration
+
+#### 20.3. Hibenrate
+
+#### 20.4. JDO
+
+#### 20.5. JPA
+
+### 21 Marshalling XML using O/X Mappers
 
 ## VI. The Web
 
-22. Web MVC framework
-23. View Technologies
-24. Integrating with other web frameworks
-25. Portlet MVC Framework
-26. WebSocket Support
-27. CORS Support
+### 22. Web MVC framework
+
+### 23. View Technologies
+
+### 24. Integrating with other web frameworks
+
+### 25. Portlet MVC Framework
+
+### 26. WebSocket Support
+
+### 27. CORS Support
 
 ## VII. Integration
 
-28. Remoting and web service using Spring
-29. Enterprise JavaBeans(EJB) integration
-30. JMS
-31. JMX
-32. JCA CCI
-33. Email
-34. Task Execution and Schedule
-35. Dynamic language support
-36. Cache Abstraction
+### 28. Remoting and web service using Spring
+
+### 29. Enterprise JavaBeans(EJB) integration
+
+### 30. JMS
+
+### 31. JMX
+
+### 32. JCA CCI
+
+### 33. Email
+
+### 34. Task Execution and Schedule
+
+### 35. Dynamic language support
+
+### 36. Cache Abstraction
 
 ## VIII. Appendices
 
-37. Migrating to Spring Framework 4.x
-38. Spring Annotation Programming Model
-39. Classic Spring usage
-40. Classic Spring AOP usage
-41. XML Schema-based configuration
-42. Extensible XML authoring
-43. Spring JSP Tag Library
-44. Spring-form JSP Tag Library
+### 37. Migrating to Spring Framework 4.x
+
+### 38. Spring Annotation Programming Model
+
+### 39. Classic Spring usage
+
+### 40. Classic Spring AOP usage
+
+### 41. XML Schema-based configuration
+
+### 42. Extensible XML authoring
+
+### 43. Spring JSP Tag Library
+
+### 44. Spring-form JSP Tag Library
