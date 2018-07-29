@@ -46,6 +46,8 @@
         - [11. Aspect Oriented Programming with Spring](#11-aspect-oriented-programming-with-spring)
             - [11.8 通过 AspectJ 和 Spring 来依赖注入 domain 对象](#118-%E9%80%9A%E8%BF%87-aspectj-%E5%92%8C-spring-%E6%9D%A5%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-domain-%E5%AF%B9%E8%B1%A1)
         - [12. Spring AOP APIs](#12-spring-aop-apis)
+            - [12.5 Using the ProxyFactoryBean to create AOP proxies](#125-using-the-proxyfactorybean-to-create-aop-proxies)
+                - [12.5.2 AOP 拦截器](#1252-aop-%E6%8B%A6%E6%88%AA%E5%99%A8)
     - [IV. Test](#iv-test)
         - [13. Introduction to Spring Testing](#13-introduction-to-spring-testing)
         - [14. Unit Test](#14-unit-test)
@@ -208,28 +210,28 @@ Web 层由 `spring-web`, `spring-webmvc`, `spring-websocket` 和 `spring-webmvc-
 
 - Spring Framework Articats
 
-GroupId | ArtifactId | 描述 
----|---|---
-org.springframework | spring-aop | 基于代理的 AOP 支持
-org.springframework | spring-aspects | 基于 aspects 的 AspectJ
-org.springframework | spring-beans | 包括 `groovy` 的 `bean` 支持
-org.springframework | spring-context | 应用的运行时 context(上下文), 包括远程调用和任务调度的抽象
-org.springframework | spring-context-support | 支持类, 包括常见的三方库集成到 Spring 程序的上下文中
-org.springframework | spring-core | 核心工具, 被其他的 Spring 模块使用
-org.springframework | spring-expression | Spring EL 表达式
-org.springframework | spring-instrument | 用于 JVM 引导的检测代理程序
-org.springframework | spring-instrument-tomcat | 用于 JVM 引导的检测 Tomcat 的代理程序
-org.springframework | spring-jdbc | JDBC 支持包, 包括数据源配置和对数据库访问数据的支持
-org.springframework | spring-jms | JMS 支持包, 包括用于 发送/接收 JSM 消息的辅助类
-org.springframework | spring-messaging | ~~支持通过消息传递结构和协议(Support for messaging architectures and protocols)~~
-org.springframework | spring-orm | orm, 包括 JPA, Hibernate 的支持
-org.springframework | spring-oxm | 对象/XML的映射
-org.springframework | spring-test | 提供单元测试和集成测试
-org.springframework | spring-tx | 提供事物管理, 包括 DAO 支持 和 JCA 集成
-org.springframework | spring-web | 基础 Web 支持, 包括 Web 客户端和基于 Web 的远程处理
-org.springframework | spring-webmvc | 用于 Servlet stack 的 基于 HTTP 的 MVC 和 REST ~~端点(endpoints??)~~
-org.springframework | spring-webmvc-portlet | 在 `Portlet` 环境中使用的 MVC 实现
-org.springframework | spring-websocket | WebSocket 和 SockJS 的基础框架, 包括 STOMP 消息传递的支持
+| GroupId             | ArtifactId               | 描述                                                                              |
+| ------------------- | ------------------------ | --------------------------------------------------------------------------------- |
+| org.springframework | spring-aop               | 基于代理的 AOP 支持                                                               |
+| org.springframework | spring-aspects           | 基于 aspects 的 AspectJ                                                           |
+| org.springframework | spring-beans             | 包括 `groovy` 的 `bean` 支持                                                     |
+| org.springframework | spring-context           | 应用的运行时 context(上下文), 包括远程调用和任务调度的抽象                        |
+| org.springframework | spring-context-support   | 支持类, 包括常见的三方库集成到 Spring 程序的上下文中                              |
+| org.springframework | spring-core              | 核心工具, 被其他的 Spring 模块使用                                                |
+| org.springframework | spring-expression        | Spring EL 表达式                                                                  |
+| org.springframework | spring-instrument        | 用于 JVM 引导的检测代理程序                                                       |
+| org.springframework | spring-instrument-tomcat | 用于 JVM 引导的检测 Tomcat 的代理程序                                             |
+| org.springframework | spring-jdbc              | JDBC 支持包, 包括数据源配置和对数据库访问数据的支持                               |
+| org.springframework | spring-jms               | JMS 支持包, 包括用于 发送/接收 JSM 消息的辅助类                                  |
+| org.springframework | spring-messaging         | ~~支持通过消息传递结构和协议(Support for messaging architectures and protocols)~~ |
+| org.springframework | spring-orm               | orm, 包括 JPA, Hibernate 的支持                                                   |
+| org.springframework | spring-oxm               | 对象/XML的映射                                                                    |
+| org.springframework | spring-test              | 提供单元测试和集成测试                                                            |
+| org.springframework | spring-tx                | 提供事物管理, 包括 DAO 支持 和 JCA 集成                                           |
+| org.springframework | spring-web               | 基础 Web 支持, 包括 Web 客户端和基于 Web 的远程处理                               |
+| org.springframework | spring-webmvc            | 用于 Servlet stack 的 基于 HTTP 的 MVC 和 REST ~~端点(endpoints??)~~              |
+| org.springframework | spring-webmvc-portlet    | 在 `Portlet` 环境中使用的 MVC 实现                                                |
+| org.springframework | spring-websocket         | WebSocket 和 SockJS 的基础框架, 包括 STOMP 消息传递的支持                         |
 
 ##### 2.3.2 日志
 TODO
@@ -384,7 +386,7 @@ ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", 
 
 上述例子中, 这个 bean 定义去加载另外三个文件: `service.xml`, `messageSource.xml` & `themeSource.xml`。 所有位置路径与执行导入的定义文件相关, 因此 `service.xml` 必须和 `classpath` 在同一个路径下, `messageSource.xml` & `themeSource.xml` 必须在 `resources`。 
 
-TODO 
+TODO
 
 ##### 7.2.3
 
@@ -424,17 +426,17 @@ IoC 容器能够管理 Bean。 Bean 是通过元数据配置来创建的, 比如
 
 - 定义 Bean
 
-属性 | 解释
----|---
-class | [初始化 Bean](#732-%E5%88%9D%E5%A7%8B%E5%8C%96-bean)
-name | [Bean 命名](#731-bean-%E5%91%BD%E5%90%8D)
-scope | [Bean 范围]()
-constructor arguments(构造参数) | [依赖注入](#741-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5)
-属性(对象的属性) | [依赖注入](#741-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5)
-autoeiring modo | []()
-lazy-initialization mode | []()
-initialization method | []()
-destruction method | []()
+| 属性                            | 解释                                                   |
+| ------------------------------- | ------------------------------------------------------ |
+| class                           | [初始化 Bean](#732-%E5%88%9D%E5%A7%8B%E5%8C%96-bean)   |
+| name                            | [Bean 命名](#731-bean-%E5%91%BD%E5%90%8D)              |
+| scope                           | [Bean 范围]()                                          |
+| constructor arguments(构造参数) | [依赖注入](#741-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5)  |
+| 属性(对象的属性)                | [依赖注入](#741-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5) |
+| autoeiring modo                 | []()                                                   |
+| lazy-initialization mode        | []()                                                   |
+| initialization method           | []()                                                   |
+| destruction method              | []()                                                   |
 
 除了包含如何创建特定 Bean 的信息的 Bean 定义之外, `ApplicationContext` 实现还允许用户注册在容器外部创建现有的对象。 这是通过 `getBeanFactory()` 方法访问 `ApplicationContext` 的 `BeanFactory` 来完成的, 该方法返回 `BeanFactory` 的实现 `DefaultListableFeanFactory`, `DefaultListableBeanFactory` 通过 `registerSingleton(...)` 方法和 `registerBeanDefinition(...)` 来支持注册 Bean。 然而, 典型的应用程序仅适用于元数据 Bean 的定义来定义的 Bean。
 
@@ -922,13 +924,136 @@ public class ExampleBean {
 </bean>
 ```
 
+第一个变体与第二个变体相比, `idref` 标记允许容器在部署是验证引用名实际存在。 第二个变体, 不会传递给 `client` Bean 的 `targetName` 属性的值执行任何验证。 只有在实例化 `client` Bean 时才会发现语法错误(最有可能出现的致命原因)。 如果 `client` Bean 是一个原型的 Bean, 这种类型和产生的异常可能只会在容器部署很久后才发现。
+
+> `local` 属性的 `idref` 元素在 4.0 Bean xsd 中不再支持, 因为它不再提供常规 Bean 引用的值。 升级到 4.0 时, 只需更改对 `idref local` 的引用为 `idref bean` 即可。
+
+`<idref/>` 元素带来价值指出在 `ProxyFactioryBean` 定义的 [AOP 拦截器](#1252-aop-%E6%8B%A6%E6%88%AA%E5%99%A8) 中(至少在 Spring 2.0 之前的版本如此)。 在指定拦截器名称是使用 `<idref/>` 元素可以防止错误的拼写拦截器 id。
+
 - 其他的 Bean(协作)
+
+`ref` 元素是 `<constructor-arg/>` 或 `<property/>` 定义元素中的最后一个元素。 在这里可以将 Bean 的置顶属性设置为对另一个 Bean(协作者) 的引用。 引用的 Bean 是 `将其设置为属性的 Bean` 的依赖项, 在设置属性之前根据需要对其进行初始化。(如果是单例的 Bean, 容器可能已经将其初始化)。 所有引用最终都是对另一个对象的引用。 范围和验证取决于是否通过 `bean`, `local` 或 `parent` 属性指定另一个对象的 id/name。
+
+通过 `<ref/>` 标记的 Bean 属性指向目标 Bean 是最通用的形式, 并允许在相同容器或父容器中创建对任何 Bean 的引用而这些 Bean 不用必须在相同的 XML 文件中。 Bean 属性的值可能与目标 Bean 的属性 `id` 相同, 或者与目标 Bean 的 `name` 属性的值相同。
+
+```xml
+<ref bean="someBean"/>
+```
+
+通过父属性指定目标属性将创建对当前容器的父容器的 Bean 的引用。 父属性的值可能与目标 Bean 的 `id` 属性相同, 或者是目标 Bean 的 `name` 属性的一个值, 而目标 Bean 必须位于当前的父容器中。 当容器使用某种层次结构, 并且希望将一个现有的 Bean 封装在一个父容器中时, 主要使用的是这个 Bean 的引用变量。
+
+```xml
+<!-- 父容器 -->
+<bean id="accountService" class="com.foo.SimpleAccountService"/>
+  <!-- 必要的依赖 -->
+</bean>
+```
+
+```xml
+<!-- 子容器 -->
+<!-- 与父容器中的 Bean 的 id 相同 -->
+<bean id="accountService"
+  class="org.springframework.aop.ProxyFactoryBean">
+  <property name="target">
+    <!-- 引用 parent bean -->
+    <ref parent="accountService"/>
+  </property>
+</bean>
+```
 
 - 内部 Bean
 
+一个在 `<property/>` 或 `<constroctor-args/>` 元素中的 `<bean/>` 元素定义了一个内部 `bean`。
+
+```xml
+<bean id="outer" class="...">
+  <!-- 直接内联的定义目标 Bean, 代替使用对目标 Bean 的引用 -->
+  <property name="target">
+    <bean class="com.example.Person">
+      <!-- 内部 Bean -->
+      <property name="name" value="Fiona Applke"/>
+      <property name="age" value="25">
+    </bean>
+  </propertu>
+</bean>
+```
+
+一个内部 Bean 的定义不用必须包含 id 或者 name, 如果指定, 容器不会使用这个值作为标识符。 容器在创建时也忽略 `scope` 标识: 内部 Bean 总是和外部 Bean 一起创建, 且名称不公开。 除了将内部 Bean 注入到封闭意外事件, 无法将内部 Bean 注入到协作 Bean 中, 也不能独立的访问。
+
 - 集合
 
-- 合并集合
+可以通过 `<list/>`, `<set/>`, `<map/>`, `<props/>` 元素来配置参数是集合类型 `List`, `Set`, `Map` 或 `Properties`。
+
+```xml
+<bean id="moreConplexObject" class="example.ComplexObject">
+  <property name="adminEmails">
+    <props>
+      <prop key="administrator">administrator@example.ort</prop>
+      <prop key="support">support@example.ort</prop>
+      <prop key="development">development@example.ort</prop>
+    </props>
+  </property>
+  <property name="someList">
+    <list>
+      <value>a list element followed by a reference</value>
+      <ref bean="myDataSource"/>
+    </list>
+  </property>
+  <property name="someMap">
+     <map>
+       <entry key="an entry" value="just some string"/>
+       <entry key="a ref" value-ref="myDataSource"/>
+     </map>
+  </property>
+  <property name="someSet">
+    <set>
+      <value>just some string</value>
+      <ref bean="myDataSource"/>
+    </set>
+  </property>
+</bean>
+```
+
+Map 和 Set 的键值可以是以下的类型:
+
+```text
+bean | ref | idref | list | set | map | props | value | null
+```
+
+- 集合的合并
+
+Spring 容器提供合并的集合。 通过在一个 `<list/>`, `<map/>` ,`<set/>` 或 `<props/>` 元素中定义一个  `<list/>`, `<map/>` ,`<set/>` 或 `<props/>` 的子元素来实现。
+
+```xml
+<beans>
+  <bean id="parnet" abstract="true" class="com.example.ComplexObject">
+    <property name="adminEmails">
+      <props>
+        <prop key="administrator">administrator@example.org</prop>
+        <prop key="support">support@example.org</prop>
+      </props>
+    </property>
+  </bean>
+  <bean id="child" parent="parent">
+    <property name="adminEmails">
+      <props merge="true">
+        <prop key="sales">sales@example.org</prop>
+        <prop key="support">support@example.co.uk</prop>
+      </props>
+    </property>
+  </bean>
+</beans>
+```
+
+通过在 `child` Bean 的 `adminEmails` 属性的 `<props/>` 元素的 `merge=true` 属性定义的使用。 当 `child` Bean 被容器解析并实例化时, 返回的实例有一个 `adminEmails` 的 `Properties` 集合, 包括合并了 `child` 的 `adminEmails` 集合到 parent Bean 中的 `adminEmails` 集合的集合:
+
+```text
+administrator=administrator@example.org
+sales=sales@example.org
+support=support.example.co.uk
+```
+
+`<list/>`, `<map/>`, `<set/>` 集合类型提供和上述方式一样的合并行为。 在 `<list/>` 元素的情况下(与 `List` 集合类型相关的语义, 即有序集合的值的概念), parent `List` 的值先于所有子 `List` 的值。 对于 `Map`, `Set` 和 `Properties` 类型, 不存在排序, 对容器内部使用 `Map`, `Set` 和 `Properties` 的集合类型时, 没有有效的排序语义。
 
 - 限制合并集合
 
@@ -965,6 +1090,10 @@ public class ExampleBean {
 #### 11.8 通过 AspectJ 和 Spring 来依赖注入 domain 对象
 
 ### 12. Spring AOP APIs
+
+#### 12.5 Using the ProxyFactoryBean to create AOP proxies
+
+##### 12.5.2 AOP 拦截器
 
 ## IV. Test
 

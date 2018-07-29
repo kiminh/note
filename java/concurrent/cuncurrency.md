@@ -14,9 +14,8 @@
         - [SampleThreads 示例](#samplethreads-%E7%A4%BA%E4%BE%8B)
     - [Sychronization(同步)](#sychronization%E5%90%8C%E6%AD%A5)
         - [Thread Interface](#thread-interface)
-        - [Memory Consistency Errors](#memory-consistency-errors)
-        - [Sychronized Methods](#sychronized-methods)
-        - [Intrinsic Locks and Sychronization](#intrinsic-locks-and-sychronization)
+        - [内存一致性 Error](#%E5%86%85%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7-error)
+        - [内在锁和同步](#%E5%86%85%E5%9C%A8%E9%94%81%E5%92%8C%E5%90%8C%E6%AD%A5)
         - [Atomic Access](#atomic-access)
     - [Liveness](#liveness)
         - [Deadlock](#deadlock)
@@ -301,11 +300,19 @@ class Counter {
 }
 ```
 
-### Memory Consistency Errors
+计数器的设计使得每次对增量的调用, c 都会加 1, 每次递减的调用, c 都会减 1。 如果一个计数器被多个线程引用, 那么线程之间的干扰可能扰乱正常情况。
 
-### Sychronized Methods
+当两个操作(在不同线程中运行, 但作用于相同的数据)交织时, 会发生干扰。 意味着这两个操作包括多个步骤, 并且步骤序列重叠。
 
-### Intrinsic Locks and Sychronization
+### 内存一致性 Error
+
+当不同线程对相同数据有着不同的 ~~视图(views)~~ 时, 会发生内存一致性错误。
+
+避免内存一致性错误的关键是理解时间之前的关系。 这种关系时保证一个特定的语句写入的内存对另一个特定语句可见。
+
+### 内在锁和同步
+
+同步是围绕一个内部实体构建的, 称为内部锁或监视器锁。 内在锁在同步的两个方面都起作用: 强制对对象状态的独占访问和简历事件之前的关系, 这些关系对于可见性时必不可少的。
 
 ### Atomic Access
 
