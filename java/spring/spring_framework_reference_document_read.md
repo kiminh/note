@@ -34,7 +34,9 @@
             - [7.4 Dependencies](#74-dependencies)
                 - [7.4.1 依赖注入](#741-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5)
                 - [7.4.2 依赖关系和配置细节](#742-%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%92%8C%E9%85%8D%E7%BD%AE%E7%BB%86%E8%8A%82)
-                - [7.4.4 Lazy-initialization Bean](#744-lazy-initialization-bean)
+                - [7.4.3 使用依赖](#743-%E4%BD%BF%E7%94%A8%E4%BE%9D%E8%B5%96)
+                - [7.4.4 延迟初始化的 Bean](#744-%E5%BB%B6%E8%BF%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84-bean)
+                - [7.4.5 自动装配](#745-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D)
             - [7.5 Bean 范围](#75-bean-%E8%8C%83%E5%9B%B4)
             - [7.7 Bean 定义继承](#77-bean-%E5%AE%9A%E4%B9%89%E7%BB%A7%E6%89%BF)
             - [7.9 基于 Java 注解的容器配置](#79-%E5%9F%BA%E4%BA%8E-java-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE)
@@ -1057,9 +1059,65 @@ support=support.example.co.uk
 
 - 限制合并集合
 
+不能合并不同类型的集合类型(如 `Map` 和 `List`), 如果合并, 则会抛出异常。 必须在较低的、继承的、自定义上指定 `merge` 属性, 在父集合定义上指定 `merge` 属性是多余的, 不会导致所需的合并。
+
 - 强类型集合
 
+在 Java 5 引入范性后, 可以使用强类型集合。 也就是说, 可以声明一个 `Collection` 类型使其只包含 `String` 元素。 如果通过 Spring 依赖注入一个强类型 `Collection` 到 Bean 中, 可以使用 Spring 的类型转换支持, 以便强类型 `Collection` 实例的元素在添加之前被转换成适当的类型。
+
+```java
+public class Foo {
+    private Map<String, Float> accounts;
+
+    public void setAccount(Map<String, Float> accounts) {
+        this.accounts = accounts;
+    }
+}
+```
+
+```xml
+<beans>
+  <bean id="foo" class="x.y.Foo">
+    <map>
+      <entry key="one" value="9.99">
+      <entry key="two" value="2.75">
+      <entry key="three" value="3.99">
+    </map>
+  </bean>
+</beans>
+```
+
+当 `foo` Bean 的 `accounts` 属性准备好注入时, 强类型 `Map<String, Float>` 的元素范型信息可以通过反射获得。 因此, Spring 的类型转换基础结构将各种值元素识别为浮点数类型。
+
 - Null 和空字符串值
+
+Spring 将属性和类似的空参数视为空字符串。 以下基于 XML 的配置元数据片段将 `email` 属性设置为 `“”`:
+
+```xml
+<bean class="ExampleBean">
+  <property name="email" value=""/>
+<bean>
+```
+
+等同于:
+
+```java
+exampleBean.setEmail("");
+```
+
+`null` 元素处理空值:
+
+```xml
+<bean class="ExampleBean">
+  <null/>
+<bean>
+```
+
+等同于:
+
+```java
+exampleBean.setEmail(null);
+```
 
 - 具有 `p-namespace` 的快捷方式
 
@@ -1067,7 +1125,69 @@ support=support.example.co.uk
 
 - 复合属性名
 
-##### 7.4.4 Lazy-initialization Bean
+TODO
+[复合属性名](https://docs.spring.io/spring/docs/4.3.19.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#beans-factory-dependson)
+
+##### 7.4.3 使用依赖
+
+如果一个 Bean 是另一个 Bean 的依赖项, 通常另一个 Bean 要呗设置为这个 Bean 的属性。 通常使用基于 XML 的配置元数据的 `<ref/>` 来实现。 有时, Bean 之间的依赖关系不那么直接, 如: 需要触发器中的静态初始化器来实现, 如: 数据库驱动(driver class) 注册。 依赖属性可以显示的强制在使用此元素的 Bean 初始化之前初始化:
+
+```xml
+<bean id="beanOne" class="ExampleBean" depends-on="manager"/>
+<bean id="manager" class="ManagerBean"/>
+```
+
+要表示多个 Bean 的依赖关系, 需要提供一个 Bean 的名称列表, 作为依赖属性的值, 并使用逗号, 空格, 分号 作为有效的分隔符。
+
+```xml
+<bean id="beanOne" class="ExampleBean" depends-on="manager,accountDao">
+  <property name="manager" ref="manager"/>
+</bean>
+
+<bean id="manager" class="ManagerBean"/>
+<bean id="accountDao" class="x.y.jdbc.JdbcAccountDao"/>
+```
+
+> Bean 定义中的 `depends-on` 属性既可以指定初始化的依赖, 也可以指定相应销毁的依赖。 被定义为依赖的 Bean 首先被销毁, 然后该 Bean 才被销毁。 依赖可以空值关机顺序。
+
+##### 7.4.4 延迟初始化的 Bean
+
+默认情况下, `ApplicationContext` 的实现会在初始化过程的一部分是去创建和配置所有的单例的 Bean。 通常, 这种预先实例化是可取的, 因为配置和环境的错误会立即被发现。 当这种情况不适用时, 可以通过将 Bean 定义为 `lazy-initialized` 来防止单例 Bean 的预实例化。 IoC 容器在 延迟初始化的 Bean 第一次被需要时进程初始化而不是启动的时候。
+
+在 XML 中, 通过 `<bean/>` 的 `lazy-init` 属性来配置延迟初始化的 Bean:
+
+```xml
+<bean id="lazy" class="com.foo.ExpensiveToCreateBean" lazy-init="true"/>
+<bean name="not.lazy" class="com.foo.AnotherBean"/>
+```
+
+`ApplicationContext` 使用前面的配置时, 在 `ApplicationContext` 启动时, 名为 `lazy` 的 Bean 不会被预实例化。
+
+然而, 当延迟初始化的 Bean 是 非延迟初始化的单例 Bean 的依赖项时, `ApplicationContext` 在启动时创建 延迟初始化的 Bean, 因为它必须满足单例的依赖项。 延迟初始化的 Bean 被注入到其他 预初始化的单例 Bean 中。
+
+也可以通过在 `<bean/>` 元素上使用 `default-lazy-init` 属性来空值容器的延迟初始化:
+
+```xml
+<beans default-lazy-init="true">
+  <!-- 所有配置的 Bean 都会被延迟初始化 -->
+</beans>
+```
+
+##### 7.4.5 自动装配
+
+Spring 容器可以自动连接协作 Bean 之间的关系。 通过检查 `ApplicationContext` 的内容, 可以允许 Spring 自动解析 Bean。优点如下:
+
+1. 自动装配可以减少置顶属性或构造函数参数的需要。
+2. 自动装配可以随着对象更新而更新配置。 如: 如果需要向类添加依赖项, 那么无需修改配置就可以自动满足依赖项。 因此在开发中, 自动装配很有用。
+
+使用基于 XML 的配置元数据时, 可以使用 `<bean/>` 元素的 `autowire` 属性为 Bean 定义指定 `autowire` 模式。 自动装配有 4 种模式:
+
+模式 | 说明
+---|---
+no | (默认项) 没有自动装配, Bean 引用必须通过 `ref` 元素定义。
+byName | 通过属性名自动装配。 Spring 查找于需要自动装配的 Bean 属性同名的 Bean。
+byType | 如果容器中只存在一个属性的 Bean, 则允许对属性进行自动连接。
+constructor | 类似于 byType, 但适用于构造函数。
 
 #### 7.5 Bean 范围
 
