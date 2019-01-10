@@ -29,7 +29,3 @@ echo $?
 ```
 hdfs dfs -help
 ```
-
-
-
-

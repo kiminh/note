@@ -6,36 +6,21 @@
 
 1. 硬件错误
 
-
-
 2. 流式数据访问
-
-
 
 3. 简单一致性模型
 
-
-
 4. NameNode 和 DataNode
-
 
 ![架构图](../imgs/hdfsarchitecture.gif)
 
-
 5. namespace
-
-
 
 6. 数据复制
 
-
 7. 副本存放
 
-
 8. 安全模式
-
-
-9.
 
 ## 基本指令
 

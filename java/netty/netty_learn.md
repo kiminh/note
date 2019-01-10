@@ -137,9 +137,10 @@ Decode 负责将消息从字节或其他序列形式转换成指定消息对象;
 > `Netty` 提供的简单统一的方法来引导 Server 和 Client。 引导是配置 `Netty` Server 和 Client 的过程。
 
 分类: 
-    1. 服务器的引导: `ServerBootstrap`
-    2. 客户端的引导: `Bootstrap`
-    - 特例: `DatagramChannel` 实例, 用于 `UDP` 协议, 无连接, 一个通道可以处理所有数据, 不需要依赖于连接。
+   1. 服务器的引导: `ServerBootstrap`
+   2. 客户端的引导: `Bootstrap`
+        - 特例: `DatagramChannel` 实例, 用于 `UDP` 协议, 无连接, 一个通道可以处理所有数据, 不需要依赖于连接。
+    3. 连接通过 `channel` 关闭, `ChannelFuture` 只是作为一个异步处理的工具。
 
 ## reactor 模型
 

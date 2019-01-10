@@ -85,46 +85,56 @@ echo $?
 
     1. 创建用户
 
-```sql
-# 通配符为 %
-# 创建一个名为 user 的用户, 所有 IP 能访问, 未设置密码
-CREATE USER 'user'@'%';
-# 创建一个名为 user 的用户, 指定 IP 能访问, 密码为 password
-CREATE USER 'user'@'192.168.1.101' IDENDIFIED BY 'password';
-# 创建一个名为 user 的用户, 所有 IP 能访问, 密码为 password
-CREATE USER 'user'@'%' IDENTIFIED BY 'password';
-# 创建一个名为 user 的用户, 所有 IP 能访问, 无密码
-CREATE USER 'user'@'%' IDENTIFIED BY '';
-```
+    ```sql
+    # 通配符为 %
+    # 创建一个名为 user 的用户, 所有 IP 能访问, 未设置密码
+    CREATE USER 'user'@'%';
+    # 创建一个名为 user 的用户, 指定 IP 能访问, 密码为 password
+    CREATE USER 'user'@'192.168.1.101' IDENDIFIED BY 'password';
+    # 创建一个名为 user 的用户, 所有 IP 能访问, 密码为 password
+    CREATE USER 'user'@'%' IDENTIFIED BY 'password';
+    # 创建一个名为 user 的用户, 所有 IP 能访问, 无密码
+    CREATE USER 'user'@'%' IDENTIFIED BY '';
+    ```
 
     2. 为数据库添加用户:
 
-```sql
-# 通过 root 用户对数据库进行添加用户
-use mysql;
-INSERT INTO user
-    (host, user, password,
-    select_priv, select_priv, select_priv)
-    VALUES ('localhost', 'guest',
-    PASSWORD('password'), 'Y', 'Y', 'Y');
+    ```sql
+    # 通过 root 用户对数据库进行添加用户
+    use mysql;
+    INSERT INTO user
+        (host, user, password,
+        select_priv, select_priv, select_priv)
+        VALUES ('localhost', 'guest',
+        PASSWORD('password'), 'Y', 'Y', 'Y');
 
-# 在添加用户时, 注意使用MySQL提供的 PASSWORD() 函数来对密码进行加密。
-# 在 MySQL5.7 中 user 表的 password 已换成了 authentication_string 。
-# 可以在创建用户时, 为用户指定权限, 在对应的权限列中, 在插入语句中设置为 'Y' 即可
+    # 在添加用户时, 注意使用MySQL提供的 PASSWORD() 函数来对密码进行加密。
+    # 在 MySQL5.7 中 user 表的 password 已换成了 authentication_string 。
+    # 可以在创建用户时, 为用户指定权限, 在对应的权限列中, 在插入语句中设置为 'Y' 即可
 
-# or
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
-    ON mysql.*
-    TO 'user'@'%'
-    IDENTIFIED BY 'password';
+    # or
+    GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+        ON mysql.*
+        TO 'user'@'%'
+        IDENTIFIED BY 'password';
 
-# 需要执行 FLUSH PRIVILEGES 语句, 执行后会重新载入授权表。
-```
+    # 需要执行 FLUSH PRIVILEGES 语句, 执行后会重新载入授权表。
+    ```
 
     3. 修改 root 用户密码:
 
 ```sql
 update user set password=password('123456') where user='root';
+flush privileges;
+```
+
+    1. 初始化密码
+
+```sql
+SET PASSWORD = PASSWORD('your new password');
+
+ALTER USER 'root'@'localhost' PASSWORD EXPIRE NEVER;
+
 flush privileges;
 ```
 
@@ -163,6 +173,8 @@ SHOW TABLE STATUS  FROM RUNOOB;   # 显示数据库 RUNOOB 中所有表的信息
 SHOW TABLE STATUS from RUNOOB LIKE 'runoob%';     # 表名以runoob开头的表的信息
 SHOW TABLE STATUS from RUNOOB LIKE 'runoob%'\G;   # 加上 \G，查询结果按列打印
 ```
+
+8. 初始密码: `grep "temporary password" /var/log/mysqld.log` 查看
 
 ## 问题记录
 
@@ -336,6 +348,22 @@ select * from table_name where id > 4;
 update table_name set field1=new_data1, field2=new_data2
     [where clause];
 ```
+
+## insert or update
+
+说明: 一堆数据, 如果不存在则 `insert`, 如果存在则 `update`.
+
+通过 `on duplicate` 实现。 样例如下, 表说明: `roles.role_id`: `int`, `roles.role_name`: `varchar(64)`, `roles.role_info`: `varchar(200)`
+
+```sql
+insert into roles (role_id, role_name, role_info)
+values (11, "xxx", "qqq"),
+       (12, "xdq", "qwe")
+on duplicate key update role_name = values(role_name),
+                        role_info = values(role_info);
+```
+
+## dual
 
 ## 配置相关
 

@@ -124,8 +124,8 @@ pom.xml 内容:
 
 ```xml
 <plugin>
-  <groupid>org.apache.tomcat.maven</groupid>
-  <artifactid>tomcat7-maven-plugin</artifactid>
+  <groupId>org.apache.tomcat.maven</groupId>
+  <artifactId>tomcat7-maven-plugin</artifactId>
   <version>2.1</version>
   <configuration>
     <port>9090</port>
@@ -306,3 +306,15 @@ mvn duplicate-finder:check
   > runtime: 只在运行时使用, 如 JDBC。
   > test: 只在测试时使用, 用于编译和运行测试代码。不会随项目发布。
   > system: 类似provided, 需要显式提供包含依赖的jar, Maven不会在Repository中查找它。
+
+8. 通过占位符传入参数
+
+```xml
+<project>
+  <my.param>${param}</my.param>
+</project>
+```
+
+```bash
+mvn clean package -Dmy.param=<my_param>
+```
