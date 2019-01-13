@@ -146,8 +146,6 @@ dump 出来的文件可以用MAT、VisualVM等工具查看：
 jhat -port <port\> <file_path\>
 ```
 
-
-
 **注意如果Dump文件太大，可能需要加上-J-Xmx512m这种参数指定最大堆内存。**
 
 ## jinfo(Java Configuration Info)
@@ -155,9 +153,6 @@ jhat -port <port\> <file_path\>
 观察进程运行环境参数，包括 Java System 属性和 JVM 命令行参数
 
 //TODO
-
-
-
 
 ## hprof（Heap/CPU Profiling Tool）
 
@@ -201,7 +196,7 @@ javac -J-agentlib:hprof=cpu=times Hello.java
 javac -J-agentlib:hprof=heap=sites Hello.java
 javac -J-agentlib:hprof=heap=dump Hello.java
 ```
-**虽然在 JVM 启动参数中加入```-Xrunprof:heap=sites``` 参数可以生成 CPU/Heap Profile 文件，但对 JVM 性能影响非常大，不建议在线上服务器环境使用。**
+**虽然在 JVM 启动参数中加入 `-Xrunprof:heap=sites` 参数可以生成 CPU/Heap Profile 文件，但对 JVM 性能影响非常大，不建议在线上服务器环境使用。**
 
 ## 参考资料
 

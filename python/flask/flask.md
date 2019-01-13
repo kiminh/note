@@ -14,20 +14,16 @@ pip install flask
 
 - usage  
 
-
-
 - 项目结构  
 
 ```
 project_directory
-  ├──<code_and_configurations>                          
+  ├──<code_and_configurations>
   ├──static  
-  |  └──<static_file>                              
-  ├──templates                               
-     └──hello.html                        
+  |  └──<static_file>
+  ├──templates
+     └──hello.html
 ```
-
-
 
 - start project
 
@@ -44,7 +40,6 @@ flask run
 ```
 
 - methods
-
     - GET: 浏览器从服务器中获取数据(大多数的形式, just get the information)  
     - HEAD: 浏览器从服务器获取 head 中的数据
     - POST: 浏览器向服务器发送数据(并且服务器必须确保数据被存储并且只存储一次)
@@ -53,7 +48,3 @@ flask run
     - OPTIONS: 提供一些选项
 
 - template
-
-
-
-

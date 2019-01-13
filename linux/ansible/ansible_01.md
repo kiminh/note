@@ -55,19 +55,20 @@ ansible 与 puppet 等相比，其号称是 agentless 的，而且这个也确�
 
 ### 通过源码安装
 
-    1. 获取源码
+1. 获取源码
 
 ```
 git clone https://github.com/ansible/ansible.git
 cd ./ansible
 ```
-    2. python依赖
+
+2. python依赖
 
 ```
 sudo pip install paramiko PyYAML Jinja2 httplib2 six
 ```
 
-    3. 使用bash
+3. 使用bash
 
 ```
 source ./hacking/env-setup
@@ -77,7 +78,7 @@ source ./hacking/env-setup
 
 ### 使用yum安装最新发布的版本
 
-    **通过Yum安装RPMs适用于 EPEL 6, 7, 以及仍在支持中的Fedora发行版，RHEL和CentOS用户需要配置EPEL**
+**通过Yum安装RPMs适用于 EPEL 6, 7, 以及仍在支持中的Fedora发行版，RHEL和CentOS用户需要配置EPEL**
 
 ```bash
 # install the epel-release RPM if needed on CentOS, RHEL, or Scientific Linux
@@ -90,7 +91,7 @@ sudo yum install ansible
 
 配置/etc/ansible/hosts
 
-添加主机
+添加主机, 可按照服务器类型分组。
 
 ### 初次尝试
 
@@ -98,11 +99,11 @@ sudo yum install ansible
 
 ```
 # 未配置authorized_key
- ansible all -m ping --ask-pass
- 只需要填写未配置authorized_key的server
+ansible all -m ping --ask-pass
+# 只需要填写未配置authorized_key的server
 
- # 完成配置authorized_key后
- ansible all -m ping
+# 完成配置authorized_key后
+ansible all -m ping
 ```
 
 -v的选项是显示出详细信息。ansible支持三种显示信息的方式:
@@ -141,7 +142,7 @@ ansible atlanta -a "/usr/bin/foo" -u <user\> --sudo [--ask-sudo-pass]
 ansible atlanta -a "/usr/bin/foo" -u <user\> -U <otheruser\> [--ask-sudo-pass]
 ```
 
-**Note:command 模块不支持 shell 变量,也不支持管道等 shell 相关的东西.如果你想使用 shell相关的这些东西, 请使用’shell’ 模块。**
+**Note:command 模块不支持 shell 变量,也不支持管道等 shell 相关的东西.如果想使用 shell相关的这些东西, 请使用’shell’ 模块。**
 
 - 使用 shell 模块的示例：
 
@@ -151,7 +152,7 @@ ansible raleigh -m shell -a 'echo $TERM'
 
 - File Transfer
 
-    1. Ansible 能够以并行的方式同时 SCP 大量的文件到多台机器：
+1. Ansible 能够以并行的方式同时 SCP 大量的文件到多台机器：
 
 ```shell
 ansible webservers -m copy -a 'src=/root/anaconda-ks.cfg dest=/root'
@@ -176,14 +177,14 @@ ansible03 | SUCCESS =\> {
 }
 ```
 
-    2. 使用 file 模块可以做到修改文件的属主和权限：
+2. 使用 file 模块可以做到修改文件的属主和权限：
 
 ```shell
 ansible webservers -m file -a "dest=/srv/foo/a.txt mode=600"
 ansible webservers -m file -a "dest=/srv/foo/b.txt mode=600 owner=mdehaan group=mdehaan"
 ```
 
-    3. 使用 file 模块也可以创建目录,与执行 mkdir -p 效果类似:
+3. 使用 file 模块也可以创建目录,与执行 mkdir -p 效果类似:
 
 ```shell
 ansible webservers -m file -a "dest=/path/to/c mode=755 owner=mdehaan group=mdehaan state=directory"
@@ -191,7 +192,7 @@ ansible webservers -m file -a "dest=/path/to/c mode=755 owner=mdehaan group=mdeh
 
 ```
 
-    4. 删除目录(递归的删除)和删除文件：
+4. 删除目录(递归的删除)和删除文件：
 
 ```shell
 ansible webservers -m file -a "dest=/path/to/c state=absent"
@@ -236,11 +237,7 @@ ansible webservers -m git -a "repo=git://foo.example.org/repo.git dest=/srv/myap
 
 - Gathering Facts
 
-
-
 ###  Ansible playbook
-
-
 
 ## 名词解释
 

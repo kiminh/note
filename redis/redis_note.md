@@ -1,15 +1,10 @@
 # Redis  
 
-[简介](#jump)
-
-## 簡介  
-
--[Download](http://download.redis.io/releases/)
+## 简介
 
 ## 集群环境搭建  
 
 参见 [Redis集群搭建与简单使用](http://www.cnblogs.com/wuxl360/p/5920330.html)
-
 
 ## 配置文件说明  
 

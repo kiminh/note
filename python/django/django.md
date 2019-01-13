@@ -1,6 +1,5 @@
 # django
 
-
 ## usage  
 
 - quick start project

@@ -33,7 +33,7 @@ tutorial
 
 文件作用:  
 
-3. 启动 scrapy project 
+3. 启动 scrapy project
 
 ```shell
 scrapy crawl tutorial #tutorial 为 project 名称

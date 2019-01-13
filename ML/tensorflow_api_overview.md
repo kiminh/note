@@ -18,15 +18,15 @@
     > 图例:
     > 符号|描述
     > ---|---
-    > ![](imgs/namespace_node.png) | 高级节点, 双击查看高级节点结构
-    > ![](imgs/horizontal_stack.png) | 没有连接到任何其他节点的节点编号
-    > ![](imgs/vertical_stack.png) | 连接到其他节点的节点编号
-    > ![](imgs/op_node.png) | 个性化操作节点
-    > ![](imgs/constant.png) | 常量
-    > ![](imgs/summary.png) | j节点总结
-    > ![](imgs/dataflow_edge.png) | operations 之间的数据流
-    > ![](imgs/control_edge.png) | oerations 之间的 control dependency
-    > ![](imgs/reference_edge.png) | 输出 operation 可以改变输入张量
+    > ![namespace](imgs/namespace_node.png) | 高级节点, 双击查看高级节点结构
+    > ![horizontal stack](imgs/horizontal_stack.png) | 没有连接到任何其他节点的节点编号
+    > ![vertical](imgs/vertical_stack.png) | 连接到其他节点的节点编号
+    > ![operation node](imgs/op_node.png) | 个性化操作节点
+    > ![constant](imgs/constant.png) | 常量
+    > ![summary](imgs/summary.png) | j节点总结
+    > ![dataflow edge](imgs/dataflow_edge.png) | operations 之间的数据流
+    > ![control edge](imgs/control_edge.png) | oerations 之间的 control dependency
+    > ![reference edge](imgs/reference_edge.png) | 输出 operation 可以改变输入张量
 4. 根据目前情况, 可以选用 Hadoop 作为发布平台(参考[TensorFlow on Hadoop](https://www.tensorflow.org/deploy/hadoop))。
     > 发布方式:
     > 1. Distributed TensorFlow

@@ -1,14 +1,14 @@
 # bottle 使用及源码阅读笔记
 
-参考: 
+参考:
 [Python微型Web框架Bottle源码分析](https://mp.weixin.qq.com/s/mN2S1y_ukvWPbHFfBj9kHg)
 [微型 Python Web 框架： Bottle](http://blog.csdn.net/huithe/article/details/8087645)
 
 ## bottle 简介
 
-Bottle 是一个非常小巧但高效的微型 Python Web 框架, 它被设计为仅仅只有一个文件的 python 模块, 并且除Python标准库外, 它不依赖于任何第三方模块。
+Bottle 是一个非常小巧但高效的微型 Python Web 框架, 它被设计为仅仅只有一个文件的 python 模块, 并且除Python标准库外, 它不依赖于任何第三方模块。 不建议在生产环境中使用, 可以用 flask 替代。
 
-阅读原因: 
+阅读原因:
 - [Python微型Web框架Bottle源码分析](https://mp.weixin.qq.com/s/mN2S1y_ukvWPbHFfBj9kHg) 这篇博客引发的兴趣。
 - Bottle 从发布至今一直贯彻的微型 Web 框架的理念。
 - Bottle 一直坚持单文件发布，也就是只有一个 ```bottle.py``` 文件。
@@ -18,7 +18,7 @@ Bottle 是一个非常小巧但高效的微型 Python Web 框架, 它被设计�
 
 代码下载: [bottle](https://github.com/bottlepy/bottle)
 
-安装: 
+安装:
     1. ```sudo easy_install -U bottle```  
     2. ```pip install bottle```  
 
@@ -67,7 +67,7 @@ def server_static(filename):
     return static_file(filename, root='/path/to/your/static/files')
 ```
 
-static_file() 函数是一个安全且方便的用来返回静态文件请求的函数。
+`static_file()` 函数是一个安全且方便的用来返回静态文件请求的函数。
 
 如果我们想要 "/path/to/your/static/files" 目录的子目录下的文件也被处理, 那么我们可以使用一个格式化的通配符。
 
@@ -81,13 +81,3 @@ def server_static(path):
 ## 源码阅读  
 
 在 Bottle 中关于创建一个标准的 WSGI Server 涉及的类或者方法只有 3 个。
-
-
-
-
-
-
-
-
-
-

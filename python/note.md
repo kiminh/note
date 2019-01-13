@@ -45,11 +45,12 @@ deactivate # 退出虚拟 python 环境, 回到系统 python 环境
 python 定时任务框架
 
 5. Windows 下执行 scrapy 需要 win32api, 通过下载 pypiwin32 模块解决依赖问题。
+
 ```
 pip install pypiwin32
 ```
 
-6. 用 ```requirements.txt``` 安装类库
+1. 用 `requirements.txt` 安装类库
 
 ```shell
 pip install -r requirements.txt
@@ -93,7 +94,7 @@ print_everything('apple', 'banana', 'cabbage')
 # 2. cabbage
 ```
 
-\*\*kwargs允许你使用没有事先定义的参数名
+`**kwargs`允许你使用没有事先定义的参数名
 
 ```python
 def table_things(**kwargs):
@@ -106,7 +107,7 @@ table_things(apple = 'fruit', cabbage = 'vegetable')
 # apple = fruit
 ```
 
-也可以混着用。命名参数首先获得参数值然后所有的其他参数都传递给 \*args 和 \*\*kwargs 。命名参数在列表的最前端。例如:
+也可以混着用。命名参数首先获得参数值然后所有的其他参数都传递给 `*args` 和 `**kwargs` 。命名参数在列表的最前端。例如:
 
 ```python
 def table_things(titlestring, **kwargs)
@@ -120,11 +121,11 @@ with open('<file_path>', 'open_mode') as f:
 ```
 
   - python2 中, 默认通过二进制方式读取文件。
-  - python3 中, 默认通过 UTF-8 编码读取文件。open_mode 为 `'wb'`` , 通过二进制形式读取文件。
+  - python3 中, 默认通过 UTF-8 编码读取文件。open_mode 为 `'wb'` , 通过二进制形式读取文件。
 
 11. lambda 表达式
 
-lambda 表达式可以替代仅仅求职的简单函数
+lambda 表达式可以替代仅仅求职的简单函数.
 
 ```python
 add = lambda x, y: x + y

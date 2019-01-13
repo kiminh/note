@@ -2,19 +2,13 @@
 
 Lucene 是一个 Java 语言编写的利用倒排原理实现的文本检索类库, Solr 是以 Lucene 为基础实现的文本检索应用服务。
 
-
-some address
-
 - [apache-solr](http://lucene.apache.org/solr/)
 - [Apache Solr Wiki](https://wiki.apache.org/solr/FrontPage)
 - [Solr中国](https://www.solr.cc/blog/)
 
+## solr cloud
 
-
-
-# solr cloud
-
-基本概念: 
+基本概念:
 
 - Cluster: 一组Solr节点, 逻辑上作为一个单元进行管理, 整个集群使用同一套 Schema 和 SolrConfig  
 - Node: 一个运行 Solr 的 JVM 实例  

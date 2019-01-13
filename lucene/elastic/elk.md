@@ -8,12 +8,12 @@
 
 ### kibana
 
-查看 [elasticsearch_studt.md](./elasticsearch_studt.md)
+TODO
 
 ### logstash
 
   1. 安装 Java 环境
-  2. 下载安装 logstash 安装包, 安装包下载地址: https://www.elastic.co/downloads/logstash。 建议翻墙下载, 会稍快些。
+  2. 下载安装 logstash 安装包, 安装包[下载地址](https://www.elastic.co/downloads/logstash)。 建议翻墙下载, 会稍快些。
   3. 配置 logstash, 启动 logstash。
 
 - 配置 logstash
@@ -21,6 +21,7 @@
   > 最小配置只需要配置 `logstash.yml`, `log4j_to_es.conf` 即可。
 
 - logstash.yml 配置
+
 ```yml
 #default configurations except http.host
 
@@ -54,8 +55,10 @@ path.plugins: []
 ```
 
 - log4j_to_es.conf 主要配置 input, output 和 filter。
+
 提供 file 和 filebeat 两种配置方式, 其余方式请查看官网。
 filter 配置提供一个 demo, 查看官网。
+
 ```conf
 input{
   beat {
@@ -75,7 +78,9 @@ output{
   }
 }
 ```
+
 这里使用 filebeat 来采集日志, 也可以使用 logstash 自身来采集数据, 配置如下:
+
 ```conf
 input{
   file {
@@ -100,10 +105,10 @@ output{
 
 filebeat 是用来替代 Logstash Forwarder 的下一代 Logstash 收集器, 是为了更快速稳定轻量低耗地进行收集工作, 它可以很方便地与 Logstash 连接, 也可以直接与 Elasticsearch 进行对接。
 参考:
-  - [Beats 基础](http://soft.dog/2015/12/24/beats-basic/#section)
-  - [官方文档](https://www.elastic.co/guide/en/beats/filebeat/master/index.html)
+
+- [Beats 基础](http://soft.dog/2015/12/24/beats-basic/#section)
+- [官方文档](https://www.elastic.co/guide/en/beats/filebeat/master/index.html)
 
 filebeat 配置文件有 `filebeat.full.yml`, `filebeat.template-es2x.json`, `filebeat.template.json`, `filebeat.yml`。
-```
 
 ## 使用

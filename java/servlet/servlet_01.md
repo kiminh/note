@@ -9,29 +9,28 @@
 - Servlet 任务：  
     Servlet 主要执行以下任务：
 
-    1. 读取客户端（浏览器）发送的显式的数据。这包括网页上的 Html 表单，或者也可以是来自 applet 或自定义的 HTTP 客户端程序的表单。
-    2. 读取客户端（浏览器）发送的隐式的 HTTP 请求数据。这包括 cookies、媒体类型和浏览器能理解的压缩格式等等。
-    3. 处理数据并生成结果。这个过程可能需要访问数据库，执行 RMI 或 [CORBA](http://baike.baidu.com/link?url=5J_ptampsX1UkSP7TLj6H39h9dS26DyFnVki1xmIzotdCmqtzsdPf1PUBUA2Fk3djR_fSDdflzihBhd12idXKq) 调用，调用 Web 服务，或者直接计算得出对应的响应。
-    3. 发送显式的数据（即文档）到客户端（浏览器）。该文档的格式可以是多种多样的，包括文本文件(HTML 或 XML)、二进制文件(GIF 图像)、Excel 等。
-    4. 发送隐式的 HTTP 响应到客户端（浏览器）。这包括告诉浏览器或其他客户端被返回的文档类型（例如 HTML），设置 cookies 和缓存参数，以及其他类似的任务。
+1. 读取客户端（浏览器）发送的显式的数据。这包括网页上的 Html 表单，或者也可以是来自 applet 或自定义的 HTTP 客户端程序的表单。
+2. 读取客户端（浏览器）发送的隐式的 HTTP 请求数据。这包括 cookies、媒体类型和浏览器能理解的压缩格式等等。
+3. 处理数据并生成结果。这个过程可能需要访问数据库，执行 RMI 或 [CORBA](http://baike.baidu.com/link?url=5J_ptampsX1UkSP7TLj6H39h9dS26DyFnVki1xmIzotdCmqtzsdPf1PUBUA2Fk3djR_fSDdflzihBhd12idXKq) 调用，调用 Web 服务，或者直接计算得出对应的响应。
+4. 发送显式的数据（即文档）到客户端（浏览器）。该文档的格式可以是多种多样的，包括文本文件(HTML 或 XML)、二进制文件(GIF 图像)、Excel 等。
+5. 发送隐式的 HTTP 响应到客户端（浏览器）。这包括告诉浏览器或其他客户端被返回的文档类型（例如 HTML），设置 cookies 和缓存参数，以及其他类似的任务。
 
 - Servlet Package
 
 Java Servlet 是运行在带有支持 Java Servlet 规范的解释器的 web 服务器上的 Java 类。Servlet 可以使用 javax.servlet 和 javax.servlet.http 包创建，它是 Java 企业版的标准组成部分，Java 企业版是支持大型开发项目的 Java 类库的扩展版本。
 
-
 ## Servlet 生命周期
 
 - Servlet 生命周期可被定义为从创建直到毁灭的整个过程：
 
-    1. Servlet 通过调用 init () 方法进行初始化。
-    2. Servlet 调用 service() 方法来处理客户端的请求。
-    3. Servlet 通过调用 destroy() 方法终止（结束）。
-    4. 最后，Servlet 是由 JVM 的垃圾回收器进行垃圾回收的。
+1. Servlet 通过调用 init () 方法进行初始化。
+2. Servlet 调用 service() 方法来处理客户端的请求。
+3. Servlet 通过调用 destroy() 方法终止（结束）。
+4. 最后，Servlet 是由 JVM 的垃圾回收器进行垃圾回收的。
 
- Servlet 生命周期:
+Servlet 生命周期:
 
- ![image](../imgs/Servlet-LifeCycle.jpg)
+![image](../imgs/Servlet-LifeCycle.jpg)
 
 - init 方法
 
@@ -254,9 +253,3 @@ public class LogFilterImpl implements Filter {
 TODO
 
 ## Servlet 实例
-
-
-
-
-
-

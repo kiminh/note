@@ -6,7 +6,6 @@
     3. Relu: 比 Sigmoid 有更多有效的计算, 因为只需要对 $(0,x)$ 区间的值进行操作
     4. Relu: 收敛性更好([Krizhevsky et al](http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf))
    - Disadvantage:
-    1. 
    - source: [What are the advantages of ReLU over sigmoid function in deep neural networks?](https://stats.stackexchange.com/questions/126238/what-are-the-advantages-of-relu-over-sigmoid-function-in-deep-neural-networks)
 
 2. 注意: 神经网络不一定始终比特征组合好, 但确实可以提供适用于很多情形的灵活替代方案。
