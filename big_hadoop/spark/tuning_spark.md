@@ -5,10 +5,9 @@
   - [内存管理](#内存管理)
   - [决定内存消耗](#决定内存消耗)
   - [调整数据结构](#调整数据结构)
-  - [调整垃圾回收](#调整垃圾回收)
+  - [Tuning Data Structures](#tuning-data-structures)
   - [数据持久化的序列化](#数据持久化的序列化)
     - [Measuring the Impact of GC](#measuring-the-impact-of-gc)
-    - [Advanced GC Tuning](#advanced-gc-tuning)
 - [其他考虑](#其他考虑)
   - [并行级别](#并行级别)
   - [Reduce Task 内存使用](#reduce-task-内存使用)
@@ -75,7 +74,7 @@ Spark 中的内存使用主要分为两类: 执行和存储。 执行内存是�
 
 当对象仍然太大而无法有效存储时, 减少内存使用的一种简单得多的方法是使用[RDD persistence API](http://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence) (如: MEMORY_ONLY_SER)中的序列化存储图以序列化的形式存储它们, 从而减少内存使用。 然后 Spark 将每个 RDD 分区存储为一个大字节数组。 以序列化形式存储数据的惟一缺点是访问时间较慢, 因为必须动态地反序列化每个对象。 如果希望以序列化的形式缓存数据, 我们强烈推荐使用 Kryo, 因为它的大小比 Java 序列化小得多(当然也比原始 Java 对象小)。
 
-### 调整垃圾回收
+### Tuning Data Structures
 
 减少内存消耗的第一种方法是避免增加开销的 Java 特性, 例如基于指针的数据结构和包装器对象。 有几种方法可以做到这一点:
 
@@ -92,13 +91,28 @@ Spark 中的内存使用主要分为两类: 执行和存储。 执行内存是�
 
 #### Measuring the Impact of GC
 
-#### Advanced GC Tuning
+当应用程序存储的 RDD 有很大波动时, JVM GC 可能是一个问题(通常在只读取一次 RDD 并在其上运行许多操作的应用程序中, 这不是问题)。 使用对象更少的数据结构可以大大降低此成本。 更好的方式是以序列化的形式持久化对象。 如果出现 GC 问题, 首先应当尝试使用序列化缓存。
+
+- Measuring the Impact of GC
+
+首先应当收集 GC 发生的频率和话费 GC 的时间统计信息, 通过 `-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps` 的来配置。 日志位于集群的工作节点上。
+
+- Advanced GC Tuning
+
+Spark GC 调优的目标是确保在 Old Generation 中存储 long-lived RDD, 在 Young Generation 中存储 short-lived RDD。 有助于避免使用完整的 GC 来收集在 Job 执行期间创建的临时对象。
+
+1. 通过收集 GC 统计信息来检查是否有太多的 GC, 如果在 Task 完成之前多次调用 Full GC , 则意味着没有足够的内存来执行 Task。
+2. 如果有太多的小 GC 但没有太多大 GC, 增加 Eden 内存。可以将 Eden 的大小设置为比每个 Task 所需内存稍高。 如果 Eden 大小确定为 E, 可以通过 `-Xmn=4/3E` 来配置 Young Generation(扩大 4/3 是考虑到 Survivor Space)。
 
 ## 其他考虑
 
 ### 并行级别
 
+除非将每个操作的并行级别设置得足够高, 否则不会充分利用集群。 Spark 根据每个文件的大小自动设置要在其上运行的 `map` task 的数量(尽管可以通过 `SparkContext`的可选参数来控制它)。 对于分布式的 `reduce` 操作, 例如 `groupByKey` 和 `reduceByKey`, 它使用最大的父RDD分区数。 可以将并行级别作为第二个参数传递(参见  spark.[PairRDDFunctions](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions) 文档)。 或者设置 `spark.default.parallelism` 属性来更改默认值。 通常, 建议集群中每个 CPU core 执行2-3个 task。
+
 ### Reduce Task 内存使用
+
+有时, 会出现 `OutOfMemoryError` 错误, 这并不是因为 RDD 没配置好内存, 而是因为其中一个 task 的工作集太大, 例如 `groupByKey` 中的一个 `reduce` 任务。 Spark 的 shuffle 操作(`sortByKey`, `groupByKey`, `reduceByKey`, `join` 等)在每个任务中构建一个散列表来执行分组, 分组通常很大。 这里最简单的解决方案是增加并行性级别, 这样每个 task 的输入集就会更小。 Spark 可以高效地支持短至 200 ms 的任务, 因为它跨多个任务重用一个执行器 JVM, 并且任务启动成本很低, 因此可以安全地将并行度级别提高到超过集群中内核的数量。
 
 ### Broadcasting Large Variables
 

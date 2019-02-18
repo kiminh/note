@@ -315,6 +315,7 @@ context.awaitTermination()
 [Structured Streaming Programming Guide](http://spark.apache.org/docs/latest/structured-streaming-programming-guide.html)
 
 Streaming/batch 统一
+基于 Spark SQL
 
 ### Programming Model
 

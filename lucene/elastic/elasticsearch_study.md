@@ -1,4 +1,4 @@
-# elastic
+# elastic 破冰
 
 Elastic 是一个实时分布式搜索和分析引擎, 使用 Java 开发, 基于 Lucene, 目的是通过 RESTful API 来隐藏 Lucene 的复杂性, 简化全文搜索。
 
