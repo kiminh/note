@@ -1,4 +1,6 @@
-```
+# log & des
+
+```log
 STATUS | wrapper  | 2017/10/04 22:04:31 | --> Wrapper Started as Daemon
 STATUS | wrapper  | 2017/10/04 22:04:31 | Launching a JVM...
 INFO   | jvm 1    | 2017/10/04 22:04:31 | WrapperManager class initialized by thread: main  Using classloader: sun.misc.Launcher$AppClassLoader@5c647e05
@@ -37,7 +39,7 @@ INFO   | jvm 1    | 2017/10/04 22:04:45 | 2017.10.04 22:04:45 INFO  app[][o.s.a.
 STATUS | wrapper  | 2017/10/04 22:04:47 | <-- Wrapper Stopped
 ```
 
-```
+```bash
  mvn --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.1:sonar -Dsonar.host.url=http://192.168.1.88:9000/ -Dsonar.login=tangl -Dsonar.password=123456 -Dsonar.analysis.mode=preview -Dsonar.issuesReport.console.enable=true -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref=$CI_COMMIT_REF_NAME Dsonar.gitlab.project_id=$CI_PROJECT_PATH
 ```
 
@@ -65,19 +67,18 @@ mvn sonar:sonar \
 mvn package sonar:sonar   -Dsonar.host.url=http://192.168.1.88:9000   -Dsonar.login=5f6f68885d1cf72e86bf223411adb9bb5fb50b3e -Dsonar.sources=src/main/java/ -Dsonar.libraries=./target/sonar-gitlab-plugin-2.2.0-SNAPSHOT/META-INF/lib/*.jar
 ```
 
-```
+```txt
 # sonarqube's new token for jenkins
 8fce20e507448c653d87174102db4b25e17b28db
 ```
 
-
-```
+```bash
 mvn package sonar:sonar   -Dsonar.host.url=http://192.168.1.88:9000   -Dsonar.login=5f6f68885d1cf72e86bf223411adb9bb5fb50b3e -Dsonar.sources=src/main/java/ -Dsonar.libraries=./src/main/webapp/WEB-INF/lib/*.jar
 ```
 
 ## jenkins log
 
-```
+```log
 Oct 25, 2017 2:25:10 PM hudson.XmlFile replaceIfNotAtTopLevel
 WARNING: JENKINS-45892: reference to hudson.maven.MavenModuleSet@73486958[ssm] being saved from unexpected /var/lib/jenkins/jobs/ssm/builds/37/build.xml
 java.lang.IllegalStateException
@@ -157,7 +158,7 @@ sleep 2
 sh /home/jenkins/tomcat/bin/startup.sh
 ```
 
-```
+```log
 org.eclipse.jetty.io.EofException
         at org.eclipse.jetty.io.ChannelEndPoint.flush(ChannelEndPoint.java:292)
         at org.eclipse.jetty.io.WriteFlusher.flush(WriteFlusher.java:429)

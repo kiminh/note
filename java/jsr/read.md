@@ -10,6 +10,7 @@
     2. Happen-before 的内存模型
 
 - 名次定义
+
 1. 共享变量/堆内存(Shared variable/Heap memory)
     > 线程间共享的内存, 包括静态字段, 数组元素, 实例字段。局部变量不会存在于共享内存。
 2. 线程间动作(Intra-thread Actions)
@@ -18,10 +19,11 @@
 4. 线程内语义(Intra-thread semantics)
 5. 同步动作(Synchronization Action)
     > 包括: 锁, 解锁, 读写 `volatile` 变量, 用于启动线程的动作以及用于探测线程是否结束的动作。
-7. 同步顺序(Synchronization Order)
-8. Happen-before and Synchronization-with 
+6. 同步顺序(Synchronization Order)
+7. Happen-before and Synchronization-with 
 
 - 内存模型的正式规范
+
 1. synchronizes-with
     > 起点: release; 终点: acquire
 2. happen-before
@@ -30,6 +32,7 @@
 4. restrictions of partial orders and functions(偏序和函数的限制)
 
 - (Well-format)良构的执行过程
+
 1. 每个对变量 x 的读都能看到一个对 x 的写。所有对 volatile 变量的读写都是 volatile 动作。
 2. 同步顺序与程序顺序以及互斥是一致的。
 3. 线程的运行遵守线程内(intra-thread)一致性。
@@ -41,6 +44,7 @@
 #### final 字段
 
 - final字段
+
 1. 语义
     > 只初始化一次且不再改变。 **这种语义允许编译器在读取这类字段时进行激进优化, 同时在不需要同步时保证线程安全**
 2. 目标与要求
@@ -51,7 +55,8 @@
         4. 该语义必须支持诸如反序列化的场景, 通常, 一个对象的 final 字段将在该对象构建完成后改变。
 3. 用户 final 字段的 JVM 规则
 
-TO READ menu: 
+TO READ menu:
+
 1. **final 字段构建后再改变**
-2. **wait, sleep, yield** 
+2. **wait, sleep, yield**
 3. **finalized**

@@ -22,9 +22,9 @@ https://www.ibm.com/developerworks/cn/java/j-lo-jenkins-plugin/
   1. 获取 Jenkins 源: `sudo wget -O /etc/yum.repos.d/jenkins.repo http://jenkins-ci.org/redhat/jenkins.repo`
   2. 导入 key: 'sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key'
   3. 执行安装指令: `yum install jenkins`
-    1. jenkins.war 路径: `/usr/lib/jenkins/`
-    2. 配置文件路径: `/etc/sysconfig/jenkins`
-    3. ps: 最重要的是需要指定 java 环境
+     1. jenkins.war 路径: `/usr/lib/jenkins/`
+     2. 配置文件路径: `/etc/sysconfig/jenkins`
+     3. ps: 最重要的是需要指定 java 环境
   4. 启动指令: `service jenkins start`,
   可以设置成开机自启动。
 
@@ -43,48 +43,31 @@ env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
 - project 相关
   1. 创建 project
   2. 配置 project
-    1. 配置 project 自动构建过程
-    2. 配置 定时构建
-    3. 配置 定时检查远程仓库变化构建
+     1. 配置 project 自动构建过程
+     2. 配置 定时构建
+     3. 配置 定时检查远程仓库变化构建
 
 - sonar runner 构建配置
-
 
 ## 插件及相关使用
 
 1. pipeline / Pipeline: GitHub Groovy Libraries / Pipeline: Stage Step
 
-2. GitHub Plugin / GitHub Branch Source Plugin / Branch API Plugin
+2. GitHub Plugin / GitHub Branch Source Plugin / Branch API Plugin, 这些插件主要是版本控制相关的插件
 
-这些插件主要是版本控制相关的插件
+3. SSH Plugin / SSL Slave Plugin, 集群的 jenkins 需要使用到的插件。
 
-3. SSH Plugin / SSL Slave Plugin
+4. Maven Integration plugin, 通过 maven 构建项目的插件, 简化 Jenkins 通过 maven 构建项目的步骤。
 
-集群的 jenkins 需要使用到的插件。
+5. Email Extension Plugin, 邮箱提示插件, 配置构建后结果的提示。
 
-4. Maven Integration plugin
+6. Deploy to container Plugin, jenkins 负责发布的插件。 配置项:
+   1. `WAR/EAR files`: 配置 war 包或 ear 包编译后的路径。
+   2. `content path`: tomcat 的路径, 即 tomcat 在目标服务器的 tomcat 的路径。
+   3. `deploy on failure`: 是发生错误的时候是否发布到 tomcat。
+   - 注意: 要在 `tomcat-users` 里的用户赋予 `manager-gui`, `manager-script`, `manager-jmx`, `manager-status` 这些权限。即修改 `<tomcat_path>/conf/tomcat-users.xml` 文件中配置 tomcat 的用户名和密码。
 
-通过 maven 构建项目的插件, 简化 Jenkins 通过 maven 构建项目的步骤。
-
-5. Email Extension Plugin
-
-邮箱提示插件, 配置构建后结果的提示。
-
-6. Deploy to container Plugin
-
-jenkins 负责发布的插件。
-
-配置项:
-
-  1. `WAR/EAR files`: 配置 war 包或 ear 包编译后的路径。
-  2. `content path`: tomcat 的路径, 即 tomcat 在目标服务器的 tomcat 的路径。
-  3. `deploy on failure`: 是发生错误的时候是否发布到 tomcat。  
-
- - 注意: 要在 `tomcat-users` 里的用户赋予 `manager-gui`, `manager-script`, `manager-jmx`, `manager-status` 这些权限。即修改 `<tomcat_path>/conf/tomcat-users.xml` 文件中配置 tomcat 的用户名和密码。
-
-7. SonarQube Scanner for Jenkins
-
-jenkins 负责代码审查的插件
+7. SonarQube Scanner for Jenkins, jenkins 负责代码审查的插件
 
 8. MultiJob plugin
 

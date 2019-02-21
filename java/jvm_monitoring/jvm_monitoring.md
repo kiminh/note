@@ -1,6 +1,14 @@
 # jvm monitoring
 
-```
+- [jps(Java Virtual Machine Process Status Tool)](#jpsjava-virtual-machine-process-status-tool)
+- [jstack(Java Stack Trace)](#jstackjava-stack-trace)
+- [jstat(Java Virtual Machine Statistics Monitoring Tool)](#jstatjava-virtual-machine-statistics-monitoring-tool)
+- [jmap(Java Memory Map)](#jmapjava-memory-map)
+- [jinfo(Java Configuration Info)](#jinfojava-configuration-info)
+- [hprof（Heap/CPU Profiling Tool）](#hprofheapcpu-profiling-tool)
+- [参考资料](#参考资料)
+
+```txt
 jvm实例
 堆内存（各种内存）
 ```
@@ -11,8 +19,8 @@ jvm实例
 
 语法格式：
 
-```
-jps [-q] [-mlvV] [<hostid\>]
+```bash
+jps [-q] [-mlvV] [<hostid>]
 ```
 
 参数说明：
@@ -31,10 +39,12 @@ jps [-q] [-mlvV] [<hostid\>]
 3. 当系统挂起时。jstack 工具还可以附属到正在运行的 java 程序中，看到当时运行的 java 程序的java stack 和 native stack的信息。
 
 **需要注意的问题:**
+
 1. 不同的 JAVA 虚机的线程 DUMP 的创建方法和文件格式是不一样的，不同的 JVM 版本， dump 信息也有差别。
 2. 在实际运行中，往往一次 dump 的信息，还不足以确认问题。建议产生三次 dump 信息，如果每次 dump 都指向同一个问题，我们才确定问题的典型性(from internet)。 
 
 - 命令格式：
+
 ```shell
 jstack [ option ] pid
 jstack [ option ] executable core
@@ -56,7 +66,7 @@ jstack [ option ] [server-id@]remote-hostname-or-IP
 
 - 语法：  
 
-```
+```bash
 jstat [ generalOption | outputOptions vmid [interval[s|ms] [count]] ]
 # vmid 是 Java 虚拟机 ID， 在 Linux/Unix 系统上一般就是进程 ID
 # interval 是采样时间间隔
@@ -70,26 +80,26 @@ jstat [ generalOption | outputOptions vmid [interval[s|ms] [count]] ]
 -class | 统计类装载器的行为。
 -compiler | 统计 HotSpot Just-in-Time 编译器的行为。
 -gc | 统计堆各个分区的使用情况。
--gccapacity | 统计新生区，老年区，permanent 区的 heap 容量情况。 
+-gccapacity | 统计新生区，老年区，permanent 区的 heap 容量情况。
 -gccause | 统计最后一次 gc 和当前 gc 的原因。
--gcnew | 统计 gc 时，新生代的情况。 
+-gcnew | 统计 gc 时，新生代的情况。
 -gcnewcapacity | 统计新生代大小和空间。
 -gcold | 统计老年代和永久代的行为。
 -gcoldcapacity | 统计老年代大小。
--gcpermcapacity | 统计永久代大小。 
--gcutil| 统计 gc 时，heap 情况。 
+-gcpermcapacity | 统计永久代大小。
+-gcutil| 统计 gc 时，heap 情况。
 -printcompilation | HotSpot 编译方法统计。
 
 - addition( jvm 相关 )：
 
-```
+```txt
 堆内存 = 年轻代 + 年老代 + 永久代
 年轻代 = Eden 区 + 两个 Survivor 区（ From 和 To ）
 ```
 
 - 示例  
 
-```
+```bash
 # gc 示例
 jstat -gc 21711 <interval\> <times\>
 S0C    S1C    S0U    S1U      EC       EU        OC         OU       PC     PU    YGC     YGCT    FGC    FGCT     GCT   
@@ -111,11 +121,12 @@ GCT：GC总耗时
 2. 监视 VM 内存内的各种堆和非堆的大小及其内存使用量，以及加载类的数量。
 
 ## jmap(Java Memory Map)
+
 jmap 用来查看堆内存使用状况，一般结合 jhat 使用。
 
 - 语法格式：
 
-```
+```bash
 jmap [option] pid
 jmap [option] executable core
 jmap [option] [server-id@]remote-hostname-or-ip
@@ -132,7 +143,7 @@ jmap -permstat pid
 
 - 用jmap把进程内存使用情况 dump 到文件中：
 
-```
+```bash
 # 语法
 jmap -dump:format=b,file=dumpFileName pid
 
@@ -146,7 +157,7 @@ dump 出来的文件可以用MAT、VisualVM等工具查看：
 jhat -port <port\> <file_path\>
 ```
 
-**注意如果Dump文件太大，可能需要加上-J-Xmx512m这种参数指定最大堆内存。**
+**注意如果Dump文件太大，可能需要加上 `-J-Xmx512m` 这种参数指定最大堆内存。**
 
 ## jinfo(Java Configuration Info)
 
@@ -158,9 +169,9 @@ jhat -port <port\> <file_path\>
 
 展现CPU使用率，统计堆内存使用情况。
 
-- 语法格式： 
+- 语法格式：
 
-```
+```bash
 java -agentlib:hprof[=options] ToBeProfiledClass
 java -Xrunprof[:options] ToBeProfiledClass
 javac -J-agentlib:hprof[=options] ToBeProfiledClass
@@ -188,7 +199,7 @@ verbose=y/n | print messages about dumps | y
 
 - 示例  
 
-```
+```bash
 # 每隔 20 毫秒采样 CPU 消耗信息，堆栈深度为 3，生成的 profile 文件名称是 java.hprof.txt ，在当前目录。
 java -agentlib:hprof=cpu=samples,interval=20,depth=3 Hello
 
@@ -196,6 +207,7 @@ javac -J-agentlib:hprof=cpu=times Hello.java
 javac -J-agentlib:hprof=heap=sites Hello.java
 javac -J-agentlib:hprof=heap=dump Hello.java
 ```
+
 **虽然在 JVM 启动参数中加入 `-Xrunprof:heap=sites` 参数可以生成 CPU/Heap Profile 文件，但对 JVM 性能影响非常大，不建议在线上服务器环境使用。**
 
 ## 参考资料

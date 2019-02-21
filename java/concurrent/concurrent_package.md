@@ -13,20 +13,32 @@ Java 1.5 发行版中增加了 `java.util.concurrent` 包, 该包包含 `Executo
 - 非线程安全:
 - 线程对立:
 
-## 并发 collection
+## Core AQS
 
-## Executor 相关
+## Thread Pool
 
 Executor 是用于定义自定义线程类子系统的简单标准化接口, 类图如下:
 
 ![executor_uml](imgs/executor_uml.png)
 
+## 并发 collection
+
+- java.util.concurrent.ConcurrentHashMap
+
 ## Future 相关
+
+异步操作
 
 ## Queue 相关
 
+`java.util.concurrent.BlockingQueue` -> `java.util.concurrent.ArrayBlockingQueue` & `java.util.concurrent.LinkedBlockingQueue`
+
 ## locks 相关
+
+`java.util.concurrent.Lock` vs `synchronized`
 
 ## atomic 相关
 
-##
+CAS
+
+## wait & notify

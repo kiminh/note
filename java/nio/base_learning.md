@@ -17,9 +17,9 @@ BIO | NIO | AIO
   3. Selector
 
 - Selector
-  > 选择器允许单线程操作多个通道, 主要作用于 有大量链接, 且带宽不高时。
+  > `Selector` 允许单线程操作多个通道, 主要作用于 有大量链接, 且带宽不高时。
   > 需要将 channel 注册到 selector 上。
-  > Selector 的 select() 方法进入阻塞, 直到一个 channel 的状态符合为止。
+  > `Selector` 的 select() 方法进入阻塞, 直到一个 channel 的状态符合为止。
 
 ## Channel
 
@@ -37,11 +37,11 @@ BIO | NIO | AIO
   3. 从 buffer 中读取数据
   4. buffer.clear() | buffer.compact() clear() 清空所有数据, compact() 清空已经读取的数据。
   5. Buffer 属性:
-    1. mark: 标记, 备忘 position, 通过 mark() 设置 mark = position。
-    2. position: 位置, 下一个要被读写的标记。由相应的 get(), put() 更新。
-    3. capacity: 容量, Buffer 能够容纳的最大数量, 在 Buffer 实例生成后不可改变。
-    4. limit: 上界, Buffer 不能被读或写的数据, 即缓冲区中现存元素的计数。
-    > 关系: 0 <= mark <= position <= limit <= capacity
+       1. mark: 标记, 备忘 position, 通过 mark() 设置 mark = position。
+       2. position: 位置, 下一个要被读写的标记。由相应的 get(), put() 更新。
+       3. capacity: 容量, Buffer 能够容纳的最大数量, 在 Buffer 实例生成后不可改变。
+       4. limit: 上界, Buffer 不能被读或写的数据, 即缓冲区中现存元素的计数。
+       > 关系: 0 <= mark <= position <= limit <= capacity
   6. 支持级联调用
   7. flip() 方法将 Buffer 翻转成一个准备读写的 Buffer。
   8. remaining(), hasRemaining(), 释放
