@@ -11,6 +11,7 @@
 [Sonar Auth GitLab Plugin](https://github.com/gabrie-allaigre/sonar-auth-gitlab-plugin)
 
 sonar 和 gitlab 审查代码相关插件, 需要自行编译, 编译指令:
+
 1. version set: `mvn versions:set -DnewVersion=<new_version>`
 2. package: `mvn package`
 将编译好的 jar 文件放在 <sonarqube_path>/extensions/plugins/ 中。

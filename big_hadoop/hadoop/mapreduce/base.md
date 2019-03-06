@@ -20,17 +20,17 @@ Map 数据来源为 HDFS 的 block。 只读取 split。
 
 ### partitioner
 
-  - 过程
-    > 输入的 <key, value> 对经过的 map() 处理后输出新的 <key, value> 对, 首先会被存储到一个环形的缓冲区中(字节数组实现)。 并且会对每个<key, value> hash 一个 partition 值, 相同的 partition 值为同一个分区。
+- 过程
+  > 输入的 <key, value> 对经过的 map() 处理后输出新的 <key, value> 对, 首先会被存储到一个环形的缓冲区中(字节数组实现)。 并且会对每个<key, value> hash 一个 partition 值, 相同的 partition 值为同一个分区。
 
-  - 作用
-    > 由于 map() 处理后的数据量可能会非常大, 
+- 作用
+  > 由于 map() 处理后的数据量可能会非常大, 
 
 ### combiner
 
-  - 作用
-    1. 将一个 map 产生的多个结果合并成一个新的作为 reduce 的输入
-    2. 在 map 与 reduce 中间来减少 map 输出的中间结果
+- 作用
+  1. 将一个 map 产生的多个结果合并成一个新的作为 reduce 的输入
+  2. 在 map 与 reduce 中间来减少 map 输出的中间结果
 
 ## TODO note these docs in my own words
 

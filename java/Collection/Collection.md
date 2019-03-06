@@ -9,6 +9,7 @@ Collection是集合类的一个顶级接口，其直接继承接口有 List 与 
 上述所有的集合类，都实现了Iterator接口。
 
 - Iterator 接口包含以下以下方法:
+
 1. hasNext()    // 是否还有下一个元素。
 2. next()   // 返回下一个元素。
 3. remove() 删除当前元素。
@@ -68,6 +69,7 @@ List 接口的实现类有：
 Map 是一种把键对象和值对象映射的集合, 每一个元素都包含一对键对象和值对象。Map 没有继承于 Collection 接口 从 Map 集合中检索元素时，只要给出键对象，就会返回对应的值对象。 
 
 Map 接口的实现类有：
+
 1. HashTable
 2. HashMap
 3. WeakHashMap

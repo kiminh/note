@@ -4,19 +4,19 @@
 
 1. 安装
 
-```
+```bash
 pip install scrapy
 ```
 
 2. 创建 scrapy project
 
-```shell
+```bash
 scrapy startproject tutorial # tutorial 为 project 名称
 ```
 
 项目结构:
 
-```
+```txt
 tutorial
 │──scrapy.cfg                                 
 └──tutorial                                    
@@ -35,13 +35,12 @@ tutorial
 
 3. 启动 scrapy project
 
-```shell
+```bash
 scrapy crawl tutorial #tutorial 为 project 名称
 ```
 
 4. scrapy shell 模式
 
-```
+```bash
 python shell "<web_site>"
 ```
-

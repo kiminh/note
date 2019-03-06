@@ -1,7 +1,6 @@
-## spring boot
+# spring boot
 
-
-### spring boot annotation
+## spring boot annotation
 
 - @SpringBootApplication
 

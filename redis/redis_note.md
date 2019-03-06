@@ -81,8 +81,6 @@ dir ./
 # 此时 Redis 只接受 GET 请求, 不接受 SET 请求。
 # 该配置能够将 Redis 当作类似于 memcached 的缓存来使用
 # maxmemory <bytes>
-
-
 ```
 
 - 集群配置相关  
@@ -106,9 +104,9 @@ appendonly yes
 - 集群环境搭建  
 
     1. 启动多个 redis 实例
-    2. 执行 ```ruby redis-trib.rb create --replicas 1 <host:port>```
+    2. 执行 `ruby redis-trib.rb create --replicas 1 <host:port>`
 
 - 注意:  
 
     1. ruby Redis 接口需要手动下载，通过 ```gem install redis``` 下载。  
-    2. ```replicas 1``` 选项表示为集群中的每个主节点创建一个从节点。  
+    2. `replicas 1` 选项表示为集群中的每个主节点创建一个从节点。  

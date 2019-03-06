@@ -11,4 +11,4 @@
 
 效果图:
 
-![](imgs/jupyter_contrib_nbextensions.png)
+![jupyter](imgs/jupyter_contrib_nbextensions.png)

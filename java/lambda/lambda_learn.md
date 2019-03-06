@@ -23,10 +23,10 @@ BiPredicate<T, U> | T, U | boolean | test | 有两个参数的布尔值函数 | 
 
 函数式接口 | 参数类型 | 返回类型 | 示例 | 示例用例
 ---|---|---|---|---
-Consumer<T> | T | void | s -> System.out.println(s) | 使用对象过滤值工厂方法进行转换或从对象中选择
-Predicate<T> | T | boolean | s -> s.isEmpty() | 同上
-Supplier<T> | 无 | T | () -> new String() | 同上
-Function<T> | T | U | s -> new Integer(s) | 同上
+`Consumer<T>` | T | void | s -> System.out.println(s) | 使用对象过滤值工厂方法进行转换或从对象中选择
+`Predicate<T>` | T | boolean | s -> s.isEmpty() | 同上
+`Supplier<T>` | 无 | T | () -> new String() | 同上
+`Function<T>` | T | U | s -> new Integer(s) | 同上
 
 ## 内部类
 
@@ -40,6 +40,7 @@ Function<T> | T | U | s -> new Integer(s) | 同上
 
 - 方法或构造器参数, 该情况下, 目标类型就是恰当的参数类型。
 - 变量声明与赋值, 该情况下, 目标类型是被赋值的类型。
+
 ```Java
 Comparator<String> cc = (String s1, String s2) -> s1.compareToIgnoreCase(s2);
 IntBinaryOperator[] calculatorOps = new IntBinaryOperator[](
@@ -57,7 +58,6 @@ IntBinaryOperator[] calculatorOps = new IntBinaryOperator[](
 ### 匿名内部类
 
 ### 静态内部类
-
 
 ## notice
 

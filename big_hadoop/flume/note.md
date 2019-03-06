@@ -1,16 +1,16 @@
-1. 文件中出现 COMPLETE 表示完成获取数据, Flume 将不再继续传输该目录的文件。
-2.
+# share
 
-## share
+1. 文件中出现 COMPLETE 表示完成获取数据, Flume 将不再继续传输该目录的文件。
 
 最初目的 日志处理
 
 能力: 流数据处理、故障转移和恢复
 
 包含:
-  1. source
-  2. channel
-  3. sink
+
+1. source
+2. channel
+3. sink
 
 ## custom source template
 

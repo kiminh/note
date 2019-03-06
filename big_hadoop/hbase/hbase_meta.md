@@ -29,10 +29,10 @@ hbase hbck -fixAssignments
 
 ```shell
 # 缺少 regioninfo  
-hbase hbck -fixHdfsOrphans 
+hbase hbck -fixHdfsOrphans
 ```
 
-4. 重复 region 问题: 
+4. 重复 region 问题:
 
 ```bash
 # in hbase shell
@@ -75,8 +75,8 @@ hdfs dfs -rm -r /hbase/data/default/INDEX_11/73ab00eaa7bab7bc83f440549b9749a3
     11. -repair, 相当于 ```-fixAssignments -fixMeta -fixHdfsHoles -fixHdfsOrphans -fixHdfsOverlaps -fixVersionFile -sidelineBigOverlaps```
     12. -repairHoles, 相当于 ```-fixAssignments -fixMeta -fixHdfsHoles -fixHdfsOrphans```
 
-    - 新版本的 hbck   
-    1. 缺失 hbase.version 文件: 
+    - 新版本的 hbck:
+    1. 缺失 hbase.version 文件:
         - 加上选项 ```-fixVersionFile```
     2. 如果一个 region 即不在 META 表中, 又不在hdfs上面, 但是在 regionserver 的 online region 集合中: 
         - 加上选项 ```-fixAssignments```
@@ -114,7 +114,7 @@ hdfs dfs -rm -r /hbase/data/default/INDEX_11/73ab00eaa7bab7bc83f440549b9749a3
         (2) META;  
         (3) RegionServer 这三处获得 region 的 Table 和 Region 的相关信息, 根据这些信息判断并 repair。
 
-Kylin hbase 表恢复  顺序: 
+Kylin hbase 表恢复  顺序:
 1. ```kylin_metadata```
 2. ```kylin_metadata_acl```
 3. ```kylin_metadata_user```

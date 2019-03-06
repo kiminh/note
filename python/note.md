@@ -46,7 +46,7 @@ python 定时任务框架
 
 5. Windows 下执行 scrapy 需要 win32api, 通过下载 pypiwin32 模块解决依赖问题。
 
-```
+```bash
 pip install pypiwin32
 ```
 
@@ -56,9 +56,9 @@ pip install pypiwin32
 pip install -r requirements.txt
 ```
 
-    request 文件格式:
+request 文件格式:
 
-```
+```txt
 requests==1.2.0
 Flask==0.10.1
 numpy
@@ -68,7 +68,7 @@ numpy
 
 制作简介美观的文档, usage: django 文档使用该模块。
 
-```
+```bash
 pip install Sphinx
 ```
 
@@ -120,8 +120,8 @@ with open('<file_path>', 'open_mode') as f:
   <execution>
 ```
 
-  - python2 中, 默认通过二进制方式读取文件。
-  - python3 中, 默认通过 UTF-8 编码读取文件。open_mode 为 `'wb'` , 通过二进制形式读取文件。
+  1. python2 中, 默认通过二进制方式读取文件。
+  2. python3 中, 默认通过 UTF-8 编码读取文件。open_mode 为 `'wb'` , 通过二进制形式读取文件。
 
 11. lambda 表达式
 

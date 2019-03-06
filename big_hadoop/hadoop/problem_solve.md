@@ -5,8 +5,3 @@
 org.apache.hadoop.util.DiskChecker$DiskErrorException: Directory is not writable
 
 org.apache.hadoop.util.DiskChecker$DiskErrorException: Too many failed volumes course previous exception
-
-
-
-
-

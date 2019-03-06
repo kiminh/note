@@ -7,7 +7,7 @@
 通过包装的手法, 允许 "重新定义" 函数签名。  
 用一些默认参数包装一个可调用对象, 返回结果可以是可调用对象, 并像原始对象一样对待。  
 
-- 用法: 
+- 用法:
 
 ```python
 def partial(func, *args, **keywords):
@@ -25,6 +25,6 @@ def partial(func, *args, **keywords):
 
 声明:
 
-```
+```python
 urlunquote = functools.partial(urlunquote, encoding='latin1')
 ```

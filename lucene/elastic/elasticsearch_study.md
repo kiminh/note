@@ -264,4 +264,3 @@ public class ESMockTest extends ESIntegTestCase {
     ```
 
 6. elasticsearch 通过 `Mock node` 的方式执行单元测试, 不能使用 root 用户执行, 这与 elasticsearch 无法通过 root 用户启动原理相同。 
-

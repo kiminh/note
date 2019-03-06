@@ -1,4 +1,4 @@
-1. pip install -i https://pypi.doubanio.com/simple/ <module_name>
+1. `pip install -i https://pypi.doubanio.com/simple/ <module_name>`
 2. 在代码中使用 pip 安装相应的模块
 
  ```python

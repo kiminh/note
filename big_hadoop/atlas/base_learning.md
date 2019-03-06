@@ -3,6 +3,7 @@
 atlas 是一个可扩展和可扩展的核心基础治理服务集 —— 使企业能够有效地和高效地满足 Hadoop 中的合规性要求，并允许与整个企业数据生态系统的集成。提供 Hadoop 生态下的数据治理。
 
 主要提供以下功能：
+
   1. Metadata truth in Hadoop(truth?)
   2. Developed in the Open
   3. Data lineage
@@ -17,6 +18,7 @@ atlas 是一个可扩展和可扩展的核心基础治理服务集 —— 使企
 嵌入 HBase 和 Solr 编译 atlas: `mvn clean -DskipTests package -Pdist,embedded-hbase-solr`
 
 编译后结果路径:
+
 ```
 distro/target/apache-atlas-{version}-bin.tar.gz
 distro/target/apache-atlas-{version}-bin.tar.gz
@@ -40,21 +42,19 @@ distro/target/apache-atlas-{version}-sources.tar.gz
 ### Core
 
 次类别包含实现 Atlas 功能的核心组件，包括:
-  - Type System
-  - Graph Engine
-  - Titan DB
+
+- Type System
+- Graph Engine
+- Titan DB
 
 #### Type System
 
 Type System 包含内容有:
-  1. TypeCategory
-  2.
+
+1. TypeCategory
 
 Type System 是 Atlas 定义的元数据模型, 允许用户自定义自己的元数据类型, 开放对元数据类型的扩展。
 目前 Atlas 支持的类型有:
-  1.
-
-
 
 #### Graph DB(Titan)
 
@@ -68,7 +68,6 @@ Type System 是 Atlas 定义的元数据模型, 允许用户自定义自己的�
 - Messaging
 
 ### Metadata source
-
 
 ### Application
 

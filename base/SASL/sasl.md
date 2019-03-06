@@ -14,14 +14,11 @@ SASL，JSSE 和 Java GSS 通常一起使用。 例如, 一个常见的模式是�
 
 除了从头开始定义和构建协议之外, 通常决定要使用哪个API的最大因素是协议定义。 例如, LDAP 和 IMAP 被定义为使用 SASL, 因此与这些协议相关的软件应该使用 Java SASL API。 在构建 Kerberos 应用程序和服务时, 要使用的 API 是 Java GSS。 当构建使用 SSL/TLS 作为协议的应用程序和服务时, 使用的 API 是 JSSE。 有关何时使用 JSSE 与 Java GSS 的更多详细信息, 请参阅Java安全性文档。
 
+参考:
 
-
-
-参考: 
 - [The Java SASL API Programming and Deployment Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/sasl/sasl-refguide.html)
 
-
-名词解释: 
+名词解释:
 
 - JSSE: 即Java Secure Socket Extension, 是基于安全算法和握手机制之上的合成体。参考 [Java Secure Socket Extension wikipedia](https://en.wikipedia.org/wiki/Java_Secure_Socket_Extension)
 - LDAP

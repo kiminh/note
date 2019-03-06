@@ -14,7 +14,7 @@
 
 生成文件
 
-```
+```txt
 mysite
   __init__.py
   manage.py
@@ -23,7 +23,7 @@ mysite
 ```
 
 - manage.py
-    命令行工具, 允许以多种方式与 Django project 进行交互。 ```python manage.py help``` 查看帮助。
+    命令行工具, 允许以多种方式与 Django project 进行交互。 `python manage.py help` 查看帮助。
 
 - setting.py
     该 Django project 的设置或配置。
@@ -43,7 +43,7 @@ python manage.py runserver
 
 ### setting.py
 
-所有的 Django project 开始于 setting.py , 脚本在 manage.py 同一个目录下查找名为 setting.py 的文件。这个文件包含所有关于这个 Django 项目的配置信息, 均大写: ```INSTALLED_APPS```, ```MIDDLEWARE```. ```ROOT_URLCONF```, ```TEMPLATE_DIRS``` ,```WSGI_APPLICATION``` , ```DATABASE_NAME```, ```AUTH_PASSWORD_VALIDATORS```, ```LANGUAGE_CODE```, ```TIME_ZONE```, ```USE_I18N```, ```USE_L10N```, ```USE_TZ```, ```STATIC_URL``` 。最重要的是 ```ROOT_URLCONF```， 它将作为 ```URLconf``` 告诉 Django 在这个站点哪些 Python 模块将被用到。
+所有的 Django project 开始于 setting.py , 脚本在 manage.py 同一个目录下查找名为 setting.py 的文件。这个文件包含所有关于这个 Django 项目的配置信息, 均大写: `INSTALLED_APPS`, `MIDDLEWARE`. `ROOT_URLCONF`, `TEMPLATE_DIRS`, `WSGI_APPLICATION` , `DATABASE_NAME`, `AUTH_PASSWORD_VALIDATORS`, `LANGUAGE_CODE`, `TIME_ZONE`, `USE_I18N`, `USE_L10N`, `USE_TZ`, `STATIC_URL` 。最重要的是 `ROOT_URLCONF`， 它将作为 `URLconf` 告诉 Django 在这个站点哪些 Python 模块将被用到。
 
 - Django 时区
 
@@ -70,11 +70,9 @@ django.contrib.staticfiles | 管理静态文件的框架
 ROOT_URLCONF = 'mysite.urls'
 ```
 
-对应的文件是 ```<project_dir>/urls.py```
+对应的文件是 `<project_dir>/urls.py`
 
 一个视图功能必须返回一个 HttpResponse， 完成后, Django 将完成剩余的转换 Python 对象到一个合适的带有 HTTP 请求头和 body 的 Web Respond。
-
-
 
 ## Django 的错误界面
 
@@ -95,7 +93,7 @@ ROOT_URLCONF = 'mysite.urls'
 
 - 使用技巧
 
-通过临时插入 ```assert False``` 触发一个调试页, 通过调试页查看局部变量和程序语句。
+通过临时插入 `assert False` 触发一个调试页, 通过调试页查看局部变量和程序语句。
 
 - 禁用错误页
 
@@ -156,13 +154,14 @@ DATABASES = {
 
 配置 | 数据库 | 所需要的适配器
 ---|---|---
-```postgresql``` | PostgreSQL | psycopg 1.x
-```postgresql_pycopg2``` | PostgreSQL | psycopg 2.x
+`postgresql` | PostgreSQL | psycopg 1.x
+`postgresql_pycopg2` | PostgreSQL | psycopg 2.x
 mysql | MySQL | MySQLdb
 sqlite3 | SQLite | 如果使用 Python 2.5+ 则不需要适配器。 否则就使用 pysqlite
 oracle | Oracle | cx_Oracle
 
 配置示例:
+
 ```python
 ENGINE = 'postgresql_psycopg2'
 NAME = 'mydb'
@@ -176,15 +175,15 @@ DATABASE_HOST = '/var/run/mysql'
 
 错误信息 | 解决方法
 ---|---
-```You haven’t set the DATABASE_ENGINE setting yet.``` | 不要以空字符串配置`` DATABASE_ENGINE`` 的值。
-```Environment variable DJANGO_SETTINGS_MODULE is undefined.``` | 使用```python manager.py shell``` 命令启动交互解释器, 不要以 ```python``` 命令直接启动交互解释器。
-```Error loading _____ module: No module named _____.``` | 未安装合适的数据库适配器。
-```_____ isn’t an available database backend.``` | 把 ```DATABASE_ENGINE``` 配置成前面提到的合法的数据库引擎。
-```database _____ does not exist``` | 设置 ```DATABASE_NAME``` 指向存在的数据库, 或者先在数据库客户端中执行合适的 ```CREATE DATABASE``` 语句创建数据库。
-```role _____ does not exist``` | 设置 ```DATABASE_USER``` 指向存在的用户, 或者先在数据库客户端中执创建用户。
-```could not connect to server``` | 查看 ```DATABASE_HOST和DATABASE_PORT``` 是否已正确配置, 并确认数据库服务器是否已正常运行。
+`You haven’t set the DATABASE_ENGINE setting yet.` | 不要以空字符串配置 `DATABASE_ENGINE` 的值。
+`Environment variable DJANGO_SETTINGS_MODULE is undefined.` | 使用 `python manager.py shell` 命令启动交互解释器, 不要以 `python` 命令直接启动交互解释器。
+`Error loading _____ module: No module named _____.` | 未安装合适的数据库适配器。
+`_____ isn’t an available database backend.` | 把 ```DATABASE_ENGINE``` 配置成前面提到的合法的数据库引擎。
+`database _____ does not exist` | 设置 ```DATABASE_NAME``` 指向存在的数据库, 或者先在数据库客户端中执行合适的 ```CREATE DATABASE``` 语句创建数据库。
+`role _____ does not exist` | 设置 ```DATABASE_USER``` 指向存在的用户, 或者先在数据库客户端中执创建用户。
+`could not connect to server` | 查看 ```DATABASE_HOST和DATABASE_PORT``` 是否已正确配置, 并确认数据库服务器是否已正常运行。
 
-在 setting.py 中配置 models :
+在 setting.py 中配置 models:
 
 ```python
 INSTALLED_APPS ={
@@ -243,8 +242,6 @@ python manage.py createsuperuser
 ```
 
 3. form 表单管理
-
-
 
 ## 站点管理
 

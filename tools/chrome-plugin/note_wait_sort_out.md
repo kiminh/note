@@ -6,7 +6,3 @@
 2. GitHub Hovercard 需要access tokens.
 
 切换 GitHub 主题为 dark, 使用 Github Dark theme One Dark with ligatures 插件。
-
-
-
-

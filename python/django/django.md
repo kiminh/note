@@ -4,7 +4,7 @@
 
 - quick start project
 
-```
+```bash
 django-admin startproject mysite
 ```
 
@@ -29,7 +29,6 @@ python manage.py migrate
 # 进入 project 命令行模式
 python manage.py shell
 ```
-
 
 - create a new app
 

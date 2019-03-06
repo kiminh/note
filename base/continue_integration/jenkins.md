@@ -8,7 +8,6 @@ Jenkins是一个开源软件项目, 是基于Java开发的一种持续集成工�
 
 https://www.ibm.com/developerworks/cn/java/j-lo-jenkins-plugin/
 
-
 编写 Jenkins 插件需要引入 Jenkins 的 maven 仓库, 在 pom.xml 中配置。
 
 - 功能

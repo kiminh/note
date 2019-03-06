@@ -33,7 +33,7 @@ options | 描述
 -backup | 开始备份节点
 -checkpoint | 开始检查节点
 -format [-clusterid cid] [-force] [-nonInteractive] | 初始化namenode
--upgrade [clusterid cid] [-renameReserved <k v pairs>] | 升级 namenode 并通过升级选项启动
+-upgrade [clusterid cid] [-renameReserved \<k v pairs\>] | 升级 namenode 并通过升级选项启动
 -upgradeOnly | 仅升级, 不启动
 -rollback | 将 namenode 回滚到以前的版本, 应该在停止就去那并分发就的Hadoop版本后使用
 -rollingUpgrade [downgrade&#124;roolback&#124;started] |

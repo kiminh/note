@@ -1,6 +1,6 @@
 # troubleshooting
 
-### yarn 界面无法显示执行的 MapReduce 日志
+## yarn 界面无法显示执行的 MapReduce 日志
 
 - 问题描述
   > 在启用 Ranger 管理 HDFS 权限后, yarn 读取 MapReduce 执行日志失败, 报错为 dr.who 五访问权限

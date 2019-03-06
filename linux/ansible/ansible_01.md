@@ -16,7 +16,7 @@ Ansible是一个开源自动化平台。能够在配置管理、应用程序部�
     4. [Ansible 中文权威指南](http://www.ansible.com.cn/)
     5. [ansible 的 github地址](https://github.com/ansible/ansible)
 
- - 依赖
+- 依赖
 
     - 管理主机的要求
         1. ansible默认通过SSH协议管理机器。
@@ -57,20 +57,20 @@ ansible 与 puppet 等相比，其号称是 agentless 的，而且这个也确�
 
 1. 获取源码
 
-```
+```bash
 git clone https://github.com/ansible/ansible.git
 cd ./ansible
 ```
 
 2. python依赖
 
-```
+```bash
 sudo pip install paramiko PyYAML Jinja2 httplib2 six
 ```
 
 3. 使用bash
 
-```
+```bash
 source ./hacking/env-setup
 ```
 
@@ -97,7 +97,7 @@ sudo yum install ansible
 
 可以通过 ```ansible -h``` 获得详细使用。
 
-```
+```bash
 # 未配置authorized_key
 ansible all -m ping --ask-pass
 # 只需要填写未配置authorized_key的server
@@ -108,7 +108,7 @@ ansible all -m ping
 
 -v的选项是显示出详细信息。ansible支持三种显示信息的方式:
 
-```
+```bash
 -v
 -vv
 -vvv
@@ -128,7 +128,7 @@ Ansible提供两种方式去完成任务,一是 ad-hoc 命令,一是写 Ansible 
 
 一些命令去比较快的完成一些命令,而不需要将这些执行的命令特别保存下来, 这样的命令就叫做 ad-hoc 命令，主要用来解决一些简单的任务。
 
-```
+```bash
 # 重启 Atlanta 组中所有的 web 服务器，每次重启10个。
 ansible atlanta -a "/sbin/reboot" -f 10"
 
@@ -146,7 +146,7 @@ ansible atlanta -a "/usr/bin/foo" -u <user\> -U <otheruser\> [--ask-sudo-pass]
 
 - 使用 shell 模块的示例：
 
-```
+```bash
 ansible raleigh -m shell -a 'echo $TERM'
 ```
 
@@ -154,12 +154,11 @@ ansible raleigh -m shell -a 'echo $TERM'
 
 1. Ansible 能够以并行的方式同时 SCP 大量的文件到多台机器：
 
-```shell
+```bash
 ansible webservers -m copy -a 'src=/root/anaconda-ks.cfg dest=/root'
 ansible webservers -m copy -a 'src=/root/anaconda-ks.cfg dest=/root' --ask-pass
 
 # 结果
-
 ansible03 | SUCCESS =\> {
     "changed": true,
     "checksum": "71ebc4d84ae57d7b350d98b3fa857dc99523706c",
@@ -179,14 +178,14 @@ ansible03 | SUCCESS =\> {
 
 2. 使用 file 模块可以做到修改文件的属主和权限：
 
-```shell
+```bash
 ansible webservers -m file -a "dest=/srv/foo/a.txt mode=600"
 ansible webservers -m file -a "dest=/srv/foo/b.txt mode=600 owner=mdehaan group=mdehaan"
 ```
 
 3. 使用 file 模块也可以创建目录,与执行 mkdir -p 效果类似:
 
-```shell
+```bash
 ansible webservers -m file -a "dest=/path/to/c mode=755 owner=mdehaan group=mdehaan state=directory"
 
 
@@ -194,7 +193,7 @@ ansible webservers -m file -a "dest=/path/to/c mode=755 owner=mdehaan group=mdeh
 
 4. 删除目录(递归的删除)和删除文件：
 
-```shell
+```bash
 ansible webservers -m file -a "dest=/path/to/c state=absent"
 ```
 
@@ -202,7 +201,7 @@ ansible webservers -m file -a "dest=/path/to/c state=absent"
 
 nsible 提供对 yum 和 apt 的支持。
 
-```shell
+```bash
 # 确认一个软件包已经安装,但不去升级它
 ansible webservers -m yum -a "name=acme state=present"
 
@@ -212,13 +211,14 @@ ansible webservers -m yum -a "name=acme-1.5 state=present"
 # 确认一个软件包还没有安装
 ansible webservers -m yum -a "name=acme state=absent"
 ```
+
 可以使用 command 模块去安装软件。
 
 - Users and Groups
 
 使用 ‘user’ 模块可以方便的创建账户,删除账户,或是管理现有的账户
 
-```shell
+```bash
 ansible all -m user -a "name=foo password=<crypted password here\>"
 ansible all -m user -a "name=foo state=absent"
 ```
@@ -227,7 +227,7 @@ ansible all -m user -a "name=foo state=absent"
 
 直接使用 git 部署 webapp：
 
-```shell
+```bash
 ansible webservers -m git -a "repo=git://foo.example.org/repo.git dest=/srv/myapp version=HEAD"
 ```
 
@@ -237,11 +237,8 @@ ansible webservers -m git -a "repo=git://foo.example.org/repo.git dest=/srv/myap
 
 - Gathering Facts
 
-###  Ansible playbook
+### Ansible playbook
 
 ## 名词解释
 
-**TODO**
-
-- [sftp]()
 - [EPEL](http://fedoraproject.org/wiki/EPEL)

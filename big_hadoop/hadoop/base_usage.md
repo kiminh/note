@@ -3,11 +3,13 @@
 ## 通过 Hadoop 执行任务
 
 - 运行 jar 文件
+
 ```bash
 hadoop jar xxx.jar <options>
 ```
 
 - 引入三方 jar:
+
 ```bash
 # 1 直接使用 hadoop 的 libjars 参数加载第三方 jar
 hadoop fs -libjars /path/to/your/lib_jar -jar /path/to/your/run_jar
