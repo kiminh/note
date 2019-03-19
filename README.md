@@ -4,68 +4,64 @@
 
 目录结构:
 
-```
+```txt
 .
-├── JavaScript
+.
+├── ML
 ├── ambari_study
 │   ├── base
-│   ├── imgs
 │   ├── log
 │   └── note
-│       ├── AMS
-│       ├── Kerberos
-│       ├── about_ambari
-│       ├── alert
-│       ├── configuration
-│       ├── hadoop_security_learn
-│       ├── hue
-│       ├── kylin_integration
-│       ├── logsearch
-│       ├── multi-tenant
-│       ├── ranger_usage
-│       └── 编译问题整理
 ├── base
 │   ├── SASL
 │   ├── TCP
-│   │   └── imgs
+│   ├── arithmetic
 │   ├── coding_habit
 │   ├── continue_integration
-│   │   └── imgs
 │   ├── database
-│   │   ├── mysql
-│   │   └── postgres
+│   ├── design_pattern
+│   ├── http
 │   └── regular_expression
 ├── big_hadoop
+│   ├── atlas
+│   ├── calcite
+│   ├── flink
 │   ├── flume
 │   ├── hadoop
-│   │   ├── hdfs
-│   │   ├── imgs
-│   │   └── mapreduce
 │   ├── hbase
 │   ├── hive
 │   ├── spark
+│   ├── sqoop
+│   ├── stream
 │   └── zookeeper
-├── deeplearning
-├── html
+├── data
+│   └── tensorflow
+├── docker
 ├── java
 │   ├── Collection
-│   ├── deploy_zheng
-│   ├── imgs
-│   ├── jee
-│   │   └── spring
+│   ├── annotation
+│   ├── aspectJ
+│   ├── cglib
+│   ├── classloader
+│   ├── concurrent
+│   ├── functional_interface
+│   ├── jce
+│   ├── jep
+│   ├── jsr
 │   ├── jvm_monitoring
-│   ├── mybatis
-│   ├── reflect
+│   ├── lambda
+│   ├── netty
+│   ├── nio
 │   ├── servlet
-│   ├── slf4j
-│   └── spring
-│       └── imgs
+│   ├── spring
+│   └── springboot
 ├── linux
 │   ├── ansible
-│   │   └── imgs
 │   ├── centos7
 │   └── repository
-├── nodejs
+├── lucene
+│   ├── elastic
+│   └── solr
 ├── python
 │   ├── base_usage
 │   ├── bottle
@@ -74,11 +70,13 @@
 │   ├── functools
 │   └── scrapy
 ├── redis
-├── solr
-│   └── imgs
+├── scala
+│   └── akka
+├── tensorflow
 └── tools
     ├── IntelliJ_usage
-    ├── chrome\ plugin
+    ├── brew
+    ├── chrome-plugin
     ├── git
     └── maven
 ```

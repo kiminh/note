@@ -61,6 +61,7 @@ be used to filter the output. Examples:
 
 
 描述：“baseZNode=/hbase-unsecure Unable to get data of znode /hbase-unsecure/meta-region-server because node does not exist (not an error)”
+
 ```log
 request:: '/hbase-unsecure,F  response:: s{4294967360,4294967360,1493888683458,1493888683458,0,153,0,0,0,17,111669150271}
    819 2017-08-31 11:03:04,981 DEBUG [main-SendThread(ab-03:2181)] zookeeper.ClientCnxn: Reading reply sessionid:0x35e362be55b000e, packet:: clientPath:null serverPath:null finished:false header:: 261,4  replyHeader:: 261,111669150273,-10
@@ -82,101 +83,99 @@ http://blog.csdn.net/liuxiao723846/article/details/53146304
 ### 问题2
 
 ```log
-2017-09-11 20:38:10,411 INFO  [B.priority.fifo.QRpcServer.handler=1,queue=1,port=16000] master.ServerManager: Registering server=ab-01,16020,1505133487628                                                                                    
+2017-09-11 20:38:10,411 INFO  [B.priority.fifo.QRpcServer.handler=1,queue=1,port=16000] master.ServerManager: Registering server=ab-01,16020,1505133487628
 2017-09-11 20:38:10,422 INFO  [ab-05:16000.activeMasterManager] master.ServerManager: Waiting for region servers count to settle; currently checked in 1, slept for 5517 ms, expecting minimum of 1, maximum of 2147483647, timeout of 4500 ms
-, interval of 1500 ms.                                                                                                                                                                                                                        
-2017-09-11 20:38:10,539 INFO  [B.priority.fifo.QRpcServer.handler=3,queue=1,port=16000] master.ServerManager: Registering server=ab-04,16020,1505133487478                                                                                    
+, interval of 1500 ms.
+2017-09-11 20:38:10,539 INFO  [B.priority.fifo.QRpcServer.handler=3,queue=1,port=16000] master.ServerManager: Registering server=ab-04,16020,1505133487478
 2017-09-11 20:38:10,572 INFO  [ab-05:16000.activeMasterManager] master.ServerManager: Waiting for region servers count to settle; currently checked in 2, slept for 5667 ms, expecting minimum of 1, maximum of 2147483647, timeout of 4500 ms
-, interval of 1500 ms.                                                                                                                                                                                                                        
-2017-09-11 20:38:10,849 ERROR [B.priority.fifo.QRpcServer.handler=0,queue=0,port=16000] master.MasterRpcServices: Region server ab-01,16020,1505133487628 reported a fatal error:                                                             
-ABORTING region server ab-01,16020,1505133487628: Unhandled: cannot get log writer                                                                                                                                                            
-Cause:                                                                                                                                                                                                                                        
-java.io.IOException: cannot get log writer                                                                                                                                                                                                    
-        at org.apache.hadoop.hbase.wal.DefaultWALProvider.createWriter(DefaultWALProvider.java:378)                                                                                                                                           
-        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.createWriterInstance(FSHLog.java:765)                                                                                                                                              
-        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.rollWriter(FSHLog.java:730)                                                                                                                                                        
-        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.rollWriter(FSHLog.java:640)                                                                                                                                                        
-        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.<init>(FSHLog.java:573)                                                                                                                                                            
-        at org.apache.hadoop.hbase.wal.DefaultWALProvider.init(DefaultWALProvider.java:97)                                                                                                                                                    
-        at org.apache.hadoop.hbase.wal.WALFactory.getProvider(WALFactory.java:148)                                                                                                                                                            
-        at org.apache.hadoop.hbase.wal.WALFactory.<init>(WALFactory.java:180)                                                                                                                                                                 
-        at org.apache.hadoop.hbase.regionserver.HRegionServer.setupWALAndReplication(HRegionServer.java:1648)                                                                                                                                 
-        at org.apache.hadoop.hbase.regionserver.HRegionServer.handleReportForDutyResponse(HRegionServer.java:1381)                                                                                                                            
-        at org.apache.hadoop.hbase.regionserver.HRegionServer.run(HRegionServer.java:917)                                                                                                                                                     
-        at java.lang.Thread.run(Thread.java:745)                                                                                                                                                                                              
-Caused by: java.io.IOException: Key provider org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider failed test: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)            
-        at org.apache.hadoop.hbase.util.EncryptionTest.testKeyProvider(EncryptionTest.java:68)                                                                                                                                                
-        at org.apache.hadoop.hbase.regionserver.wal.SecureProtobufLogWriter.buildWALHeader(SecureProtobufLogWriter.java:53)                                                                                                                   
-        at org.apache.hadoop.hbase.regionserver.wal.ProtobufLogWriter.init(ProtobufLogWriter.java:94)                                                                                                                                         
-        at org.apache.hadoop.hbase.wal.DefaultWALProvider.createWriter(DefaultWALProvider.java:367)                                                                                                                                           
-        ... 11 more                                                                                                                                                                                                                           
-Caused by: java.lang.RuntimeException: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)                                                                                     
-        at org.apache.hadoop.hbase.io.crypto.Encryption.getKeyProvider(Encryption.java:560)                                                                                                                                                   
-        at org.apache.hadoop.hbase.util.EncryptionTest.testKeyProvider(EncryptionTest.java:64)                                                                                                                                                
-        ... 14 more                                                                                                                                                                                                                           
-Caused by: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)                                                                                                                 
-        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.init(KeyStoreKeyProvider.java:153)                                                                                                                                           
-        at org.apache.hadoop.hbase.io.crypto.Encryption.getKeyProvider(Encryption.java:553)                                                                                                                                                   
-        ... 15 more                                                                                                                                                                                                                           
-Caused by: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)                                                                                                                                             
-        at java.io.FileInputStream.open(Native Method)                                                                                                                                                                                        
-        at java.io.FileInputStream.<init>(FileInputStream.java:146)                                                                                                                                                                           
-        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.load(KeyStoreKeyProvider.java:124)                                                                                                                                           
-        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.init(KeyStoreKeyProvider.java:147)                                                                                                                                           
-        ... 16 more                                                                                                                                                                                                                           
+, interval of 1500 ms.
+2017-09-11 20:38:10,849 ERROR [B.priority.fifo.QRpcServer.handler=0,queue=0,port=16000] master.MasterRpcServices: Region server ab-01,16020,1505133487628 reported a fatal error:
+ABORTING region server ab-01,16020,1505133487628: Unhandled: cannot get log writer
+Cause:
+java.io.IOException: cannot get log writer
+        at org.apache.hadoop.hbase.wal.DefaultWALProvider.createWriter(DefaultWALProvider.java:378)
+        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.createWriterInstance(FSHLog.java:765)
+        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.rollWriter(FSHLog.java:730)
+        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.rollWriter(FSHLog.java:640)
+        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.<init>(FSHLog.java:573)
+        at org.apache.hadoop.hbase.wal.DefaultWALProvider.init(DefaultWALProvider.java:97)
+        at org.apache.hadoop.hbase.wal.WALFactory.getProvider(WALFactory.java:148)
+        at org.apache.hadoop.hbase.wal.WALFactory.<init>(WALFactory.java:180)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.setupWALAndReplication(HRegionServer.java:1648)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.handleReportForDutyResponse(HRegionServer.java:1381)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.run(HRegionServer.java:917)
+        at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.IOException: Key provider org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider failed test: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)
+        at org.apache.hadoop.hbase.util.EncryptionTest.testKeyProvider(EncryptionTest.java:68)
+        at org.apache.hadoop.hbase.regionserver.wal.SecureProtobufLogWriter.buildWALHeader(SecureProtobufLogWriter.java:53)
+        at org.apache.hadoop.hbase.regionserver.wal.ProtobufLogWriter.init(ProtobufLogWriter.java:94)
+        at org.apache.hadoop.hbase.wal.DefaultWALProvider.createWriter(DefaultWALProvider.java:367)
+        ... 11 more
+Caused by: java.lang.RuntimeException: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)
+        at org.apache.hadoop.hbase.io.crypto.Encryption.getKeyProvider(Encryption.java:560)
+        at org.apache.hadoop.hbase.util.EncryptionTest.testKeyProvider(EncryptionTest.java:64)
+        ... 14 more
+Caused by: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)
+        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.init(KeyStoreKeyProvider.java:153)
+        at org.apache.hadoop.hbase.io.crypto.Encryption.getKeyProvider(Encryption.java:553)
+        ... 15 more
+Caused by: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)
+        at java.io.FileInputStream.open(Native Method)
+        at java.io.FileInputStream.<init>(FileInputStream.java:146)
+        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.load(KeyStoreKeyProvider.java:124)
+        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.init(KeyStoreKeyProvider.java:147)
+        ... 16 more
 
-2017-09-11 20:38:11,025 ERROR [B.priority.fifo.QRpcServer.handler=2,queue=0,port=16000] master.MasterRpcServices: Region server ab-04,16020,1505133487478 reported a fatal error:                                                             
-ABORTING region server ab-04,16020,1505133487478: Unhandled: cannot get log writer                                                                                                                                                            
-Cause:                                                                                                                                                                                                                                        
-java.io.IOException: cannot get log writer                                                                                                                                                                                                    
-        at org.apache.hadoop.hbase.wal.DefaultWALProvider.createWriter(DefaultWALProvider.java:378)                                                                                                                                           
-        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.createWriterInstance(FSHLog.java:765)                                                                                                                                              
-        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.rollWriter(FSHLog.java:730)                                                                                                                                                        
-        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.rollWriter(FSHLog.java:640)                                                                                                                                                        
-        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.<init>(FSHLog.java:573)                                                                                                                                                            
-        at org.apache.hadoop.hbase.wal.DefaultWALProvider.init(DefaultWALProvider.java:97)                                                                                                                                                    
-        at org.apache.hadoop.hbase.wal.WALFactory.getProvider(WALFactory.java:148)                                                                                                                                                            
-        at org.apache.hadoop.hbase.wal.WALFactory.<init>(WALFactory.java:180)                                                                                                                                                                 
-        at org.apache.hadoop.hbase.regionserver.HRegionServer.setupWALAndReplication(HRegionServer.java:1648)                                                                                                                                 
-        at org.apache.hadoop.hbase.regionserver.HRegionServer.handleReportForDutyResponse(HRegionServer.java:1381)                                                                                                                            
-        at org.apache.hadoop.hbase.regionserver.HRegionServer.run(HRegionServer.java:917)                                                                                                                                                     
-        at java.lang.Thread.run(Thread.java:745)                                                                                                                                                                                              
-Caused by: java.io.IOException: Key provider org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider failed test: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)            
-        at org.apache.hadoop.hbase.util.EncryptionTest.testKeyProvider(EncryptionTest.java:68)                                                                                                                                                
-        at org.apache.hadoop.hbase.regionserver.wal.SecureProtobufLogWriter.buildWALHeader(SecureProtobufLogWriter.java:53)                                                                                                                   
-        at org.apache.hadoop.hbase.regionserver.wal.ProtobufLogWriter.init(ProtobufLogWriter.java:94)                                                                                                                                         
-        at org.apache.hadoop.hbase.wal.DefaultWALProvider.createWriter(DefaultWALProvider.java:367)                                                                                                                                           
-        ... 11 more                                                                                                                                                                                                                           
-Caused by: java.lang.RuntimeException: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)                                                                                     
-        at org.apache.hadoop.hbase.io.crypto.Encryption.getKeyProvider(Encryption.java:560)                                                                                                                                                   
-        at org.apache.hadoop.hbase.util.EncryptionTest.testKeyProvider(EncryptionTest.java:64)                                                                                                                                                
-        ... 14 more                                                                                                                                                                                                                           
-Caused by: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)                                                                                                                 
-        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.init(KeyStoreKeyProvider.java:153)                                                                                                                                           
-        at org.apache.hadoop.hbase.io.crypto.Encryption.getKeyProvider(Encryption.java:553)                                                                                                                                                   
-        ... 15 more                                                                                                                                                                                                                           
-Caused by: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)                                                                                                                                             
-        at java.io.FileInputStream.open(Native Method)                                                                                                                                                                                        
-        at java.io.FileInputStream.<init>(FileInputStream.java:146)                                                                                                                                                                           
-        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.load(KeyStoreKeyProvider.java:124)                                                                                                                                           
-        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.init(KeyStoreKeyProvider.java:147)                                                                                                                                           
-        ... 16 more                                                                                                                                                                                                                           
+2017-09-11 20:38:11,025 ERROR [B.priority.fifo.QRpcServer.handler=2,queue=0,port=16000] master.MasterRpcServices: Region server ab-04,16020,1505133487478 reported a fatal error:
+ABORTING region server ab-04,16020,1505133487478: Unhandled: cannot get log writer
+Cause:
+java.io.IOException: cannot get log writer
+        at org.apache.hadoop.hbase.wal.DefaultWALProvider.createWriter(DefaultWALProvider.java:378)
+        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.createWriterInstance(FSHLog.java:765)
+        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.rollWriter(FSHLog.java:730)
+        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.rollWriter(FSHLog.java:640)
+        at org.apache.hadoop.hbase.regionserver.wal.FSHLog.<init>(FSHLog.java:573)
+        at org.apache.hadoop.hbase.wal.DefaultWALProvider.init(DefaultWALProvider.java:97)
+        at org.apache.hadoop.hbase.wal.WALFactory.getProvider(WALFactory.java:148)
+        at org.apache.hadoop.hbase.wal.WALFactory.<init>(WALFactory.java:180)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.setupWALAndReplication(HRegionServer.java:1648)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.handleReportForDutyResponse(HRegionServer.java:1381)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.run(HRegionServer.java:917)
+        at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.IOException: Key provider org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider failed test: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)
+        at org.apache.hadoop.hbase.util.EncryptionTest.testKeyProvider(EncryptionTest.java:68)
+        at org.apache.hadoop.hbase.regionserver.wal.SecureProtobufLogWriter.buildWALHeader(SecureProtobufLogWriter.java:53)
+        at org.apache.hadoop.hbase.regionserver.wal.ProtobufLogWriter.init(ProtobufLogWriter.java:94)
+        at org.apache.hadoop.hbase.wal.DefaultWALProvider.createWriter(DefaultWALProvider.java:367)
+        ... 11 more
+Caused by: java.lang.RuntimeException: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)
+        at org.apache.hadoop.hbase.io.crypto.Encryption.getKeyProvider(Encryption.java:560)
+        at org.apache.hadoop.hbase.util.EncryptionTest.testKeyProvider(EncryptionTest.java:64)
+        ... 14 more
+Caused by: java.lang.RuntimeException: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)
+        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.init(KeyStoreKeyProvider.java:153)
+        at org.apache.hadoop.hbase.io.crypto.Encryption.getKeyProvider(Encryption.java:553)
+        ... 15 more
+Caused by: java.io.FileNotFoundException: /local/hbase/conf/hbase.jks (No such file or directory)
+        at java.io.FileInputStream.open(Native Method)
+        at java.io.FileInputStream.<init>(FileInputStream.java:146)
+        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.load(KeyStoreKeyProvider.java:124)
+        at org.apache.hadoop.hbase.io.crypto.KeyStoreKeyProvider.init(KeyStoreKeyProvider.java:147)
+        ... 16 more
 
-2017-09-11 20:38:11,028 INFO  [main-EventThread] zookeeper.RegionServerTracker: RegionServer ephemeral node deleted, processing expiration [ab-01,16020,1505133487628]                                                                        
-2017-09-11 20:38:11,028 INFO  [main-EventThread] master.ServerManager: Master doesn't enable ServerShutdownHandler during initialization, delay expiring server ab-01,16020,1505133487628                                                     
-2017-09-11 20:38:11,119 INFO  [main-EventThread] zookeeper.RegionServerTracker: RegionServer ephemeral node deleted, processing expiration [ab-04,16020,1505133487478]                                                                        
-2017-09-11 20:38:11,119 INFO  [main-EventThread] master.ServerManager: Master doesn't enable ServerShutdownHandler during initialization, delay expiring server ab-04,16020,1505133487478                                                     
+2017-09-11 20:38:11,028 INFO  [main-EventThread] zookeeper.RegionServerTracker: RegionServer ephemeral node deleted, processing expiration [ab-01,16020,1505133487628]
+2017-09-11 20:38:11,028 INFO  [main-EventThread] master.ServerManager: Master doesn't enable ServerShutdownHandler during initialization, delay expiring server ab-01,16020,1505133487628
+2017-09-11 20:38:11,119 INFO  [main-EventThread] zookeeper.RegionServerTracker: RegionServer ephemeral node deleted, processing expiration [ab-04,16020,1505133487478]
+2017-09-11 20:38:11,119 INFO  [main-EventThread] master.ServerManager: Master doesn't enable ServerShutdownHandler during initialization, delay expiring server ab-04,16020,1505133487478
 2017-09-11 20:38:12,077 INFO  [ab-05:16000.activeMasterManager] master.ServerManager: Finished waiting for region servers count to settle; checked in 2, slept for 7172 ms, expecting minimum of 1, maximum of 2147483647, master is running  
-2017-09-11 20:38:12,100 INFO  [ab-05:16000.activeMasterManager] master.MasterFileSystem: Log folder hdfs://ab-01:8020/apps/hbase/data/WALs/ab-01,16020,1504839824373 doesn't belong to a known region server, splitting                       
-2017-09-11 20:38:12,102 INFO  [ab-05:16000.activeMasterManager] master.MasterFileSystem: Log folder hdfs://ab-01:8020/apps/hbase/data/WALs/ab-01,16020,1504839940862 doesn't belong to a known region server, splitting                       
+2017-09-11 20:38:12,100 INFO  [ab-05:16000.activeMasterManager] master.MasterFileSystem: Log folder hdfs://ab-01:8020/apps/hbase/data/WALs/ab-01,16020,1504839824373 doesn't belong to a known region server, splitting
+2017-09-11 20:38:12,102 INFO  [ab-05:16000.activeMasterManager] master.MasterFileSystem: Log folder hdfs://ab-01:8020/apps/hbase/data/WALs/ab-01,16020,1504839940862 doesn't belong to a known region server, splitting
 ```
 
 https://community.hortonworks.com/questions/18637/i-am-not-getting-hive-shell-prompt-it-is-usual-pro.html
 
-
-
-
 手工模拟local/hbase/conf/hbase.jks文件； 处理filenotfound异常后出现：
+
 ```log
 2017-09-11 21:19:46,846 INFO  [ab-05:16000.activeMasterManager] zookeeper.MetaTableLocator: Failed verification of hbase:meta,,1 at address=ab-01,16020,1505135874716, exception=org.apache.hadoop.hbase.NotServingRegionException: Region hbase:meta,,1 is not online on ab-01,16020,1505135982539
         at org.apache.hadoop.hbase.regionserver.HRegionServer.getRegionByEncodedName(HRegionServer.java:2928)
@@ -191,8 +190,8 @@ https://community.hortonworks.com/questions/18637/i-am-not-getting-hive-shell-pr
 
 ```
 
-
 hbck hbase, 修复 hbase meta 表报错
+
 ```log
 2017-09-12 11:09:00,306 INFO  [main] zookeeper.ZooKeeper: Initiating client connection, connectString=ab-01:2181,ab-02:2181,ab-03:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@74aaadcc
 2017-09-12 11:09:00,322 INFO  [main-SendThread(ab-03:2181)] zookeeper.ClientCnxn: Opening socket connection to server ab-03/192.168.1.62:2181. Will not attempt to authenticate using SASL (unknown error)
@@ -202,9 +201,6 @@ hbck hbase, 修复 hbase meta 表报错
 2017-09-12 11:09:01,945 INFO  [Thread-9] client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x35e73c2bad80012
 ```
 
-
-
-
 ```log
 2017-09-12 12:51:07,874 - WARN  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@357] - caught end of stream exception
 EndOfStreamException: Unable to read additional data from client sessionid 0x15e746caf22000f, likely client has closed socket
@@ -212,7 +208,6 @@ EndOfStreamException: Unable to read additional data from client sessionid 0x15e
         at org.apache.zookeeper.server.NIOServerCnxnFactory.run(NIOServerCnxnFactory.java:208)
         at java.lang.Thread.run(Thread.java:745)
 ```
-
 
 ```log
 017-09-13 18:00:44,385 INFO  [LruBlockCacheStatsExecutor] hfile.LruBlockCache: totalSize=417.35 KB, freeSize=395.89 MB, max=396.30 MB, blockCount=0, accesses=0, hits=0, hitRatio=0, cachingAccesses=0, cachingHits=0, cachingHitsRatio=0,evictions=9059, evicted=0, evictedPerRun=0.0
