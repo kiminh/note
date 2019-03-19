@@ -6,7 +6,6 @@
 
 ```txt
 .
-.
 ├── ML
 ├── ambari_study
 │   ├── base
