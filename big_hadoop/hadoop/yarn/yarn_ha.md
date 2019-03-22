@@ -15,7 +15,7 @@
     - [实现分析](#实现分析)
     - [对 ActiveStandbyElector 主被选举状态变化的处理](#对-activestandbyelector-主被选举状态变化的处理)
 
-在 Hadoop 生态中(Hadoop2.x及以后版本), JobTracker 和 TaskTracker 演变为 Yarn 作为 Hadoop 的资源管理器。 同时, MapReduce、Spark、Flink、等计算框架也支持 Yarn 来调度, 因此, Yarn 高可用极为重要。 关于 Yarn 相关内容, 详情查看[Apache Hadoop YARN Architecture](https://hadoop.apache.org/docs/r2.7.3/hadoop-yarn/hadoop-yarn-site/YARN.html), 这里对 Yarn ResourceManager 的 HA 做一个简单介绍。 文章大部分来自官方文档。
+在 Hadoop 生态中(Hadoop2.x及以后版本), JobTracker 和 TaskTracker 演变为 Yarn 作为 Hadoop 的资源管理器。 同时, MapReduce、Spark、Flink、等计算框架也支持 Yarn 来调度, 因此, Yarn 高可用极为重要。 关于 Yarn 相关内容, 详情查看[Apache Hadoop YARN Architecture](https://hadoop.apache.org/docs/r2.7.3/hadoop-yarn/hadoop-yarn-site/YARN.html), 这里对 Yarn ResourceManager 的 HA 做一个简单介绍。 文章部分来自官方文档。
 
 ResourceManager HA 的目的是当 Active RM 无法工作时, Standby RM 能够阶梯正在服务的 Active RM, 防止集群出现不可用状态。
 
@@ -39,7 +39,7 @@ RM 可以选择基于 zookeeper 的 `ActiveStandbyElector` 来决定那个 RM �
 
 ### Active-RM 状态恢复
 
-启用 ResourceManager 后, 将 RM 状态转换成 Active 状态需要加载 RM 内部状态, 并根据 RM Restart 特性尽可能从之前停止的位置继续执行。 对于之前提交给 RM 托管的 Application, 都会生成一个新的 Application。 Application 可以定期 CheckPoint, 以免丢失任何 work。 状态存储必须在 Active & Standby 的 RM 中可见, 目前有两种用于持久化的 `RMStateStore` 实现: `FileSystemRMStateStore` 和 `ZKRMStateStore`。 `ZKRMStateStore` 隐式允许任何时间任何节点对单个 RM 进行写访问, 因此官方推荐使用 `ZKRMStateStore`。 在使用 `ZKRMStateStore` 时, 不需要单独的隔离机制来处理潜在的[脑裂]()情况。 在这种情况下, 多个 RM 可以潜在地承担活动角色。 在使用 `ZKRMStateStore` 时, 官方建议不要在 zookeeper 集群中设置 `zookeeper.DigestAuthenticationProvider`, 同时 zookeeper 管理员用户不能有 Yarn 的 application/user 的凭证信息。
+启用 ResourceManager 后, 将 RM 状态转换成 Active 状态需要加载 RM 内部状态, 并根据 RM Restart 特性尽可能从之前停止的位置继续执行。 对于之前提交给 RM 托管的 Application, 都会生成一个新的 Application。 Application 可以定期 CheckPoint, 以免丢失任何 work。 状态存储必须在 Active & Standby 的 RM 中可见, 目前有两种用于持久化的 `RMStateStore` 实现: `FileSystemRMStateStore` 和 `ZKRMStateStore`。 `ZKRMStateStore` 隐式允许任何时间任何节点对单个 RM 进行写访问, 因此官方推荐使用 `ZKRMStateStore`。 在使用 `ZKRMStateStore` 时, 不需要单独的隔离机制来处理潜在的脑裂情况。 在这种情况下, 多个 RM 可以潜在地承担活动角色。 在使用 `ZKRMStateStore` 时, 官方建议不要在 zookeeper 集群中设置 `zookeeper.DigestAuthenticationProvider`, 同时 zookeeper 管理员用户不能有 Yarn 的 application/user 的凭证信息。
 
 ## 配置清单
 

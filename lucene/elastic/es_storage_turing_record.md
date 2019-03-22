@@ -7,7 +7,6 @@
   - [Field 类型优化](#field-类型优化)
   - [Compression 优化](#compression-优化)
 - [集群构建](#集群构建)
-  - [hot-warm 集群](#hot-warm-集群)
 
 ## Summary
 
@@ -158,16 +157,3 @@ PUT ship_data_hot_1
 ## 集群构建
 
 建立 ES 集群时, 注意需要修改几项系统配置: 最大打开文件数, swap 分区, 内存限制等。 同时注意根据系统信息设置合理的 JVM 参数。
-
-### hot-warm 集群
-
-建议集群中共 6 个 ES 节点, 3 个 hot 节点, 3 个 warm 节点, 具体配置如下表:
-
-节点名称 | 节点类型 | 是否 Master | CPU | Memory | Disk
----|---|:-:|:-:|:-:|---|---
-hot-1 | hot | Y | 8 | 16GB | 500GB(建议使用 SSD), 增加检索效率
-hot-2 | hot | N | 8 | 16GB | 500GB(建议使用 SSD), 增加检索效率
-hot-3 | hot | N | 8 | 16GB | 500GB(建议使用 SSD), 增加检索效率
-warm-1 | warm | Y | 8 | 16GB | 1TB(使用普通机械硬盘即可), 主要用于存储历史不常访问数据
-warm-2 | warm | N | 8 | 16GB | 1TB(使用普通机械硬盘即可), 主要用于存储历史不常访问数据
-warm-3 | warm | N | 8 | 16GB | 1TB(使用普通机械硬盘即可), 主要用于存储历史不常访问数据
