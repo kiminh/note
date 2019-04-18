@@ -240,7 +240,116 @@ private synchronized void fence() throws Exception {
 
 - 注册 Watcher 监听
 
+注册 Watcher 的实现在 `org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore` 中, 关注点为 `org.apache.zookeeper.Watcher.Event.EventType#NodeDeleted` 和 `org.apache.zookeeper.Watcher.Event.EventType#NodeDataChanged` 的事件, 详见 `org.apache.hadoop.ha.ActiveStandbyElector#processWatchEvent()`。 具体实现如下:
+
+```java
+/**
+ * interface implementation of Zookeeper watch events (connection and node),
+ * 监控对应 ZNode 的 change 或 delete 事件。
+ * proxied by {@link WatcherWithClientRef}.
+ */
+synchronized void processWatchEvent(ZooKeeper zk, WatchedEvent event) {
+  Event.EventType eventType = event.getType();
+  if (isStaleClient(zk)) return;
+  LOG.debug("Watcher event type: " + eventType + " with state:"
+      + event.getState() + " for path:" + event.getPath()
+      + " connectionState: " + zkConnectionState
+      + " for " + this);
+
+  if (eventType == Event.EventType.None) {
+    // the connection state has changed
+    switch (event.getState()) {
+    case SyncConnected:
+      LOG.info("Session connected.");
+      // if the listener was asked to move to safe state then it needs to
+      // be undone
+      ConnectionState prevConnectionState = zkConnectionState;
+      zkConnectionState = ConnectionState.CONNECTED;
+      if (prevConnectionState == ConnectionState.DISCONNECTED &&
+          wantToBeInElection) {
+        monitorActiveStatus();
+      }
+      break;
+    case Disconnected:
+      LOG.info("Session disconnected. Entering neutral mode...");
+      // ask the app to move to safe state because zookeeper connection
+      // is not active and we dont know our state
+      zkConnectionState = ConnectionState.DISCONNECTED;
+      enterNeutralMode();
+      break;
+    case Expired:
+      // the connection got terminated because of session timeout
+      // call listener to reconnect
+      LOG.info("Session expired. Entering neutral mode and rejoining...");
+      enterNeutralMode();
+      reJoinElection(0);
+      break;
+    case SaslAuthenticated:
+      LOG.info("Successfully authenticated to ZooKeeper using SASL.");
+      break;
+    default:
+      fatalError("Unexpected Zookeeper watch event state: "
+          + event.getState());
+      break;
+  }
+  return;
+}
+```
+
+```java
+/**
+ * Watcher implementation which forward events to the ZKRMStateStore This
+ * hides the ZK methods of the store from its public interface
+ */
+private final class ForwardingWatcher implements Watcher {
+  private ZooKeeper watchedZkClient;
+
+  public ForwardingWatcher(ZooKeeper client) {
+    this.watchedZkClient = client;
+  }
+
+  @Override
+  public void process(WatchedEvent event) {
+    try {
+      ZKRMStateStore.this.processWatchEvent(watchedZkClient, event);
+    } catch (Throwable t) {
+      LOG.error("Failed to process watcher event " + event + ": "
+          + StringUtils.stringifyException(t));
+    }
+  }
+}
+```
+
 - 自动触发主备选举
+
+监控到对应的 ZNode 被删除的事件, 作出相应的操作:
+
+```java
+switch (eventType) {
+  case NodeDeleted:
+    if (state == State.ACTIVE) {
+      enterNeutralMode();
+    }
+    joinElectionInternal();
+    break;
+  case NodeDataChanged:
+    monitorActiveStatus();
+    break;
+  default:
+    LOG.debug("Unexpected node event: " + eventType + " for path: " + path);
+    monitorActiveStatus();
+}
+```
+
+```java
+private void enterNeutralMode() {
+  if (state != State.NEUTRAL) {
+    LOG.debug("Entering neutral mode for " + this);
+    state = State.NEUTRAL;
+    appClient.enterNeutralMode();
+  }
+}
+```
 
 - 防止脑裂
 
