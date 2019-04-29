@@ -20,7 +20,6 @@ http://blog.csdn.net/ldds_520/article/details/51648833
 09:32:23.318 [main] DEBUG org.apache.hadoop.hbase.zookeeper.ZKUtil - hconnection-0x301abf87-0x2423aeb0f790ff2 Unable to get data of znode /hbase/meta-region-server because node does not exist (not an error)
 ```
 
-
 ```log
 ERROR: org.apache.hadoop.hbase.PleaseHoldException: Master is initializing
         at org.apache.hadoop.hbase.master.HMaster.checkInitialized(HMaster.java:2402)
@@ -41,9 +40,7 @@ be used to filter the output. Examples:
   hbase> list 'ns:abc.*'
   hbase> list 'ns:.*'
 
-
 TABLE
-
 
 ERROR:
 
@@ -58,8 +55,6 @@ be used to filter the output. Examples:
 
 ```
 
-
-
 描述：“baseZNode=/hbase-unsecure Unable to get data of znode /hbase-unsecure/meta-region-server because node does not exist (not an error)”
 
 ```log
@@ -70,15 +65,11 @@ request:: '/hbase-unsecure,F  response:: s{4294967360,4294967360,1493888683458,1
        egion-server because node does not exist (not an error)
 ```
 
-
 参考资料：
 https://stackoverflow.com/questions/19903622/hbase-hbase-meta-region-server-node-does-not-exist
 https://issues.apache.org/jira/browse/HBASE-8560
 https://stackoverflow.com/questions/34969270/hbase-meta-region-server-because-node-does-not-exist-not-an-error
 http://blog.csdn.net/liuxiao723846/article/details/53146304
-
-
-
 
 ### 问题2
 
@@ -251,85 +242,3 @@ ab-01,16020,1505206264265
 ```
 
 不断清理 WAL 直到清理完所有的 WAL, 之后每 1H 清理一次(即每 1H flush 一次)。
-
-##
-
-环境说明: 单节点 NameNode, SNamenode, DataNode, HMaster, HRegionServer. HMaster 无法启动。
-
-```log
-2017-12-06 14:03:31,537 WARN  [adm-test:16000.activeMasterManager] master.SplitLogManager: returning success without actually splitting and deleting all the log files in path hdfs://adm-test:8020/apps/hbase/data/WALs/adm-test,16020,1499391573608-splitting
-2017-12-06 14:03:31,537 INFO  [adm-test:16000.activeMasterManager] master.SplitLogManager: finished splitting (more than or equal to) 83 bytes in 1 log files in [hdfs://adm-test:8020/apps/hbase/data/WALs/adm-test,16020,1499391573608-splitting] in 4476ms
-2017-12-06 14:03:31,675 INFO  [adm-test:16000.activeMasterManager] zookeeper.MetaTableLocator: Failed verification of hbase:meta,,1 at address=adm-test,16020,1499391573608, exception=org.apache.hadoop.hbase.NotServingRegionException: Region hbase:meta,,1 is not online on adm-test,16020,1512540200922
-        at org.apache.hadoop.hbase.regionserver.HRegionServer.getRegionByEncodedName(HRegionServer.java:2928)
-        at org.apache.hadoop.hbase.regionserver.RSRpcServices.getRegion(RSRpcServices.java:974)
-        at org.apache.hadoop.hbase.regionserver.RSRpcServices.getRegionInfo(RSRpcServices.java:1254)
-        at org.apache.hadoop.hbase.protobuf.generated.AdminProtos$AdminService$2.callBlockingMethod(AdminProtos.java:22731)
-        at org.apache.hadoop.hbase.ipc.RpcServer.call(RpcServer.java:2127)
-        at org.apache.hadoop.hbase.ipc.CallRunner.run(CallRunner.java:107)
-        at org.apache.hadoop.hbase.ipc.RpcExecutor.consumerLoop(RpcExecutor.java:133)
-        at org.apache.hadoop.hbase.ipc.RpcExecutor$1.run(RpcExecutor.java:108)
-        at java.lang.Thread.run(Thread.java:744)
-
-2017-12-06 14:03:31,682 INFO  [adm-test:16000.activeMasterManager] master.SplitLogManager: dead splitlog workers [adm-test,16020,1499391573608]
-2017-12-06 14:03:31,689 INFO  [adm-test:16000.activeMasterManager] master.SplitLogManager: hdfs://adm-test:8020/apps/hbase/data/WALs/adm-test,16020,1499391573608-splitting is empty dir, no logs to split
-2017-12-06 14:03:31,689 INFO  [adm-test:16000.activeMasterManager] master.SplitLogManager: started splitting 0 logs in [hdfs://adm-test:8020/apps/hbase/data/WALs/adm-test,16020,1499391573608-splitting] for [adm-test,16020,1499391573608]
-2017-12-06 14:03:31,696 WARN  [adm-test:16000.activeMasterManager] retry.RetryInvocationHandler: Exception while invoking ClientNamenodeProtocolTranslatorPB.delete over null. Not retrying because try once and fail.
-org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.fs.PathIsNotEmptyDirectoryException): `/apps/hbase/data/WALs/adm-test,16020,1499391573608-splitting is non empty': Directory is not empty
-        at org.apache.hadoop.hdfs.server.namenode.FSDirDeleteOp.delete(FSDirDeleteOp.java:89)
-        at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.delete(FSNamesystem.java:3829)
-        at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.delete(NameNodeRpcServer.java:1071)
-        at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.delete(ClientNamenodeProtocolServerSideTranslatorPB.java:619)
-        at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
-        at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:640)
-        at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:982)
-        at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2313)
-        at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2309)
-        at java.security.AccessController.doPrivileged(Native Method)
-        at javax.security.auth.Subject.doAs(Subject.java:415)
-        at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1724)
-        at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2307)
-
-        at org.apache.hadoop.ipc.Client.getRpcResponse(Client.java:1552)
-        at org.apache.hadoop.ipc.Client.call(Client.java:1496)
-        at org.apache.hadoop.ipc.Client.call(Client.java:1396)
-        at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:233)
-        at com.sun.proxy.$Proxy19.delete(Unknown Source)
-        at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.delete(ClientNamenodeProtocolTranslatorPB.java:585)
-        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-        at java.lang.reflect.Method.invoke(Method.java:606)
-        at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:278)
-        at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:194)
-        at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:176)
-        at com.sun.proxy.$Proxy20.delete(Unknown Source)
-        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-        at java.lang.reflect.Method.invoke(Method.java:606)
-        at org.apache.hadoop.hbase.fs.HFileSystem$1.invoke(HFileSystem.java:279)
-        at com.sun.proxy.$Proxy21.delete(Unknown Source)
-        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-        at java.lang.reflect.Method.invoke(Method.java:606)
-        at org.apache.hadoop.hbase.fs.HFileSystem$1.invoke(HFileSystem.java:279)
-        at com.sun.proxy.$Proxy21.delete(Unknown Source)
-        at org.apache.hadoop.hdfs.DFSClient.delete(DFSClient.java:2094)
-        at org.apache.hadoop.hdfs.DistributedFileSystem$17.doCall(DistributedFileSystem.java:815)
-        at org.apache.hadoop.hdfs.DistributedFileSystem$17.doCall(DistributedFileSystem.java:811)
-        at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
-        at org.apache.hadoop.hdfs.DistributedFileSystem.delete(DistributedFileSystem.java:811)
-        at org.apache.hadoop.hbase.master.SplitLogManager.splitLogDistributed(SplitLogManager.java:296)
-        at org.apache.hadoop.hbase.master.MasterFileSystem.splitLog(MasterFileSystem.java:393)
-        at org.apache.hadoop.hbase.master.MasterFileSystem.splitMetaLog(MasterFileSystem.java:308)
-        at org.apache.hadoop.hbase.master.MasterFileSystem.splitMetaLog(MasterFileSystem.java:299)
-        at org.apache.hadoop.hbase.master.HMaster.splitMetaLogBeforeAssignment(HMaster.java:1077)
-        at org.apache.hadoop.hbase.master.HMaster.assignMeta(HMaster.java:1005)
-        at org.apache.hadoop.hbase.master.HMaster.finishActiveMasterInitialization(HMaster.java:801)
-        at org.apache.hadoop.hbase.master.HMaster.access$500(HMaster.java:213)
-        at org.apache.hadoop.hbase.master.HMaster$1.run(HMaster.java:1863)
-        at java.lang.Thread.run(Thread.java:744)
-```
-
-原因: datanode无法启动, datanode未启动原因。

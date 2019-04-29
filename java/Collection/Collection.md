@@ -14,7 +14,7 @@ Collection是集合类的一个顶级接口，其直接继承接口有 List 与 
 2. next()   // 返回下一个元素。
 3. remove() 删除当前元素。
 
-- 集合类: 
+- 集合类:
 
 名称 |  | 是否有序 | 是否允许元素重复  
 ---|---|---|---  
@@ -74,3 +74,17 @@ Map 接口的实现类有：
 2. HashMap
 3. WeakHashMap
 4. Tip
+
+## 几个比较
+
+- HashTable vs HashMap
+
+1. HashTable 线程安全, HashMap 线程不安全。 HashTable 有同步操作。
+2. HashTable 基于 Dictionary 实现, HashMap 实现基于 AbstractMap, Map。
+3. HashMap 允许在集合中有一个 null 的 key 和多个 null 的 value。
+4. HashTable 类的对象必须覆盖 Object 的 hashCode() 和 equals() 方法。
+
+- ArrayList vs Vector
+
+1. Vector 线程安全, ArrayList 线程不安全。 Vector 有同步操作, 由于同步操作, 性能上较差。
+2. 扩容时, Vector 增长 1 倍, 即扩容为原来的 2 倍; ArrayList 增长原来的一半, 即扩容后为原来的 1.5 倍。

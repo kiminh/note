@@ -131,6 +131,7 @@ Spark Streaming 是 Spark 核心 API 的扩展, 支持对实时数据流进行�
 输入的 `DStreams` 表示从 Streaming 源接收数据流的 DStreams。 每个 `DStream` 都与一个 `Reciever` 对象关联, 该对象接收数据并将其存储在 Spark 的内存中进行处理。
 
 - Spark 提供两种内置的 Streaming 源
+
 1. Basic source: 在直接 `StreamingContext` API 中可以直接使用的, 如: 文件系统, Socket 连接。
 2. Advanced source: 从类似 Kafka, Flume, Kinesis 等通过额外的程序类获。
 
