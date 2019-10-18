@@ -38,7 +38,7 @@ yum install -y git
 1. git config --global
 
 这台机器的所有git仓库都会使用这个参数。
-通过```git config --global```配置远程仓库、用户等信息。
+通过 `git config --global` 配置远程仓库、用户等信息。
 
 2. 创建版本库
 
@@ -47,7 +47,7 @@ yum install -y git
 
 3. git add
 
-在仓库中添加一个文件使用```git add```命令。将仓库目录中的文件添加到git。
+在仓库中添加一个文件使用 `git add` 命令。将仓库目录中的文件添加到git。
 
 ```bash
 touch README.md
@@ -56,7 +56,7 @@ git add README.md
 
 4. git commint
 
-通过```git comnmint```提交，`-m` 后面输入的是本次提交的说明。
+通过 `git comnmint` 提交，`-m` 后面输入的是本次提交的说明。
 
 ```bash
 git commint -m "add the file README.md"
